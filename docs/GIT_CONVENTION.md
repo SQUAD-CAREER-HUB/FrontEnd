@@ -1,13 +1,13 @@
 # Commit Convention
 
-- Test - 테스트 업무
-- File - 파일 이동 또는 삭제, 파일명 변경
-- Docs - md, yml 등의 문서 작업
-- Chore - 이외의 애매하거나 자잘한 수정
-- Setting - 빌드,패키지,인프라 등 프로젝트 설정
-- Feat - 기능 추가
-- Refactor - 코드 리팩토링
-- Fix - 버그 수정
+- test - 테스트 업무
+- file - 파일 이동 또는 삭제, 파일명 변경
+- docs - md, yml 등의 문서 작업
+- chore - 이외의 애매하거나 자잘한 수정
+- setting - 빌드,패키지,인프라 등 프로젝트 설정
+- feat - 기능 추가
+- refactor - 코드 리팩토링
+- fix - 버그 수정
 
 # Branch
 
@@ -15,7 +15,7 @@
 - `develop`: 개발용 branch
 - `feat` : 기능 구현용 branch
   - `Issue_종류/#Issue_번호` : branch 생성
-  - 예시) Feat/#1
+  - 예시) feat/#1
   - 병합 후 삭제
 
 # PR
@@ -27,7 +27,7 @@
 - PR 제목
 
   - 이슈 제목의 내용과 동일하게 작성한다.
-  - ex) 이슈 → `✅Feat: 카카오 로그인` / pr → `Feat: 카카오 로그인`
+  - ex) 이슈 → `feat: 카카오 로그인` / pr → `feat: 카카오 로그인`
 
 - **_Pull Request_** 등록 전 다음 항목을 **반드시** 체크한다.
   - [ ] 코드 컨벤션을 준수했습니다.
@@ -36,7 +36,7 @@
   - [ ] 관련 문서를 업데이트했습니다. (README, API 문서 등)
   - [ ] 리뷰어를 지정했습니다. (Assignees, Reviewers)
   - [ ] 라벨을 추가했습니다. (Label)
-  - [ ] 브랜치명이 컨벤션을 따릅니다. (예: `Feat/#42`)
+  - [ ] 브랜치명이 컨벤션을 따릅니다. (예: `feat/#42`)
 
 # Git flow 전략
 
