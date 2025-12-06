@@ -1,7 +1,6 @@
----
-name: 'Pull Request'
-about: '기능 개발, 버그 수정, 리팩터링 등을 제출할 때 사용하는 PR 템플릿입니다.'
----
+- 제목 : feat(issue 번호): 기능명
+  ex) feat(17): pull request template 작성
+  (확인 후 지워주세요)
 
 ## 요약
 
