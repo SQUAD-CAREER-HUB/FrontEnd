@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
+import Providers from '@/components/providers';
 
 export const metadata: Metadata = {
   title: 'Career-Hub',
@@ -14,7 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ko'>
-      <body className='antialiased'>{children}</body>
+      <body className='antialiased'>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
