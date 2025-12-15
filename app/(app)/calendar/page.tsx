@@ -1,9 +1,9 @@
-import CalendarWrapper from './_components/CalendarWrapper';
+import CalendarContainer from './_components/CalendarContainer';
 
 export default function CalendarPage() {
   return (
-    <div className='h-full'>
-      <CalendarWrapper />
-    </div>
+    <>
+      <CalendarContainer />
+    </>
   );
 }
