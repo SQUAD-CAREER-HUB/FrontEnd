@@ -1,0 +1,108 @@
+@reference "tailwindcss";
+@reference "tw-animate-css";
+@reference "../../../../../styles/theme.css";
+
+#calendar-wrapper .rbc-toolbar {
+  background-color: white;
+}
+
+#calendar-wrapper .rbc-month-header {
+  @apply grid grid-cols-7 bg-slate-50 dark:bg-slate-900 border-b border-slate-300 dark:border-slate-800 flex-shrink-0;
+  @apply font-semibold text-slate-500 dark:text-slate-400;
+}
+
+#calendar-wrapper .rbc-month-header .rbc-header {
+  @apply py-2 text-center;
+  @apply border-none;
+}
+
+#calendar-wrapper .rbc-day-bg {
+  @apply border-l-slate-300;
+  @apply cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800;
+}
+
+#calendar-wrapper .rbc-month-row + .rbc-month-row {
+  @apply border-t-slate-300;
+}
+
+#calendar-wrapper .rbc-date-cell {
+  @apply text-slate-700;
+}
+
+#calendar-wrapper .rbc-today {
+  @apply bg-white;
+}
+
+#calendar-wrapper .rbc-now button {
+  @apply bg-primary text-primary-foreground w-6 h-6 rounded-full;
+}
+
+/* 주간 캘린더 헤더 */
+#calendar-wrapper .rbc-time-header-cell {
+  @apply bg-slate-50 dark:bg-slate-900 min-h-[48px];
+}
+
+#calendar-wrapper .rbc-allday-cell .rbc-row-bg {
+  @apply right-0;
+}
+
+/* 오늘 날짜 표시 */
+#calendar-wrapper .rbc-header.rbc-today {
+  @apply bg-slate-50 dark:bg-slate-900 border-b border-slate-300 dark:border-slate-800;
+  @apply text-primary;
+}
+
+#calendar-wrapper .rbc-time-content .rbc-time-gutter {
+  @apply bg-slate-50 dark:bg-slate-900;
+}
+
+#calendar-wrapper .rbc-label {
+  @apply p-0;
+}
+
+#calendar-wrapper .rbc-time-content .rbc-time-gutter .rbc-label {
+  @apply bg-white text-slate-500 font-semibold border border-border rounded;
+}
+
+#calendar-wrapper .rbc-current-time-indicator {
+  @apply bg-red-500;
+}
+
+/* 좌측 gutter 전체 */
+#calendar-wrapper .rbc-time-header-gutter,
+.rbc-time-gutter {
+  width: 64px;
+  min-width: 64px;
+  max-width: 64px;
+  flex-shrink: 0;
+}
+
+/* 좌측 gutter 타임 라벨 중앙 정렬 */
+#calendar-wrapper .rbc-time-column .rbc-timeslot-group {
+  @apply h-full items-center justify-center;
+}
+
+/* 좌측 gutter 타임 라벨 */
+#calendar-wrapper .rbc-time-gutter .rbc-label {
+  @apply text-xs p-1;
+}
+
+/* 월간 지난달, 다음달 안보이게 */
+/* 지난달 / 다음달 날짜 완전 제거 */
+#calendar-wrapper .rbc-off-range {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#calendar-wrapper .rbc-off-range-bg {
+  background: transparent;
+  pointer-events: none;
+}
+
+#calendar-wrapper .rbc-event {
+  @apply p-0 bg-transparent border-none;
+}
+
+#calendar-wrapper .rbc-time-view .rbc-event-label {
+  display: none;
+}
