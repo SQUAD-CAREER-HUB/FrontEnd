@@ -1,17 +1,23 @@
-import { PROCESS_TYPE_META } from '../../_constants/processType';
-
+import { cn } from '@/lib/utils';
 import { RbcEvent } from '../../_types/rbcEvent';
+import { getEventMeta } from '../../_utils/getEventMeta';
 
 export default function Event({ event }: { event: RbcEvent }) {
-  const bgColor = PROCESS_TYPE_META[event.resource.processType].bgColor;
-  const color = PROCESS_TYPE_META[event.resource.processType].color;
-  const borderColor = PROCESS_TYPE_META[event.resource.processType].borderColor;
+  const { bgColor, color, borderColor } = getEventMeta(event);
 
   return (
     <div
-      className={`h-full font-semibold text-sm rounded ${bgColor} ${color} border ${borderColor}`}
+      className={cn(
+        'h-full px-1 py-0.5 rounded border',
+        bgColor,
+        color,
+        borderColor
+      )}
     >
-      <div>{event.title}</div>
+      <div className='flex items-center gap-1'>
+        <span className='text-xs font-bold'>{event.resource.companyName}</span>{' '}
+        | <span className='text-xs truncate'>{event.title}</span>
+      </div>
     </div>
   );
 }

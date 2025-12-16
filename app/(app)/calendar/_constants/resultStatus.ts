@@ -19,7 +19,7 @@ export const RESULT_STATUS_META: Record<
     color: 'bg-red-500',
     bgColor: 'bg-red-100',
   },
-};
+} as const;
 
 export const RESULT_STATUS_OPTIONS: { label: string; value: ResultStatus }[] = [
   { label: '전형 합격', value: 'PROCESS_PASS' },
