@@ -14,7 +14,7 @@ export default function CalendarFilterPanelMobile() {
         <SheetTitle className='p-4 border-b'>
           <span className='font-bold text-slate-900 dark:text-slate-100 flex gap-2 items-center'>
             <FunnelIcon className='w-4 h-4 text-primary' />
-            필터
+            검색 및 필터
           </span>
         </SheetTitle>
         <FilterPanelContent />

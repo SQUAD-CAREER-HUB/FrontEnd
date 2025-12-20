@@ -1,15 +1,13 @@
 import { create } from 'zustand';
 import { ProcessType, DocumentStatus, ResultStatus } from '../_types/filter';
 
-type FilterState = {
+type FilterValueState = {
   /** ===== filter values ===== */
-  companyNames: string[]; // 기업명 다중 선택
   processTypes: ProcessType[]; // 전형 종류
   documentStatuses: DocumentStatus[];
   resultStatuses: ResultStatus[];
 
   /** ===== actions ===== */
-  toggleCompany: (name: string) => void;
   toggleProcessType: (type: ProcessType) => void;
   toggleDocumentStatus: (status: DocumentStatus) => void;
   toggleResultStatus: (status: ResultStatus) => void;
@@ -17,21 +15,13 @@ type FilterState = {
   clearAll: () => void;
 };
 
-export const useFilterStore = create<FilterState>((set) => ({
+export const useFilterValueStore = create<FilterValueState>((set) => ({
   /** ===== initial state ===== */
-  companyNames: [],
   processTypes: [],
   documentStatuses: [],
   resultStatuses: [],
 
   /** ===== helpers ===== */
-  toggleCompany: (name) =>
-    set((state) => ({
-      companyNames: state.companyNames.includes(name)
-        ? state.companyNames.filter((n) => n !== name)
-        : [...state.companyNames, name],
-    })),
-
   toggleProcessType: (type) =>
     set((state) => ({
       processTypes: state.processTypes.includes(type)
@@ -55,7 +45,6 @@ export const useFilterStore = create<FilterState>((set) => ({
 
   clearAll: () =>
     set({
-      companyNames: [],
       processTypes: [],
       documentStatuses: [],
       resultStatuses: [],
