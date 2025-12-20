@@ -24,7 +24,6 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 
 import { useState } from 'react';
-import { DateTimePicker } from '@/components/ui/date-time-picker';
 
 export default function DateScheduleCreateModal() {
   const { isOpen, close, selectedDate } = useDateScheduleCreateStore();
@@ -42,7 +41,7 @@ export default function DateScheduleCreateModal() {
   const [scheduleType, setScheduleType] = useState<'INTERVIEW' | 'ETC'>(
     'INTERVIEW'
   );
-  const [company, setCompany] = useState(companies[0]);
+  const [company, setCompany] = useState<undefined | string>();
   const [interviewType, setInterviewType] = useState(interviewTypes[0]);
   const [customInterviewType, setCustomInterviewType] = useState('');
   const [date, setDate] = useState<Date | undefined>(selectedDate || undefined);
@@ -50,15 +49,19 @@ export default function DateScheduleCreateModal() {
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>
-      <DialogContent className='sm:max-w-[480px]'>
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>일정 추가</DialogTitle>
+          <DialogTitle className='font-black'>일정 추가</DialogTitle>
           {selectedDate ? (
             <DialogDescription>
-              {selectedDate
-                ? format(selectedDate, 'yyyy년 MM월 dd일', { locale: ko })
-                : ''}{' '}
-              에 새로운 일정을 추가합니다.
+              {selectedDate ? (
+                <span className='text-primary font-black'>
+                  {format(selectedDate, 'yyyy년 MM월 dd일', { locale: ko })}
+                </span>
+              ) : (
+                ''
+              )}
+              에 일정을 추가합니다.
             </DialogDescription>
           ) : null}
         </DialogHeader>
@@ -68,11 +71,11 @@ export default function DateScheduleCreateModal() {
           <ScheduleTypeSelect value={scheduleType} onChange={setScheduleType} />
 
           {/* 대상 기업 */}
-          <div className='grid gap-1'>
-            <Label>대상 기업</Label>
+          <div className='flex flex-col gap-y-2'>
+            <Label className='font-black'>대상 기업</Label>
             <Select value={company} onValueChange={setCompany}>
-              <SelectTrigger>
-                <SelectValue placeholder='기업 선택' />
+              <SelectTrigger className='w-full'>
+                <SelectValue placeholder='회원님의 지원 관리 현황들 중에 일정 추가할 회사를 선택해주세요.' />
               </SelectTrigger>
               <SelectContent>
                 {companies.map((c) => (
@@ -85,10 +88,10 @@ export default function DateScheduleCreateModal() {
           </div>
 
           {/* 면접 종류 */}
-          <div className='grid gap-1'>
-            <Label>면접 종류</Label>
+          <div className='flex flex-col gap-y-2'>
+            <Label className='font-black'>면접 종류</Label>
             <Select value={interviewType} onValueChange={setInterviewType}>
-              <SelectTrigger>
+              <SelectTrigger className='w-full'>
                 <SelectValue placeholder='면접 종류 선택' />
               </SelectTrigger>
               <SelectContent>
@@ -110,13 +113,21 @@ export default function DateScheduleCreateModal() {
           </div>
 
           {/* 일시 */}
-          <div className='grid gap-1'>
-            <DateTimePicker />
+          <div className='flex gap-x-2'>
+            <div className='flex flex-col gap-y-2'>
+              <Label className='font-black'>시작일시</Label>
+              <Input type='datetime-local' />
+            </div>
+
+            <div className='flex flex-col gap-y-2'>
+              <Label className='font-black'>종료일시</Label>
+              <Input type='datetime-local' />
+            </div>
           </div>
 
           {/* 장소 / 링크 */}
-          <div className='grid gap-1'>
-            <Label>장소 / 링크</Label>
+          <div className='flex flex-col gap-y-2'>
+            <Label className='font-black'>장소 / 링크</Label>
             <Input
               placeholder='예: Google Meet, 본사 10층'
               value={location}
