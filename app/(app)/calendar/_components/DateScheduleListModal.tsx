@@ -55,8 +55,6 @@ export default function DateScheduleListModal() {
     }
   );
 
-  console.log('rbcEventsForSelectedDate', rbcEventsForSelectedDate);
-
   return (
     <Dialog open={isOpen} onOpenChange={close}>
       <DialogContent className='sm:max-w-[500px]'>
@@ -71,25 +69,27 @@ export default function DateScheduleListModal() {
           <DialogDescription>선택한 날짜의 일정 목록입니다.</DialogDescription>
         </DialogHeader>
 
-        {rbcEventsForSelectedDate?.length === 0 && <EmptyEvent />}
+        <div className='flex-1'>
+          {rbcEventsForSelectedDate?.length === 0 && <EmptyEvent />}
 
-        {/* 일정 리스트 영역 */}
-        <div className='flex flex-col gap-1 mt-4 max-h-[400px] overflow-y-auto'>
-          {rbcEventsForSelectedDate?.map((event) => (
-            <EventCard key={event.resource.id} event={event} />
-          ))}
+          {/* 일정 리스트 영역 */}
+          <div className='flex flex-col gap-1 max-h-[400px] overflow-y-auto'>
+            {rbcEventsForSelectedDate?.map((event) => (
+              <EventCard key={event.resource.id} event={event} />
+            ))}
+          </div>
         </div>
 
-        {/* 일정 추가 버튼 */}
-        <Button onClick={() => open(selectedDate!)}>
-          <CalendarPlusIcon /> 일정 추가
-        </Button>
+        <div className='flex flex-col gap-y-2'>
+          <Button onClick={() => open(selectedDate!)} className='font-bold'>
+            <CalendarPlusIcon /> 일정 추가
+          </Button>
 
-        {/* 일간 뷰로 보기 */}
-        <Button variant='outline' onClick={handleGoToDayView}>
-          <CalendarSearchIcon />
-          일간 뷰로 자세히 보기
-        </Button>
+          <Button variant='outline' onClick={handleGoToDayView}>
+            <CalendarSearchIcon />
+            일간 뷰로 자세히 보기
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );
