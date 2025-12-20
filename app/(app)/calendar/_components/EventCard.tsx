@@ -14,17 +14,14 @@ import { Button } from '@/components/ui/button';
 import { getEventMeta } from '../_utils/getEventMeta';
 
 export default function EventCard({ event }: { event: RbcEvent }) {
-  const { bgColor, color, borderColor } = getEventMeta(event);
+  const { styles } = getEventMeta(event);
 
   const handleNavigateToApplicationDetail = () => {
     // TODO 지원 관리 상세 라우팅 추가
   };
 
   return (
-    <Card
-      key={event.resource.id}
-      className={cn('rounded-lg border', bgColor, color, borderColor)}
-    >
+    <Card key={event.resource.id} className={cn('rounded-lg border', styles)}>
       <CardHeader className='flex flex-col'>
         <span className='text-sm font-bold text-nowrap'>
           {event.resource.companyName}
@@ -32,8 +29,8 @@ export default function EventCard({ event }: { event: RbcEvent }) {
         <span className='text-sm'>{event.title}</span>
       </CardHeader>
       <CardContent>
-        <p className={cn('flex items-center gap-1 text-xs mb-1', color)}>
-          <Clock5Icon className={cn('w-3 h-3', color)} />
+        <p className={cn('flex items-center gap-1 text-xs mb-1', styles)}>
+          <Clock5Icon className={cn('w-3 h-3')} />
           {format(new Date(event.start), 'HH:mm')} ~{' '}
           {format(new Date(event.end), 'HH:mm')}
         </p>
@@ -45,7 +42,7 @@ export default function EventCard({ event }: { event: RbcEvent }) {
             className='flex items-center gap-1 text-xs font-medium'
           >
             상세 보기
-            <ArrowRightIcon className={cn('w-3 h-3', color)} />
+            <ArrowRightIcon className={cn('w-3 h-3')} />
           </Button>
         </CardAction>
       </CardFooter>

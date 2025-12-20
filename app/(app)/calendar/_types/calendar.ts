@@ -12,7 +12,10 @@ type InterviewEvent = {
 type EtcEvent = {
   processType: 'ETC';
   etcTitle: string;
-  etcLocation?: string;
+};
+
+type CloseEvent = {
+  processType: 'CLOSE';
 };
 
 export type CalendarEvent = {
@@ -23,4 +26,4 @@ export type CalendarEvent = {
   endDateTime: string;
   applicationDeadline: string;
   resultStatus?: 'PROCESS_PASS' | 'FINAL_PASS' | 'FINAL_FAIL';
-} & (DocumentEvent | InterviewEvent | EtcEvent);
+} & (DocumentEvent | InterviewEvent | EtcEvent | CloseEvent);

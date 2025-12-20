@@ -19,7 +19,7 @@ export const mockCalendarEvents = Array.from({
     'ETC',
   ]) as CalendarEvent['processType'];
   const startDateTime = randomDate(startDate, endDate);
-  const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000); // 1시간
+  const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 2000); // 2시간
 
   return {
     id: `evt-${i + 1}`,

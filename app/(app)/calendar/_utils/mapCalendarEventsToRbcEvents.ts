@@ -4,9 +4,7 @@ import { RbcEvent } from '../_types/rbcEvent';
 function getEventTitle(event: CalendarEvent) {
   switch (event.processType) {
     case 'DOCUMENT':
-      return event.documentStatus === 'SUBMITTED'
-        ? '서류 제출 완료'
-        : '서류 제출 필요';
+      return event.documentStatus === 'SUBMITTED' ? '제출' : '미제출';
 
     case 'INTERVIEW':
       return `${event.interviewTitle}`;
@@ -22,17 +20,23 @@ function getEventTitle(event: CalendarEvent) {
 export function mapCalendarEventsToRbcEvents(
   events: CalendarEvent[]
 ): RbcEvent[] {
-  return events?.map((event) => ({
-    title: getEventTitle(event),
-    start:
-      event.processType === 'DOCUMENT'
-        ? new Date(event.applicationDeadline)
-        : new Date(event.startDateTime),
-    end:
-      event.processType === 'DOCUMENT'
-        ? new Date(event.applicationDeadline)
-        : new Date(event.startDateTime),
-    allDay: event.processType === 'DOCUMENT',
-    resource: event,
-  }));
+  return events?.map((event) => {
+    if (event.processType === 'DOCUMENT') {
+      return {
+        title: getEventTitle(event),
+        start: new Date(event.applicationDeadline),
+        end: new Date(event.applicationDeadline),
+        allDay: true,
+        resource: event,
+      };
+    } else {
+      return {
+        title: getEventTitle(event),
+        start: new Date(event.startDateTime),
+        end: new Date(event.endDateTime),
+        allDay: false,
+        resource: event,
+      };
+    }
+  });
 }

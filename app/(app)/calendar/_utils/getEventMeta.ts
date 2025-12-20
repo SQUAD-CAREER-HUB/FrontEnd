@@ -4,9 +4,7 @@ import { RbcEvent } from '../_types/rbcEvent';
 
 type EventMeta = {
   label: string;
-  bgColor: string;
-  color: string;
-  borderColor: string;
+  styles: string;
 };
 
 export function getEventMeta(event: RbcEvent): EventMeta {

@@ -74,6 +74,17 @@
 
 /* 태일윈드 유틸리티 클래스 생성 */
 @theme inline {
+  --color-brand-50: #eef0fd;
+  --color-brand-100: #dde1fb;
+  --color-brand-200: #bbc3f7;
+  --color-brand-300: #99a5f3;
+  --color-brand-400: #7786ef;
+  --color-brand-500: #4f5eed;
+  --color-brand-600: #3f4bbd;
+  --color-brand-700: #2f388e;
+  --color-brand-800: #20265f;
+  --color-brand-900: #10132f;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 

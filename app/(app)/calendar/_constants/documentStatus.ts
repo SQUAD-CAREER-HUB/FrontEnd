@@ -4,28 +4,23 @@ export const DOCUMENT_STATUS_META: Record<
   DocumentStatus,
   {
     label: string;
-    color: string;
-    bgColor: string;
-    borderColor: string;
+    styles: string;
   }
 > = {
   NOT_SUBMITTED: {
     label: '미제출',
-    color: 'text-rose-700',
-    bgColor: 'bg-rose-50',
-    borderColor: 'bg-rose-200',
+    styles: 'text-rose-700 bg-rose-50 border-rose-200',
   },
   SUBMITTED: {
     label: '제출',
-    color: 'text-blue-700',
-    bgColor: 'bg-blue-50',
-    borderColor: 'border-blue-200',
+    styles: 'text-blue-700 bg-blue-50 border-blue-200',
   },
 } as const;
 
-export const DOCUMENT_STATUS_OPTIONS = Object.entries(DOCUMENT_STATUS_META).map(
-  ([value, meta]) => ({
-    value,
-    label: meta.label,
-  })
-);
+export const DOCUMENT_STATUS_OPTIONS: {
+  label: string;
+  value: DocumentStatus;
+}[] = [
+  { label: '미제출', value: 'NOT_SUBMITTED' },
+  { label: '제출', value: 'SUBMITTED' },
+];

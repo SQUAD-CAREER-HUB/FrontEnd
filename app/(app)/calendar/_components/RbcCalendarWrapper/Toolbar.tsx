@@ -4,10 +4,7 @@ import { ko } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import { useDateScheduleCreateStore } from '../../_stores/useDateScheduleCreateStore';
 import { useFilterPanelStore } from '../../_stores/useFilterPanelStore';
-import {
-  ButtonGroup,
-  ButtonGroupSeparator,
-} from '@/components/ui/button-group';
+import { ButtonGroup } from '@/components/ui/button-group';
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -15,6 +12,7 @@ import {
   PanelRightIcon,
 } from 'lucide-react';
 import { RbcEvent } from '../../_types/rbcEvent';
+import { cn } from '@/lib/utils';
 
 export function Toolbar({
   date,
@@ -27,32 +25,63 @@ export function Toolbar({
   const title = getTitleNode(view, date);
 
   return (
-    <div className='flex flex-col gap-y-2 p-4 md:flex-row md:items-center md:justify-between'>
-      <ButtonGroup className='gap-2 items-center'>
-        <Button onClick={() => onNavigate('PREV')}>
-          <ArrowLeftIcon />
-        </Button>
-        <div className='text-lg font-semibold'>{title}</div>
-        <Button onClick={() => onNavigate('NEXT')}>
-          <ArrowRightIcon />
-        </Button>
-      </ButtonGroup>
-
-      <div className='flex gap-1'>
-        <ButtonGroup>
-          <Button onClick={() => onView('month')}>월</Button>
-          <ButtonGroupSeparator />
-          <Button onClick={() => onView('week')}>주</Button>
-          <ButtonGroupSeparator />
-          <Button onClick={() => onView('day')}>일</Button>
+    <div className='flex flex-col gap-y-2 p-4 md:flex-row md:items-center md:justify-between bg-white min-h-[68px] md:h-[68px] border-b border-border'>
+      <div className='flex justify-between items-center gap-x-4'>
+        <ButtonGroup className='items-center'>
+          <Button variant='outline' onClick={() => onNavigate('PREV')}>
+            <ArrowLeftIcon />
+          </Button>
+          <Button
+            variant='outline'
+            onClick={() => onNavigate('TODAY')}
+            className='font-extrabold'
+          >
+            오늘
+          </Button>
+          <Button variant='outline' onClick={() => onNavigate('NEXT')}>
+            <ArrowRightIcon />
+          </Button>
         </ButtonGroup>
-        <Button onClick={() => onNavigate('TODAY')}>오늘</Button>
-        <Button onClick={() => open(null)}>
+
+        <div>{title}</div>
+      </div>
+
+      <div className='flex gap-x-2'>
+        <ButtonGroup>
+          <Button
+            variant='outline'
+            onClick={() => onView('month')}
+            className={cn(
+              'font-extrabold',
+              view === 'month' ? 'bg-accent' : ''
+            )}
+          >
+            월
+          </Button>
+
+          <Button
+            variant='outline'
+            onClick={() => onView('week')}
+            className={cn('font-extrabold', view === 'week' ? 'bg-accent' : '')}
+          >
+            주
+          </Button>
+
+          <Button
+            variant='outline'
+            onClick={() => onView('day')}
+            className={cn('font-extrabold', view === 'day' ? 'bg-accent' : '')}
+          >
+            일
+          </Button>
+        </ButtonGroup>
+
+        <Button onClick={() => open(null)} className='font-extrabold'>
           <CalendarPlusIcon /> 일정 추가
         </Button>
         {isOpen ? null : (
-          <Button onClick={() => toggleFilterPanel()}>
-            <PanelRightIcon />
+          <Button variant='outline' onClick={() => toggleFilterPanel()}>
+            <PanelRightIcon className='w-6 h-6' />
           </Button>
         )}
       </div>
@@ -63,7 +92,7 @@ export function Toolbar({
 function getTitleNode(view: string, date: Date) {
   if (view === 'month') {
     return (
-      <span className='text-lg font-semibold'>
+      <span className='text-lg font-bold'>
         {format(date, 'yyyy년 M월', { locale: ko })}
       </span>
     );
@@ -75,17 +104,17 @@ function getTitleNode(view: string, date: Date) {
 
     return (
       <div className='flex items-center gap-2'>
-        <span className='text-base font-semibold'>
+        <span className='text-lg font-bold text-secondary-foreground'>
           {format(date, 'yyyy년', { locale: ko })}
         </span>
 
-        <span className='text-sm text-muted-foreground'>
+        <span className='text-lg text-muted-foreground font-semibold'>
           {format(start, 'M월 d일', { locale: ko })}
         </span>
 
-        <span className='text-muted-foreground'>~</span>
+        <span className='text-muted-foreground text-lg font-semibold'>~</span>
 
-        <span className='text-sm text-muted-foreground'>
+        <span className='text-lg text-muted-foreground font-semibold'>
           {format(end, 'M월 d일', { locale: ko })}
         </span>
       </div>
@@ -95,11 +124,11 @@ function getTitleNode(view: string, date: Date) {
   if (view === 'day') {
     return (
       <div className='flex items-center gap-2'>
-        <span className='text-base font-semibold'>
+        <span className='text-lg font-semibold text-secondary-foreground'>
           {format(date, 'yyyy년', { locale: ko })}
         </span>
 
-        <span className='text-sm text-muted-foreground'>
+        <span className='text-lg font-semibold text-muted-foreground'>
           {format(date, 'M월 d일', { locale: ko })}
         </span>
       </div>

@@ -9,6 +9,10 @@ import CalendarFilterPanelMobile from './CalendarFilterPanelMobile';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { useQuery } from '@tanstack/react-query';
 
+/**
+ * 캘린더 + 필터 UI 컨테이너
+ * @returns
+ */
 export default function CalendarContainer() {
   const { isOpen } = useFilterPanelStore();
   const isDesktop = useMediaQuery('(min-width: 768px)');
