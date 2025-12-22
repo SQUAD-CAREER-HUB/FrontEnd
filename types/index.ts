@@ -10,3 +10,8 @@ export interface JobApplication {
   deadlineDate: string;     // 마감일
   nextInterviewDate: string | null; // 다음 면접일 (없을 수 있으므로 null 허용)
 }
+
+export interface StageData {
+  title: string;
+  datetime: string;
+}
