@@ -1,0 +1,175 @@
+@reference 'tailwindcss';
+@reference 'tw-animate-css';
+@reference '../../../../shared/styles/theme.css';
+
+/* 기본 패딩 제거 */
+#calendar-wrapper .rbc-label.rbc-time-header-gutter {
+  padding: 0;
+}
+
+#calendar-wrapper .rbc-toolbar {
+  background-color: white;
+}
+
+#calendar-wrapper .rbc-month-header {
+  @apply grid grid-cols-7 bg-slate-50 dark:bg-slate-900 border-b border-border dark:border-slate-800;
+  @apply text-slate-500 dark:text-slate-400;
+}
+
+#calendar-wrapper .rbc-month-header .rbc-header {
+  @apply text-center;
+  @apply border-0;
+}
+
+#calendar-wrapper .rbc-day-bg {
+  @apply border-l border-border;
+  @apply cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800;
+}
+
+#calendar-wrapper .rbc-date-cell {
+  @apply border-slate-100 text-slate-700;
+}
+
+#calendar-wrapper .rbc-today {
+  @apply bg-brand-50/10;
+}
+
+/* 월뷰 캘린더 오늘 날짜 강조 */
+#calendar-wrapper .rbc-month-view .rbc-now button {
+  @apply bg-primary text-primary-foreground w-6 h-6 rounded-full text-sm font-bold;
+}
+
+/* 주간 캘린더 헤더 */
+#calendar-wrapper .rbc-time-header-cell {
+  @apply bg-slate-50 dark:bg-slate-900 min-h-[64px];
+}
+
+#calendar-wrapper .rbc-time-header-cell .rbc-header {
+  @apply py-2;
+}
+
+#calendar-wrapper .rbc-time-header-cell-single-day .rbc-header {
+  @apply p-0;
+}
+
+#calendar-wrapper .rbc-allday-cell .rbc-row-bg {
+  @apply right-0;
+}
+
+#calendar-wrapper .rbc-time-content .rbc-time-gutter {
+  @apply bg-slate-50 dark:bg-slate-900;
+}
+
+#calendar-wrapper .rbc-time-content .rbc-time-gutter .rbc-label {
+  @apply bg-white text-slate-500 font-semibold border border-border rounded;
+}
+
+/* 좌측 gutter 전체 */
+#calendar-wrapper .rbc-time-header-gutter,
+.rbc-time-gutter {
+  width: 64px;
+  min-width: 64px;
+  max-width: 64px;
+  flex-shrink: 0;
+}
+
+/* 좌측 gutter 타임 라벨 중앙 정렬 */
+#calendar-wrapper .rbc-time-gutter .rbc-timeslot-group {
+  @apply h-full items-center justify-center;
+}
+
+/* 좌측 gutter 타임 라벨 */
+#calendar-wrapper .rbc-time-gutter .rbc-label {
+  @apply text-xs p-1;
+}
+
+#calendar-wrapper .rbc-day-slot .rbc-time-slot {
+  @apply border-border;
+}
+
+#calendar-wrapper .rbc-time-gutter .rbc-timeslot-group {
+  @apply border-b-0;
+}
+
+#calendar-wrapper .rbc-timeslot-group {
+  @apply min-h-16;
+}
+
+/* 월간 지난달, 다음달 안보이게 */
+/* 지난달 / 다음달 날짜 완전 제거 */
+#calendar-wrapper .rbc-month-row .rbc-off-range {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#calendar-wrapper .rbc-month-row .rbc-off-range-bg {
+  background: transparent;
+  pointer-events: none;
+}
+
+/* #calendar-wrapper .rbc-event {
+  @apply p-0 bg-transparent border-none;
+} */
+
+/* #calendar-wrapper .rbc-time-view .rbc-event-label {
+  display: none;
+} */
+
+#calendar-wrapper .rbc-button-link {
+  @apply text-slate-700 font-medium text-[10px] md:text-sm;
+}
+
+/* 일간 캘린더 헤더 */
+#calendar-wrapper .rbc-time-header-cell-single-day {
+  display: block;
+}
+
+/* 월간 뷰 이벤트 카드 디자인 초기화 */
+#calendar-wrapper .rbc-month-view .rbc-event {
+  @apply bg-transparent;
+}
+
+/* 주간/일간 뷰 이벤트 카드 디자인 초기화 */
+#calendar-wrapper .rbc-time-view .rbc-event {
+  @apply bg-transparent p-0 border-none;
+}
+
+.rbc-event-label {
+  display: none !important;
+}
+
+/* 1. 선 스타일 변경 */
+.rbc-current-time-indicator {
+  @apply bg-brand-500;
+  height: 2px !important;
+  z-index: 5 !important;
+}
+
+/* 2. 선 왼쪽에 동그란 점(Point) 추가하기 */
+.rbc-current-time-indicator::before {
+  content: '';
+  position: absolute;
+  top: -4px; /* 선 굵기에 따라 조정 */
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  @apply bg-brand-500;
+  border-radius: 50%;
+}
+
+/* 1. 배경을 가리고 있는 콘텐츠 레이어의 마우스 이벤트를 무시 (투과) */
+.rbc-row-content {
+  pointer-events: none;
+}
+
+.rbc-month-view {
+  @apply border-0;
+}
+
+.rbc-month-row + .rbc-month-row {
+  @apply border-border;
+}
+
+.rbc-time-view {
+  @apply border-0;
+}
