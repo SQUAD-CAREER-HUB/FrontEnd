@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import '@/styles/globals.css';
-import Providers from '@/components/providers';
+import '@/shared/styles/globals.css';
+import Providers from '@/shared/components/providers';
 
 export const metadata: Metadata = {
   title: 'Career-Hub',
