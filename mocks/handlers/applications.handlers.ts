@@ -1,4 +1,4 @@
-import { ENV } from '@/shared/config/env';
+import { ENV } from '@/shared/constants/env';
 import { http, HttpResponse } from 'msw';
 
 export const applicationHandlers = [

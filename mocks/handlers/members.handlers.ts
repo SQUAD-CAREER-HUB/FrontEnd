@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import { ENV } from '@/shared/config/env';
+import { ENV } from '@/shared/constants/env';
 
 export const membersHandlers = [
   http.get(`${ENV.BFF_API_URL}/v1/members/profile`, () => {

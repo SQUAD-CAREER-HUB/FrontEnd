@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { ENV } from '@/shared/config/env';
+import { ENV } from '@/shared/constants/env';
 import { setAuthSession } from '@/features/login/server-actions/auth'; // 쿠키 설정을 위해 기존 서버 액션 재사용
 
 // 동시 요청 제어를 위한 변수 (모듈 스코프에 위치)
