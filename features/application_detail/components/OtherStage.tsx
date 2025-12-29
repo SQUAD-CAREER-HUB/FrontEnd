@@ -1,30 +1,27 @@
 'use client'
-import { Clock, Plus } from "lucide-react";
-import { Card, CardContent } from "../ui/card";
-import { Button } from "../ui/button";
+import { Plus } from "lucide-react";
+import { Button } from "../../../components/ui/button";
 import OtherStageItem from "./OtherStageItem";
 import { StageData } from "@/types";
 import TimelineStepNumber from "./TimeLineStepNumber";
 import { useState } from "react";
+import { useTimelineStore } from "../stores/useTimeLineStore";
 
-interface OtherStageProps {
-  type: '기타 전형' | '면접 전형';
-}
-
-export default function OtherStage({ 
-  type, 
-}: OtherStageProps) {
-  const [otherStages] = useState<StageData[]>([
+export default function OtherStage() {
+  const [item] = useState<StageData[]>([
     { title: '제목', datetime: '2025. 12. 22. 오전 01:28 ~ 오전 02:28' },
-  ])
-  const onStatusChange = (index: number, status: 'pending' | 'passed' | 'failed') => {
+  ]);
+  const activeStage = useTimelineStore(state => state.activeStage);
+  const activeClasses = {
+    font: 'font-bold text-lg text-brand-600 dark:text-brand-400',
+    bg: 'bg-brand-50/30 dark:bg-brand-900/10 border border-brand-100 dark:border-brand-900/50',
   }
   return (
     <div className='relative flex gap-6 mb-10 group z-20'>
-      <TimelineStepNumber isCompleted={true} />
+      <TimelineStepNumber number={2} stage="other"/>
       <div className='flex-1 transition-opacity opacity-90'>
         <div className='flex justify-between items-center mb-4'>
-          <h3 className='font-bold text-lg text-slate-900 dark:text-slate-100'>{type}</h3>
+          <h3 className={`font-bold text-lg text-slate-900 dark:text-slate-100 ${activeStage === 'other' && activeClasses.font}`}>기타 전형</h3>
           <Button 
             variant={'xs'} 
             size={'xs'} 
@@ -35,13 +32,12 @@ export default function OtherStage({
             추가
           </Button>
         </div>
-        <div className='space-y-3 p-3 rounded-xl transition-all'>
-          {otherStages.map((stage, index) => (
+        <div className={`space-y-3 p-3 rounded-xl transition-all ${activeStage === 'other' && activeClasses.bg}`}>
+          {item.map((stage, index) => (
             <OtherStageItem 
               key={index}
               title={stage.title}
               datetime={stage.datetime}
-              onStatusChange={(status) => onStatusChange?.(index, status)}
             />
           ))}
         </div>

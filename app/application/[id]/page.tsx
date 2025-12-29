@@ -1,6 +1,6 @@
 'use client'
-import JobDetailCard from "@/components/application_detail/JobDetailCard";
-import JobDetailHeader from "@/components/application_detail/JobDetailHeader";
+import JobDetailCard from "@/features/application_detail/components/JobDetailCard";
+import JobDetailHeader from "@/features/application_detail/components/JobDetailHeader";
 
 export default function JobDetailPage() {
   return (

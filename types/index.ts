@@ -1,5 +1,3 @@
-export type ApplicationStatus = 'PENDING' | 'PASSED' | 'REJECTED' | 'CANCELED';
-
 export interface JobApplication {
   id: number;
   companyName: string;      // 기업명
@@ -15,3 +13,7 @@ export interface StageData {
   title: string;
   datetime: string;
 }
+
+export type ApplicationStage = 'document' | 'interview' | 'other' | 'result';
+
+export type ApplicationStatus = 'pending' | 'passed' | 'failed';
