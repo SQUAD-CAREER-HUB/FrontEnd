@@ -2,20 +2,29 @@
 import { Plus } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import OtherStageItem from "./OtherStageItem";
-import { StageData } from "@/types";
+import { ScheduleResult, StageData } from "@/types";
 import TimelineStepNumber from "./TimeLineStepNumber";
 import { useState } from "react";
 import { useTimelineStore } from "../stores/useTimeLineStore";
+import { useApplicationStore } from "../stores/useApplicationStore";
 
 export default function OtherStage() {
-  const [item] = useState<StageData[]>([
-    { title: '제목', datetime: '2025. 12. 22. 오전 01:28 ~ 오전 02:28' },
-  ]);
+  const etcStageTimeLine =
+    useApplicationStore(state => state.data?.applicationStageTimeLine.etcStageTimeLine);
   const activeStage = useTimelineStore(state => state.activeStage);
   const activeClasses = {
     font: 'font-bold text-lg text-brand-600 dark:text-brand-400',
     bg: 'bg-brand-50/30 dark:bg-brand-900/10 border border-brand-100 dark:border-brand-900/50',
   }
+  const result: ScheduleResult = etcStageTimeLine?.every(
+    stage => stage.scheduleResult === 'PASS'
+  )
+    ? 'PASS'
+    : etcStageTimeLine?.every(
+        stage => stage.scheduleResult === 'FAILED'
+      )
+    ? 'FAILED'
+    : 'WAITING';
   return (
     <div className='relative flex gap-6 mb-10 group z-20'>
       <TimelineStepNumber number={2} stage="other"/>
@@ -33,11 +42,12 @@ export default function OtherStage() {
           </Button>
         </div>
         <div className={`space-y-3 p-3 rounded-xl transition-all ${activeStage === 'other' && activeClasses.bg}`}>
-          {item.map((stage, index) => (
+          {etcStageTimeLine?.map((stage) => (
             <OtherStageItem 
-              key={index}
-              title={stage.title}
-              datetime={stage.datetime}
+              id={stage.stageId}
+              title={stage.scheduleName}
+              datetime={stage.startedAt}
+              scheduleResult = {stage.scheduleResult}
             />
           ))}
         </div>

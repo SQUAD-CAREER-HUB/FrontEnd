@@ -5,6 +5,8 @@ import { DropDown } from "../../../components/DropDown";
 import { ReactNode, useEffect, useState } from "react";
 import { useTimelineStore } from "../stores/useTimeLineStore";
 import { useShallow } from "zustand/shallow";
+import { useApplicationStore } from "../stores/useApplicationStore";
+import { dummyApplicationData } from "../constants/data";
 
 interface TimelineCardProps {
   children: ReactNode;
@@ -16,9 +18,11 @@ export function TimelineCard({
 }: TimelineCardProps) {
   const options = [{ value: 'document', label: '서류 전형' },  { value: 'other', label: '기타 전형' },{ value: 'interview', label: '면접 전형' }, {value: 'result', label: '지원 종료'}]
   const {activeStage, setActiveStage} = useTimelineStore(useShallow(state => ({activeStage: state.activeStage, setActiveStage: state.setActiveStage})))
+  const {applicationData, setApplicationData} = useApplicationStore(useShallow(state => ({applicationData: state.data, setApplicationData: state.setApplicationData})));
   useEffect(() => {
-    setActiveStage('document');
+    setApplicationData(dummyApplicationData);
   },[])
+  const currentStageType = applicationData?.applicationInfo.currentStageType;
   return (
     <Card className='p-0 bg-white gap-0 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex-1 flex flex-col overflow-hidden'>
       <CardHeader className='p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex justify-between items-center flex-shrink-0 relative'>
@@ -30,7 +34,7 @@ export function TimelineCard({
           <div className='text-xs font-bold text-slate-500 dark:text-slate-400 whitespace-nowrap'>
             현재 단계:
           </div>
-          <DropDown options={options} value={activeStage} onValueChange={setActiveStage} />
+          <DropDown options={options} value={currentStageType} onValueChange={setActiveStage} />
         </div>
       </CardHeader>
       <CardContent className='p-6 md:p-8 relative flex-1 overflow-y-auto custom-scrollbar'>

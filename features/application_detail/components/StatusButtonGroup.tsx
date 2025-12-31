@@ -1,15 +1,14 @@
 'use client'
-import { ApplicationStatus } from "@/types";
 import { Button } from "../../../components/ui/button";
 
 interface StatusButtonGroupProps {
-  status: 'pending' | 'passed' | 'failed';
-  onStatusChange?: (status: 'pending' | 'passed' | 'failed') => void;
+  status:'WAITING' | 'PASS' | 'FAILED';
+  onStatusChange?: (status: 'WAITING' | 'PASS' | 'FAILED') => void;
 }
 
 
 export default function StatusButtonGroup({
-  status = 'pending',
+  status = 'WAITING',
   onStatusChange,
 }: StatusButtonGroupProps) {
   const activeClasses = {
@@ -22,24 +21,24 @@ export default function StatusButtonGroup({
       <Button 
         variant={'xs'} 
         size={'xs'} 
-        onClick={() => onStatusChange?.('pending')}
-        className={`font-bold shadow-none rounded-xl text-slate-400 hover:text-slate-600 ${status === 'pending' && activeClasses.pending}`}
+        onClick={() => onStatusChange?.('WAITING')}
+        className={`font-bold shadow-none rounded-xl text-slate-400 hover:text-slate-600 ${status === 'WAITING' && activeClasses.pending}`}
       >
         대기
       </Button>
       <Button 
         variant={'xs'} 
         size={'xs'} 
-        onClick={() => onStatusChange?.('passed')}
-        className={`font-bold shadow-none hover:text-green-600 ${status === 'passed' && activeClasses.passed}`}
+        onClick={() => onStatusChange?.('PASS')}
+        className={`font-bold shadow-none hover:text-green-600 ${status === 'PASS' && activeClasses.passed}`}
       >
         합격
       </Button>
       <Button 
         variant={'xs'} 
         size={'xs'} 
-        onClick={() => onStatusChange?.('failed')}
-        className={`font-bold shadow-none hover:text-red-600 ${status === 'failed' && activeClasses.failed}`}
+        onClick={() => onStatusChange?.('FAILED')}
+        className={`font-bold shadow-none hover:text-red-600 ${status === 'FAILED' && activeClasses.failed}`}
       >
         불합격
       </Button>
