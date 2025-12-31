@@ -1,16 +1,17 @@
 'use client'
 import { Plus } from "lucide-react";
-import { Button } from "../../../components/ui/button";
 import OtherStageItem from "./OtherStageItem";
-import { ScheduleResult, StageData } from "@/types";
+import { ScheduleResult } from "@/types";
 import TimelineStepNumber from "./TimeLineStepNumber";
 import { useState } from "react";
 import { useTimelineStore } from "../stores/useTimeLineStore";
 import { useApplicationStore } from "../stores/useApplicationStore";
+import AddSchedule from "./AddSchedule";
 
 export default function OtherStage() {
   const etcStageTimeLine =
     useApplicationStore(state => state.data?.applicationStageTimeLine.etcStageTimeLine);
+  const [open, setOpen] = useState(true);
   const activeStage = useTimelineStore(state => state.activeStage);
   const activeClasses = {
     font: 'font-bold text-lg text-brand-600 dark:text-brand-400',
@@ -31,15 +32,13 @@ export default function OtherStage() {
       <div className='flex-1 transition-opacity opacity-90'>
         <div className='flex justify-between items-center mb-4'>
           <h3 className={`font-bold text-lg text-slate-900 dark:text-slate-100 ${activeStage === 'other' && activeClasses.font}`}>기타 전형</h3>
-          <Button 
-            variant={'xs'} 
-            size={'xs'} 
-            onClick={() =>{}}
-            className='text-brand-500 bg-brand-50 dark:bg-brand-900/20 hover:bg-brand-100 dark:hover:bg-brand-900/40 px-3 py-1 gap-0 rounded-lg transition-colors'
+          <div 
+            onClick={() =>{setOpen(prev => !prev)}}
+            className='p-2 text-slate-400 hover:text-brand-500 transition-colors'
+            title="전형 추가"
           >
-            <Plus className='w-3 h-3 mr-1' />
-            추가
-          </Button>
+            <Plus className='w-5 h-5 mr-1' />
+          </div>
         </div>
         <div className={`space-y-3 p-3 rounded-xl transition-all ${activeStage === 'other' && activeClasses.bg}`}>
           {etcStageTimeLine?.map((stage) => (
@@ -50,6 +49,7 @@ export default function OtherStage() {
               scheduleResult = {stage.scheduleResult}
             />
           ))}
+          {open && <AddSchedule setOpen={setOpen}/>}
         </div>
       </div>
     </div>
