@@ -10,8 +10,8 @@ import AddSchedule from "./AddSchedule";
 
 
 export default function InterViewStage() {
-const interviewStageTimeLine =
-  useApplicationStore(state => state.data?.applicationStageTimeLine.interviewStageTimeLine ?? []);
+  const interviewStageTimeLine =
+    useApplicationStore(state => state.data?.applicationStageTimeLine.interviewStageTimeLine ?? []);
   const activeStage = useTimelineStore(state => state.activeStage);
   const [open, setOpen] = useState(false);
   const activeClasses = {
@@ -23,23 +23,23 @@ const interviewStageTimeLine =
     PASS: 'text-green-800 dark:text-green-400',
     FAILED: 'text-red-800 dark:text-red-400',
   };
- const result: ScheduleResult = interviewStageTimeLine.every(
-  stage => stage.scheduleResult === 'PASS'
-)
-  ? 'PASS'
-  : interviewStageTimeLine.every(
+  const result: ScheduleResult = interviewStageTimeLine.every(
+    stage => stage.scheduleResult === 'PASS'
+  )
+    ? 'PASS'
+    : interviewStageTimeLine.every(
       stage => stage.scheduleResult === 'FAILED'
     )
-  ? 'FAILED'
-  : 'WAITING';
+      ? 'FAILED'
+      : 'WAITING';
   return (
     <div className='relative flex gap-6 mb-10 group z-20'>
       <TimelineStepNumber number={3} stage="interview" />
       <div className='flex-1 transition-opacity opacity-90'>
         <div className='flex justify-between items-center mb-4'>
           <h3 className={`font-bold text-lg text-slate-900 dark:text-slate-100 ${activeStage === 'interview' && activeClasses.font} ${activeFont[result]}`}>면접 전형</h3>
-          <div 
-            onClick={() =>{setOpen(prev => !prev)}}
+          <div
+            onClick={() => { setOpen(prev => !prev) }}
             className='p-2 text-slate-400 hover:text-brand-500 transition-colors'
             title="전형 추가"
           >
@@ -47,16 +47,17 @@ const interviewStageTimeLine =
           </div>
         </div>
         <div className={`space-y-3 p-3 rounded-xl transition-all ${activeStage === 'interview' && activeClasses.bg}`}>
-          {interviewStageTimeLine?.map((stage, index) => (
+          {interviewStageTimeLine?.map((stage) => (
             <OtherStageItem
+              key={stage.stageId}
               id={stage.stageId}
               title={stage.scheduleName}
               datetime={stage.startedAt}
-              scheduleResult = {stage.scheduleResult}
-
+              scheduleResult={stage.scheduleResult}
+              type='other'
             />
           ))}
-          {open && <AddSchedule setOpen={setOpen}/>}
+          {open && <AddSchedule setOpen={setOpen} />}
         </div>
       </div>
     </div>

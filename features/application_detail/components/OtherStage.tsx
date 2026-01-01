@@ -22,18 +22,18 @@ export default function OtherStage() {
   )
     ? 'PASS'
     : etcStageTimeLine?.every(
-        stage => stage.scheduleResult === 'FAILED'
-      )
-    ? 'FAILED'
-    : 'WAITING';
+      stage => stage.scheduleResult === 'FAILED'
+    )
+      ? 'FAILED'
+      : 'WAITING';
   return (
     <div className='relative flex gap-6 mb-10 group z-20'>
-      <TimelineStepNumber number={2} stage="other"/>
+      <TimelineStepNumber number={2} stage="other" />
       <div className='flex-1 transition-opacity opacity-90'>
         <div className='flex justify-between items-center mb-4'>
           <h3 className={`font-bold text-lg text-slate-900 dark:text-slate-100 ${activeStage === 'other' && activeClasses.font}`}>기타 전형</h3>
-          <div 
-            onClick={() =>{setOpen(prev => !prev)}}
+          <div
+            onClick={() => { setOpen(prev => !prev) }}
             className='p-2 text-slate-400 hover:text-brand-500 transition-colors'
             title="전형 추가"
           >
@@ -42,14 +42,16 @@ export default function OtherStage() {
         </div>
         <div className={`space-y-3 p-3 rounded-xl transition-all ${activeStage === 'other' && activeClasses.bg}`}>
           {etcStageTimeLine?.map((stage) => (
-            <OtherStageItem 
+            <OtherStageItem
+              key={stage.stageId}
               id={stage.stageId}
               title={stage.scheduleName}
               datetime={stage.startedAt}
-              scheduleResult = {stage.scheduleResult}
+              scheduleResult={stage.scheduleResult}
+              type = 'other'
             />
           ))}
-          {open && <AddSchedule setOpen={setOpen}/>}
+          {open && <AddSchedule setOpen={setOpen} />}
         </div>
       </div>
     </div>
