@@ -3,22 +3,10 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { CirclePlay, ExternalLink, Paperclip, Pen } from "lucide-react";
 
-export default function StageDetailNoteCard() {
+export default function ViewCard() {
+ 
   return (
-    <Card className='p-0 bg-white gap-0 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col transition-all'>
-      <CardHeader className='p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex justify-between items-center flex-shrink-0 relative'>
-        <h2 className='text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center'>
-          <CirclePlay className='w-5 h-5 text-brand-500 mr-2' />
-          상세 정보 및 메모
-        </h2>
-        <Button
-          onClick={() => { }}
-          variant="ghost"
-          className="p-1.5 text-slate-300 hover:text-brand-500"
-        >
-          <Pen className="w-4 h-4" />
-        </Button>
-      </CardHeader>
+    <>
       <CardContent className='p-6 space-y-6'>
         <div className="space-y-4">
           <div className="grid grid-cols-1 gap-4">
@@ -78,6 +66,6 @@ export default function StageDetailNoteCard() {
           </div>
         </div>
       </CardContent>
-    </Card>
+    </>
   );
 }
