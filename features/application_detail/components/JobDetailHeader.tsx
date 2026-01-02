@@ -1,9 +1,13 @@
 'use client'
-import { PanelRight, Save, Trash2 } from 'lucide-react'
+import { PanelRight, PanelRightClose, Save, Trash2 } from 'lucide-react'
 import { Button } from '../../../components/ui/button'
 import { useState } from 'react'
+import { is } from 'date-fns/locale'
+import { useTimelineStore } from '../stores/useTimeLineStore'
 
 export default function JobDetailHeader() {
+  const togglePanel = useTimelineStore(state => state.togglePanel);
+  const isPanelOpened = useTimelineStore(state => state.isPanelOpened)
   // ===== Local State =====
   const [companyName] = useState('비바리퍼블리카')
   const [position] = useState('프로덕트 디자이너')
@@ -38,10 +42,16 @@ export default function JobDetailHeader() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={handleTogglePanel}
+          onClick={() => {togglePanel()}}
           className="p-2 rounded-lg border border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
         >
-          <PanelRight className="h-5 w-5" />
+          {isPanelOpened ?
+          (
+            <PanelRightClose className="h-5 w-5"  />
+          ): (
+            <PanelRight className="h-5 w-5"  />
+          )
+          }
         </Button>
 
         <div className="h-5 w-px bg-slate-300 dark:bg-slate-700" />

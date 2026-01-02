@@ -14,6 +14,9 @@ interface TimelineState {
   setEditingEtcStageId: (id: number | null) => void;
   editingInterviewStageId: number | null;
   setEditingInterviewStageId: (id: number | null) => void;
+  isPanelOpened: boolean;
+  setIsPanelOpened: (isOpened: boolean) => void;
+  togglePanel: () => void;
 }
 
 export const useTimelineStore = create<TimelineState>((set, get) => ({
@@ -38,6 +41,11 @@ export const useTimelineStore = create<TimelineState>((set, get) => ({
   editingEtcStageId: null,
   setEditingEtcStageId: (id) => set({ editingEtcStageId: id }),
   editingInterviewStageId: null,
-  setEditingInterviewStageId: (id) => set({ editingInterviewStageId: id })
+  setEditingInterviewStageId: (id) => set({ editingInterviewStageId: id }),
+  isPanelOpened: false,
+  setIsPanelOpened: (isOpened: boolean) =>
+    set({ isPanelOpened: isOpened }),
+  togglePanel: () =>
+    set((state) => ({ isPanelOpened: !state.isPanelOpened })),
 
 }))
