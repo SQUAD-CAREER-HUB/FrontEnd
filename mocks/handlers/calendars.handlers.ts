@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { mockCalendarEvents } from '../data/calendars';
-import { ENV } from '@/shared/config/env';
+import { ENV } from '@/shared/constants/env';
 
 export const calendarHandlers = [
   http.get(`${ENV.BFF_API_URL}/v1/calendar/events`, () => {

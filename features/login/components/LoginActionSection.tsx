@@ -7,7 +7,7 @@ import { ArrowLeftIcon, ShieldCheckIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Logo from '@/assets/career-hub-logo.png';
-import { ENV } from '@/shared/config/env';
+import { ENV } from '@/shared/constants/env';
 import { useState } from 'react';
 
 export default function LoginActionSection() {
