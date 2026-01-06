@@ -1,6 +1,4 @@
 "use client"
-
-import * as React from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
 interface DropDownOption {
@@ -25,9 +23,12 @@ export function DropDown({
   className = "",
   disabled = false
 }: DropDownProps) {
-  console.log(options);
   return (
-    <Select value={value} onValueChange={onValueChange} disabled={disabled}>
+    <Select 
+      value={value || undefined} 
+      onValueChange={onValueChange} 
+      disabled={disabled}
+    >
       <SelectTrigger className={`w-full flex items-center justify-between px-3 py-1.5 
         bg-white dark:bg-slate-900 
         border border-slate-200 dark:border-slate-700 
