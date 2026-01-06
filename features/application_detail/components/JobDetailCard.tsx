@@ -1,10 +1,8 @@
 'use client'
 
-import { useInterviewModalStore } from '../stores/useInterViewModalStore'
 import { useTimelineStore } from '../stores/useTimeLineStore'
 import DocumentStage from './DocumentStage'
 import FinalResultStage from './FinalResultStage'
-import InterViewModal from './InterViewModal'
 import InterViewQuestionCard from './InterViewQuestionCard'
 import InterViewStage from './InterviewStage'
 import OtherStage from './OtherStage'
@@ -13,7 +11,6 @@ import { TimelineCard } from './TimelineCard'
 
 export default function JobDetailCard() {
   const isPanelOpened = useTimelineStore(state => state.isPanelOpened);
-  const isOpen = useInterviewModalStore(state => state.isOpen);
   const gridColumns = isPanelOpened ? 'lg:grid-cols-3' : 'lg:grid-cols-1';
   const timelineColumnSpan = isPanelOpened ? 'lg:col-span-2' : 'lg:col-span-1';
   
