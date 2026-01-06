@@ -4,7 +4,6 @@ import { ScheduleResult } from "@/types";
 import { useState } from "react";
 import ViewCard from "./ViewCard";
 import EditCard from "./EditCard";
-import { useApplicationStore } from "../../stores/useApplicationStore";
 import { useTimelineStore } from "../../stores/useTimeLineStore";
 
 export type Mode = 'edit' | 'view';
@@ -25,8 +24,7 @@ export default function OtherStageItem({
   scheduleResult,
   type,
 }: OtherStageItemProps) {
-  const [result, setResult] = useState<ScheduleResult>(scheduleResult);
-  const [mode, setMode] = useState<Mode>('view');
+  const [result] = useState<ScheduleResult>(scheduleResult);
   const editingEtcStageId = useTimelineStore(state => state.editingEtcStageId);
   const editingInterviewStageId = useTimelineStore(state => state.editingInterviewStageId);
   const isEditing = id === editingEtcStageId && type === 'other' || id === editingInterviewStageId && type === 'interview';

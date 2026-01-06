@@ -1,7 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { CirclePlay, ExternalLink, Paperclip, Pen } from "lucide-react";
+import { ExternalLink, Paperclip } from "lucide-react";
 
 export default function ViewCard() {
  

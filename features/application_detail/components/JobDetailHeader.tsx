@@ -2,7 +2,6 @@
 import { PanelRight, PanelRightClose, Save, Trash2 } from 'lucide-react'
 import { Button } from '../../../components/ui/button'
 import { useState } from 'react'
-import { is } from 'date-fns/locale'
 import { useTimelineStore } from '../stores/useTimeLineStore'
 
 export default function JobDetailHeader() {
@@ -13,9 +12,6 @@ export default function JobDetailHeader() {
   const [position] = useState('프로덕트 디자이너')
 
   // ===== Local Handlers =====
-  const handleTogglePanel = () => {
-    console.log('패널 토글')
-  }
 
   const handleDelete = () => {
     console.log('삭제')

@@ -5,7 +5,6 @@ import { DatePickerInput } from "../DatePickerInput";
 import StatusButtonGroup from "../StatusButtonGroup";
 import { Button } from "@/components/ui/button";
 import { RotateCcw, Save } from "lucide-react";
-import { Mode } from ".";
 import { useTimelineStore } from "../../stores/useTimeLineStore";
 import { useShallow } from "zustand/shallow";
 

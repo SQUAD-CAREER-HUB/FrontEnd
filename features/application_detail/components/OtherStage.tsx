@@ -1,7 +1,6 @@
 'use client'
 import { Plus } from "lucide-react";
 import OtherStageItem from "./OtherStageItem";
-import { ScheduleResult } from "@/types";
 import TimelineStepNumber from "./TimeLineStepNumber";
 import { useState } from "react";
 import { useTimelineStore } from "../stores/useTimeLineStore";
@@ -17,15 +16,6 @@ export default function OtherStage() {
     font: 'font-bold text-lg text-brand-600 dark:text-brand-400',
     bg: 'bg-brand-50/30 dark:bg-brand-900/10 border border-brand-100 dark:border-brand-900/50',
   }
-  const result: ScheduleResult = etcStageTimeLine?.every(
-    stage => stage.scheduleResult === 'PASS'
-  )
-    ? 'PASS'
-    : etcStageTimeLine?.every(
-      stage => stage.scheduleResult === 'FAILED'
-    )
-      ? 'FAILED'
-      : 'WAITING';
   return (
     <div className='relative flex gap-6 mb-10 group z-20'>
       <TimelineStepNumber number={2} stage="other" />

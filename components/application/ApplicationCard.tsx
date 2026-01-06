@@ -1,7 +1,7 @@
 // JobApplicationCard.tsx (React Component)
 import { JobApplication } from '@/types';
 import React from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 interface JobApplicationCardProps {

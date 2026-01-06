@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Clock, Pen } from "lucide-react";
 import { StatusButton } from "../StatusButton";
-import { Dispatch, SetStateAction } from "react";
 import { useTimelineStore } from "../../stores/useTimeLineStore";
 import { useShallow } from "zustand/shallow";
 

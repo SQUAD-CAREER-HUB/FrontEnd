@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Button } from "../../../../components/ui/button";
 import TimelineStepNumber from "../TimeLineStepNumber";
-import { ScheduleResult } from "@/types";
 import { Pen } from "lucide-react";
 import EditCard from "./EditCard";
 import ViewCard from "./ViewCard";

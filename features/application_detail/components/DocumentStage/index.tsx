@@ -23,7 +23,7 @@ export default function DocumentStage({
     PASSED: 'text-green-800 dark:text-green-400',
     FAILED: 'text-red-800 dark:text-red-400',
   }
-  const [status, setStatus] = useState<ScheduleResult>('WAITING');
+  const [status] = useState<ScheduleResult>('WAITING');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   return (
     <div className='relative flex gap-6 mb-10 group z-20'>
