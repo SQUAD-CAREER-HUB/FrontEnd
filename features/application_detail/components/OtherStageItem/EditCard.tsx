@@ -5,9 +5,12 @@ import StatusButtonGroup from "../StatusButtonGroup";
 import FormLabel from "../common/FormLabel";
 import { BottomActiveButtons } from "../BottomActiveButtons";
 import { useStageEditor } from "../../hooks/useStageEditor";
+import { useState } from "react";
 
 export default function EditCard({ type }: { type: 'interview' | 'other' }) {
   const { setEditingStageId } = useStageEditor(null, type);
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
   const handleClose = () => {
     setEditingStageId(null);
@@ -29,12 +32,18 @@ export default function EditCard({ type }: { type: 'interview' | 'other' }) {
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="flex flex-col gap-1">
-            <DatePickerInput label="시작 일시" value="startDate" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <DatePickerInput label="종료 일시" value="endDate" />
-          </div>
+          <DatePickerInput
+            label="시작 일시"
+            value={startDate}
+            onChange={(date) => setStartDate(date)}
+            id="startDate"
+          />
+          <DatePickerInput
+            label="종료 일시"
+            value={endDate}
+            onChange={(date) => setEndDate(date)}
+            id="endDate"
+          />
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
           <div className="flex flex-col gap-1">

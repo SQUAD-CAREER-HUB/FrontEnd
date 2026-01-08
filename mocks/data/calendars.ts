@@ -1,5 +1,21 @@
 import { faker } from '@faker-js/faker';
-import { CalendarEvent } from '@/features/calendar/types/calendar';
+
+// TODO: features/calendar이 구현되면 실제 타입으로 교체
+type CalendarEvent = {
+  id: string;
+  applicationId: string;
+  companyName: string;
+  processType: 'DOCUMENT' | 'INTERVIEW' | 'ETC';
+  interviewTitle?: string;
+  interviewLocation?: string;
+  etcTitle?: string;
+  etcLocation?: string;
+  startDateTime: string;
+  endDateTime: string;
+  documentStatus?: 'SUBMITTED' | 'NOT_SUBMITTED';
+  resultStatus?: 'PROCESS_PASS' | 'FINAL_PASS' | 'FINAL_FAIL';
+  applicationDeadline: string;
+};
 
 const startDate = new Date('2025-12-01T00:00:00');
 const endDate = new Date('2026-01-31T23:59:59');

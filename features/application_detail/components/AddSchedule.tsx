@@ -1,18 +1,22 @@
 import { Card, CardContent, CardFooter } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
 import { DatePickerInput } from "./DatePickerInput";
 import StatusButtonGroup from "./StatusButtonGroup";
 import { Button } from "@/shared/components/ui/button";
 import { RotateCcw, Save } from "lucide-react";
+import FormLabel from "./common/FormLabel";
+import { useState } from "react";
 
 export default function AddSchedule({setOpen}: {setOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+
   return (
     <Card className="transition-all ring-2 ring-brand-50">
       <CardContent className="space-y-4">
         <div className="flex gap-3">
           <div className="flex-1">
-            <Label htmlFor="email" className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-1 block">전형 이름</Label>
+            <FormLabel htmlFor="name">전형 이름</FormLabel>
             <Input
               id="name"
               type="text"
@@ -21,19 +25,24 @@ export default function AddSchedule({setOpen}: {setOpen: React.Dispatch<React.Se
               className="w-full text-sm font-bold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-2"
             />
           </div>
-
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="flex flex-col gap-1">
-            <DatePickerInput label="시작 일시" value="startDate" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <DatePickerInput label="종료 일시" value="endDate" />
-          </div>
+          <DatePickerInput
+            label="시작 일시"
+            value={startDate}
+            onChange={(date) => setStartDate(date)}
+            id="startDate"
+          />
+          <DatePickerInput
+            label="종료 일시"
+            value={endDate}
+            onChange={(date) => setEndDate(date)}
+            id="endDate"
+          />
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
           <div className="flex flex-col gap-1">
-            <Label htmlFor="status" className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 block">진행 상태</Label>
+            <FormLabel htmlFor="status">진행 상태</FormLabel>
             <StatusButtonGroup status={"WAITING"} onStatusChange={() => { }} />
           </div>
         </div>

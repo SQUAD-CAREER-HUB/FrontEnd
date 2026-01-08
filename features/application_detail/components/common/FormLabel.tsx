@@ -1,6 +1,6 @@
 import { Label } from "@/shared/components/ui/label";
 import { LABEL_STYLES } from "../../constants/styles";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 interface FormLabelProps {
   htmlFor?: string;

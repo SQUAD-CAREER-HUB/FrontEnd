@@ -1,26 +1,36 @@
 import { DateTimePicker } from "./DateTimePicker"
-import { Label } from "@/shared/components/ui/label"
+import FormLabel from "./common/FormLabel"
 
 interface DatePickerInputProps {
-  value?: string
+  value?: Date
   label?: string;
-  onChange?: (date: Date | undefined, valueString: string) => void
+  onChange?: (date: Date | undefined) => void
   placeholder?: string
   className?: string
+  id?: string
 }
 
 export function DatePickerInput({
-  value = "",
+  value,
+  onChange,
+  placeholder = "MM/DD/YYYY hh:mm aa",
   label = "",
   className = "",
+  id,
 }: DatePickerInputProps) {
-
-
   return (
     <div className={`flex flex-col gap-1 ${className}`}>
-      <Label htmlFor={value} className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">{label}</Label>
+      {label && (
+        <FormLabel htmlFor={id} className="ml-1">
+          {label}
+        </FormLabel>
+      )}
 
-      <DateTimePicker />
+      <DateTimePicker
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+      />
     </div>
   )
 }
