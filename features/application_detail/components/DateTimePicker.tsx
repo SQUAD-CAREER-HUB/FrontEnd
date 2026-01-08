@@ -4,16 +4,16 @@ import * as React from "react";
 import { format } from "date-fns";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/shared/components/ui/button";
+import { Calendar } from "@/shared/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+} from "@/shared/components/ui/popover";
+import { ScrollArea, ScrollBar } from "@/shared/components/ui/scroll-area";
 import { CalendarIcon } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/shared/components/ui/input";
 
 interface DateTimePickerProps {
   value?: Date;

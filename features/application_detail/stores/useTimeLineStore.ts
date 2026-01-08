@@ -1,5 +1,5 @@
 // store/useTimelineStore.ts
-import { ApplicationStage } from '@/types'
+import { ApplicationStage } from '@/shared/types'
 import { create } from 'zustand'
 
 

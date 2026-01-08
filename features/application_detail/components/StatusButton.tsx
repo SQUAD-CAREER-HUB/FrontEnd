@@ -1,6 +1,6 @@
 'use client'
-import { ScheduleResult } from "@/types";
-import { Button } from "../../../components/ui/button";
+import { ScheduleResult } from "@/shared/types";
+import { Button } from "../../../shared/components/ui/button";
 import { cn } from "@/lib/utils";
 
 // StatusButton 컴포넌트

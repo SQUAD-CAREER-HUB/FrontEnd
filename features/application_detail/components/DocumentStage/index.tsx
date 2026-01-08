@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import { useTimelineStore } from "../../stores/useTimeLineStore"
-import { ScheduleResult } from "@/types"
+import { ScheduleResult } from "@/shared/types"
 import DocumentStageForm from "./DocumentStageForm"
 import ViewCard from "./ViewCard"
 import StageWrapper from "../common/StageWrapper"

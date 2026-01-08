@@ -1,6 +1,6 @@
 'use client'
 
-import { ScheduleResult } from "@/types";
+import { ScheduleResult } from "@/shared/types";
 import { useState } from "react";
 import ViewCard from "./ViewCard";
 import EditCard from "./EditCard";

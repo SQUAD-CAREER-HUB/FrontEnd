@@ -1,7 +1,7 @@
 import StatusButtonGroup from "../StatusButtonGroup";
 import { BottomActiveButtons } from "../BottomActiveButtons";
 import { useState } from "react";
-import { ScheduleResult } from "@/types";
+import { ScheduleResult } from "@/shared/types";
 import FormLabel from "../common/FormLabel";
 
 export default function EditCard() {

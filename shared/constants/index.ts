@@ -1,4 +1,4 @@
-import { JobApplication } from "@/types";
+import { JobApplication } from "@/shared/types";
 
 const dummyApplications: JobApplication[] = [
   {

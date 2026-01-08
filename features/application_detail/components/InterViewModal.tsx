@@ -1,9 +1,9 @@
-import { DropDown } from "@/components/DropDown";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { DropDown } from "@/shared/components/DropDown";
+import { Button } from "@/shared/components/ui/button";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@/shared/components/ui/dialog";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Textarea } from "@/shared/components/ui/textarea";
 import { Plus } from "lucide-react";
 
 export default function InterViewModal() {

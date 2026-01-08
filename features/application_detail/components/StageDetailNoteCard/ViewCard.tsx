@@ -1,5 +1,5 @@
-import { CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import { CardContent } from "@/shared/components/ui/card";
+import { Label } from "@/shared/components/ui/label";
 import { ExternalLink, Paperclip } from "lucide-react";
 
 export default function ViewCard() {

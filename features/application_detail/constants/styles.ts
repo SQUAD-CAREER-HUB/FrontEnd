@@ -1,4 +1,4 @@
-import { ScheduleResult } from "@/types";
+import { ScheduleResult } from "@/shared/types";
 
 /**
  * Status별 배경 스타일 상수

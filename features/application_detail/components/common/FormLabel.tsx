@@ -1,4 +1,4 @@
-import { Label } from "@/components/ui/label";
+import { Label } from "@/shared/components/ui/label";
 import { LABEL_STYLES } from "../../constants/styles";
 import { cn } from "@/lib/utils";
 

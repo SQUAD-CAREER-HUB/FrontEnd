@@ -1,13 +1,13 @@
 'use client'
 import { CirclePlay } from "lucide-react";
-import { Card, CardContent, CardHeader } from "../../../components/ui/card";
-import { DropDown } from "../../../components/DropDown";
+import { Card, CardContent, CardHeader } from "../../../shared/components/ui/card";
+import { DropDown } from "../../../shared/components/DropDown";
 import { ReactNode, useEffect } from "react";
 import { useTimelineStore } from "../stores/useTimeLineStore";
 import { useShallow } from "zustand/shallow";
 import { useApplicationStore } from "../stores/useApplicationStore";
 import { dummyApplicationData } from "../constants/data";
-import { ApplicationStage } from "@/types";
+import { ApplicationStage } from "@/shared/types";
 
 interface TimelineCardProps {
   children: ReactNode;

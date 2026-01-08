@@ -1,4 +1,4 @@
-import { ScheduleResult } from '@/types';
+import { ScheduleResult } from '@/shared/types';
 import { create } from 'zustand';
 
 // API 응답 타입 정의

@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { Clock } from "lucide-react";
 import { StatusButton } from "../StatusButton";
 import StageEditButton from "../common/StageEditButton";

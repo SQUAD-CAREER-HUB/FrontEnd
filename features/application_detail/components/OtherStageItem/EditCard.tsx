@@ -1,5 +1,5 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardFooter } from "@/shared/components/ui/card";
+import { Input } from "@/shared/components/ui/input";
 import { DatePickerInput } from "../DatePickerInput";
 import StatusButtonGroup from "../StatusButtonGroup";
 import FormLabel from "../common/FormLabel";

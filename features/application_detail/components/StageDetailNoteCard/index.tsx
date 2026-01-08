@@ -1,8 +1,8 @@
 import ViewCard from "./ViewCard";
 import EditCard from "./EditCard";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardHeader } from "@/shared/components/ui/card";
 import { CirclePlay, Save } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import StageEditButton from "../common/StageEditButton";
 import { useStageEdit } from "../../hooks/useStageEdit";
 

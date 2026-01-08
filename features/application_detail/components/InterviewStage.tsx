@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 import OtherStageItem from "./OtherStageItem";
 import { useTimelineStore } from "../stores/useTimeLineStore";
 import { useApplicationStore } from "../stores/useApplicationStore";
-import { ScheduleResult } from "@/types";
+import { ScheduleResult } from "@/shared/types";
 import { useState } from "react";
 import AddSchedule from "./AddSchedule";
 import StageWrapper from "./common/StageWrapper";

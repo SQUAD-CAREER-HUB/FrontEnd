@@ -1,5 +1,5 @@
 import type { ApplicationStatus } from '../stores/useApplicationStore';
-import type { ScheduleResult } from '@/types';
+import type { ScheduleResult } from '@/shared/types';
 
 export const dummyApplicationData = {
   applicationInfo: {

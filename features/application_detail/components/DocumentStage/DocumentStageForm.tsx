@@ -1,11 +1,11 @@
-import { DropDown } from "@/components/DropDown";
+import { DropDown } from "@/shared/components/DropDown";
 import { useState } from "react";
 import { applicationMethodOptions, deadlineOptions, documentStatusOptions } from "../../constants"
 import StatusButtonGroup from "../StatusButtonGroup";
 import { BottomActiveButtons } from "../BottomActiveButtons";
 import FormLabel from "../common/FormLabel";
 import { LABEL_STYLES } from "../../constants/styles";
-import { ScheduleResult } from "@/types";
+import { ScheduleResult } from "@/shared/types";
 
 export default function DocumentStageForm() {
   const [documentStatus, setDocumentStatus] = useState("")

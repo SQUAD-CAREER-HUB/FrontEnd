@@ -1,6 +1,6 @@
 'use client'
 import { PanelRight, PanelRightClose, Save, Trash2 } from 'lucide-react'
-import { Button } from '../../../components/ui/button'
+import { Button } from '../../../shared/components/ui/button'
 import { useState } from 'react'
 import { useTimelineStore } from '../stores/useTimeLineStore'
 

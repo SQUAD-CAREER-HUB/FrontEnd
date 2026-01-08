@@ -1,6 +1,6 @@
 'use client'
 
-import { ApplicationStage } from "@/types";
+import { ApplicationStage } from "@/shared/types";
 import { useTimelineStore } from "../stores/useTimeLineStore";
 import { Check } from "lucide-react";
 
