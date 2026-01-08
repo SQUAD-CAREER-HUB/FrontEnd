@@ -7,6 +7,7 @@ import { useTimelineStore } from "../stores/useTimeLineStore";
 import { useShallow } from "zustand/shallow";
 import { useApplicationStore } from "../stores/useApplicationStore";
 import { dummyApplicationData } from "../constants/data";
+import { ApplicationStage } from "@/types";
 
 interface TimelineCardProps {
   children: ReactNode;
@@ -33,7 +34,11 @@ export function TimelineCard({
           <div className='text-xs font-bold text-slate-500 dark:text-slate-400 whitespace-nowrap'>
             현재 단계:
           </div>
-          <DropDown options={options} value={activeStage} onValueChange={setActiveStage} />
+          <DropDown
+            options={options}
+            value={activeStage || 'document'}
+            onValueChange={(value) => setActiveStage(value as ApplicationStage)}
+          />
         </div>
       </CardHeader>
       <CardContent className='p-6 md:p-8 relative flex-1 overflow-y-auto custom-scrollbar'>

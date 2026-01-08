@@ -1,10 +1,9 @@
 'use client'
-import { useState } from "react";
-import { Button } from "../../../../components/ui/button";
-import TimelineStepNumber from "../TimeLineStepNumber";
-import { Pen } from "lucide-react";
 import EditCard from "./EditCard";
 import ViewCard from "./ViewCard";
+import StageWrapper from "../common/StageWrapper";
+import StageEditButton from "../common/StageEditButton";
+import { useStageEdit } from "../../hooks/useStageEdit";
 
 export interface FinalResultStageProps {
   result?: 'passed' | 'rejected';
@@ -12,34 +11,24 @@ export interface FinalResultStageProps {
   onFail?: () => void;
 }
 
-
 export default function FinalResultStage() {
-  const [isEditing, setIsEditing] = useState(false);
+  const { isEditing, toggleEdit } = useStageEdit(false);
 
   return (
-    <div className='relative flex gap-6 mb-10 group z-20'>
-      <TimelineStepNumber number={4} stage='result' />
-      <div className='flex-1 rounded-xl p-5 shadow-sm transition-all border bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800'>
+    <StageWrapper number={4} stage='result'>
+      <div className='rounded-xl p-5 shadow-sm transition-all border bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800'>
         <div className="flex justify-between items-start mb-4">
           <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">최종 결과</h3>
-          <Button
-            onClick={() => {setIsEditing(prev =>!prev)}}
-            variant="ghost"
-            className="p-1.5 text-slate-300 hover:text-brand-500"
-          >
-            <Pen className="w-4 h-4" />
-          </Button>
+          <StageEditButton onClick={toggleEdit} />
         </div>
         <div className='pt-3 border-t border-slate-100 dark:border-slate-800'>
-          {
-          isEditing? (
-          <EditCard/>
-          ):(
+          {isEditing ? (
+            <EditCard />
+          ) : (
             <ViewCard />
-          )
-        }
+          )}
         </div>
       </div>
-    </div>
+    </StageWrapper>
   );
 }

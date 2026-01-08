@@ -2,8 +2,8 @@ import { ScheduleResult } from '@/types';
 import { create } from 'zustand';
 
 // API 응답 타입 정의
-type SubmissionStatus = 'NOT_SUBMITTED' | 'SUBMITTED';
-type ApplicationStatus = 'IN_PROGRESS' | 'FINAL_PASS' | 'FINAL_FAIL';
+export type SubmissionStatus = 'NOT_SUBMITTED' | 'SUBMITTED';
+export type ApplicationStatus = 'IN_PROGRESS' | 'FINAL_PASS' | 'FINAL_FAIL';
 
 // 지원 정보
 interface ApplicationInfo {

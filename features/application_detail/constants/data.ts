@@ -1,3 +1,6 @@
+import type { ApplicationStatus } from '../stores/useApplicationStore';
+import type { ScheduleResult } from '@/types';
+
 export const dummyApplicationData = {
   applicationInfo: {
     applicationId: 1,
@@ -6,7 +9,7 @@ export const dummyApplicationData = {
     jobLocation: 'Seoul, Korea',
     jobPostingUrl: 'https://careers.naver.com/jobs/12345',
     currentStageType: '면접 전형',
-    applicationStatus: 'IN_PROGRESS',
+    applicationStatus: 'IN_PROGRESS' as ApplicationStatus,
     deadline: '2025.03.25',
     applicationMethod: 'Online Application',
     memo: '네이버 백엔드 개발자 포지션 지원. 1차 면접 준비 중.',
@@ -20,21 +23,21 @@ export const dummyApplicationData = {
     docsStageTimeLine: {
       stageId: 1,
       scheduleName: '서류 전형',
-      scheduleResult: 'PASS',
-      submissionStatus: 'SUBMITTED',
+      scheduleResult: 'PASS' as ScheduleResult,
+      submissionStatus: 'SUBMITTED' as const,
     },
     etcStageTimeLine: [
       {
         stageId: 2,
         scheduleName: '코딩 테스트',
-        scheduleResult: 'PASS',
+        scheduleResult: 'PASS' as ScheduleResult,
         startedAt: '2025-01-15T10:00:00Z',
         endedAt: '2025-01-15T13:00:00Z',
       },
       {
         stageId: 3,
         scheduleName: '과제 제출',
-        scheduleResult: 'WAITING',
+        scheduleResult: 'WAITING' as ScheduleResult,
         startedAt: '2025-02-01T00:00:00Z',
         endedAt: '2025-02-07T23:59:59Z',
       }
@@ -43,14 +46,14 @@ export const dummyApplicationData = {
       {
         stageId: 4,
         scheduleName: '1차 면접',
-        scheduleResult: 'WAITING',
+        scheduleResult: 'WAITING' as ScheduleResult,
         location: '서울 강남구 테헤란로 123 네이버 본사 8층',
         startedAt: '2025-02-20T14:00:00Z',
       },
       {
         stageId: 5,
         scheduleName: '2차 면접 (임원 면접)',
-        scheduleResult: 'WAITING',
+        scheduleResult: 'WAITING' as ScheduleResult,
         location: '서울 강남구 테헤란로 123 네이버 본사 10층',
         startedAt: '2025-03-05T15:30:00Z',
       }
