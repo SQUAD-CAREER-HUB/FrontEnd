@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { ENV } from '@/shared/constants/env';
 import { setAuthSession } from '@/features/login/server-actions/auth'; // 쿠키 설정을 위해 기존 서버 액션 재사용
+import { ApiError, BackendErrorResponse } from './errors';
 
 // 동시 요청 제어를 위한 변수 (모듈 스코프에 위치)
 let isRefreshing = false;
@@ -70,11 +71,6 @@ export async function serverApi<T>(
     redirect: 'manual',
   });
 
-  console.log(
-    `Debug: Initial fetch to ${path} completed with status:`,
-    response.status
-  );
-
   if (response.status === 401) {
     if (!isRefreshing) {
       // 첫 번째 요청이 리프레시 로직을 실행하고, Promise를 할당
@@ -88,9 +84,11 @@ export async function serverApi<T>(
     try {
       // 후속 요청들은 진행중인 리프레시 Promise가 끝나기를 기다림
       const newAccessToken = await refreshPromise;
-      headers.set('Authorization', `Bearer ${newAccessToken}`);
-      // 재요청
-      response = await fetch(backendUrl, { ...options, headers });
+      if (newAccessToken) {
+        headers.set('Authorization', `Bearer ${newAccessToken}`);
+        // 재요청 실행
+        response = await fetch(backendUrl, { ...options, headers });
+      }
     } catch (error) {
       // 리프레시 자체가 실패한 경우 (세션 만료 등)
       // 에러를 그대로 던져서 최종 에러 처리 로직으로 전달
@@ -99,11 +97,12 @@ export async function serverApi<T>(
   }
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    // 백엔드 에러 메시지를 우선적으로 사용
-    throw new Error(
-      errorData.message || `HTTP error! status: ${response.status}`
-    );
+    const errorData: BackendErrorResponse = await response.json().catch(() => ({
+      statusCode: response.status,
+      message: '알 수 없는 에러가 발생했습니다.',
+    }));
+
+    throw new ApiError(errorData);
   }
 
   return response.json();
