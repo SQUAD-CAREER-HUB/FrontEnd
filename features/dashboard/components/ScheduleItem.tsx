@@ -3,12 +3,15 @@
 import { Interview } from '@/shared/types/interview';
 
 interface ScheduleItemProps {
-  interview: Interview; // 구체적인 인터페이스 정의 권장
+  interview: Interview & {
+    companyName?: string;
+    title?: string;
+  }; // 구체적인 인터페이스 정의 권장
   onClick: () => void;
 }
 
 export const ScheduleItem = ({ interview, onClick }: ScheduleItemProps) => {
-  const isUpcoming = new Date(interview.scheduledAt) > new Date();
+  const isUpcoming = new Date(interview.datetime) > new Date();
 
   return (
     <div

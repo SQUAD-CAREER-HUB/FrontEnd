@@ -29,5 +29,27 @@ export const clientApi = {
       body: JSON.stringify(body),
     });
   },
-  // put, delete 등 필요한 메서드 추가
+
+  put<T>(path: string, body: unknown, options?: RequestInit) {
+    return this.request<T>(path, {
+      ...options,
+      method: 'PUT',
+      body: JSON.stringify(body),
+    });
+  },
+
+  patch<T>(path: string, body: unknown, options?: RequestInit) {
+    return this.request<T>(path, {
+      ...options,
+      method: 'PATCH',
+      body: JSON.stringify(body),
+    });
+  },
+
+  delete<T>(path: string, options?: RequestInit) {
+    return this.request<T>(path, {
+      ...options,
+      method: 'DELETE',
+    });
+  },
 };
