@@ -43,7 +43,7 @@ export function StatusButton({
       size={'xs'} 
       onClick={() => onClick?.(status)}
       className={cn(
-        'font-bold shadow-none rounded-xl',
+        'font-bold shadow-none rounded-md',
         statusStyles[status],
         className
       )}

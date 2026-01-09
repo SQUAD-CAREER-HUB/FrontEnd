@@ -5,9 +5,10 @@ import Header from "@/features/application/new/components/Header";
 import Stepper from "@/features/application/new/components/Stepper";
 import URLForm from "@/features/application/new/components/URLForm";
 import BasicInfoForm from "@/features/application/new/components/BasicInfoForm";
+import StageStatusForm from "@/features/application/new/components/StageStatusForm";
 
 export default function Page() {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(3);
 
   const handleNext = () => {
     setCurrentStep((prev) => Math.min(prev + 1, 4));
@@ -24,6 +25,7 @@ export default function Page() {
 
       {currentStep === 1 && <URLForm onSkip={handleNext} />}
       {currentStep === 2 && <BasicInfoForm onNext={handleNext} onPrev={handlePrev} />}
+      {currentStep === 3 && <StageStatusForm onNext={handleNext} onPrev={handlePrev} />}
     </div>
   );
 }
