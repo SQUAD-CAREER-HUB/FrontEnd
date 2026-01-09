@@ -3,10 +3,15 @@
 import { Link } from 'lucide-react'
 import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
+import CardWrapper from '../common/CardWrapper'
 
-export default function URLForm() {
+interface URLFormProps {
+  onSkip?: () => void
+}
+
+export default function URLForm({ onSkip }: URLFormProps) {
   return (
-    <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl min-h-[400px]">
+    <CardWrapper>
       <div className="space-y-6 text-center py-8">
         {/* Icon */}
         <div className="w-20 h-20 bg-brand-50 dark:bg-brand-900/20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
@@ -43,10 +48,14 @@ export default function URLForm() {
         </div>
 
         {/* Skip Link */}
-        <button className="text-sm text-slate-400 hover:text-slate-600 underline">
+        <button
+          type="button"
+          onClick={onSkip}
+          className="text-sm text-slate-400 hover:text-slate-600 underline"
+        >
           건너뛰고 직접 입력하기
         </button>
       </div>
-    </div>
+    </CardWrapper>
   )
 }

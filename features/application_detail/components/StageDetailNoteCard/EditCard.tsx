@@ -2,7 +2,8 @@ import { Button } from "@/shared/components/ui/button";
 import { CardContent } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { Globe, MapPin, Paperclip, Upload, X } from "lucide-react";
+import FileUploadButton from "@/shared/components/FileUploadButton";
+import { Globe, MapPin, Paperclip, X } from "lucide-react";
 import FormLabel from "../common/FormLabel";
 
 export default function EditCard() {
@@ -54,11 +55,7 @@ export default function EditCard() {
             <FormLabel variant="baseBlack">
               첨부파일
             </FormLabel>
-            <label className='cursor-pointer text-[10px] font-black text-brand-600 bg-brand-50 dark:bg-brand-900/30 rounded-md hover:bg-brand-100 transition-colors px-2 py-1'>
-              <Upload id="files" className="w-3 h-3 inline mr-1" />
-              파일 추가
-              <Input type="file" className="hidden" id="files" />
-            </label>
+            <FileUploadButton variant="compact" />
           </div>
           
           <div className="space-y-2">

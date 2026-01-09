@@ -1,13 +1,16 @@
 'use client'
-import { useState } from "react";
+
 import { StepIndicator } from "./StepIndicator";
 import { steps } from "../../contants";
 
-export default function Stepper() {
-  const [currentStep, setCurrentStep] = useState<number>(1);
+interface StepperProps {
+  currentStep: number;
+}
+
+export default function Stepper({ currentStep }: StepperProps) {
   return (
     <div className="mb-12 relative">
-      <StepIndicator steps = {steps} currentStep={currentStep}/>
+      <StepIndicator steps={steps} currentStep={currentStep} />
     </div>
-  )
+  );
 }
