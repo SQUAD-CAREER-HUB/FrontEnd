@@ -1,0 +1,26 @@
+import { DocumentStatus } from '../types/filter';
+
+export const DOCUMENT_STATUS_META: Record<
+  DocumentStatus,
+  {
+    label: string;
+    styles: string;
+  }
+> = {
+  NOT_SUBMITTED: {
+    label: '미제출',
+    styles: 'text-rose-700 bg-rose-50 border-rose-200',
+  },
+  SUBMITTED: {
+    label: '제출',
+    styles: 'text-blue-700 bg-blue-50 border-blue-200',
+  },
+} as const;
+
+export const DOCUMENT_STATUS_OPTIONS: {
+  label: string;
+  value: DocumentStatus;
+}[] = [
+  { label: '미제출', value: 'NOT_SUBMITTED' },
+  { label: '제출', value: 'SUBMITTED' },
+];

@@ -1,0 +1,34 @@
+import {
+  LayoutDashboardIcon,
+  BriefcaseIcon,
+  CalendarIcon,
+  BookMarkedIcon,
+  UsersIcon,
+  BellIcon,
+  SettingsIcon,
+} from 'lucide-react';
+
+export const MENU_GROUPS = [
+  {
+    group: '지원 관리',
+    items: [
+      { name: '대시보드', href: '/dashboard', icon: LayoutDashboardIcon },
+      { name: '지원 현황', href: '/applications', icon: BriefcaseIcon },
+      { name: '캘린더', href: '/calendar', icon: CalendarIcon },
+    ],
+  },
+  {
+    group: '탐색 및 준비',
+    items: [
+      { name: '면접 질문', href: '/questions', icon: BookMarkedIcon },
+      { name: '커뮤니티', href: '/community', icon: UsersIcon },
+    ],
+  },
+  {
+    group: '시스템',
+    items: [
+      { name: '알림 센터', href: '/notifications', icon: BellIcon, count: 2 },
+      { name: '계정 설정', href: '/settings', icon: SettingsIcon },
+    ],
+  },
+];
