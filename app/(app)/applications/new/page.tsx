@@ -6,6 +6,7 @@ import Stepper from "@/features/application/new/components/Stepper";
 import URLForm from "@/features/application/new/components/URLForm";
 import BasicInfoForm from "@/features/application/new/components/BasicInfoForm";
 import StageStatusForm from "@/features/application/new/components/StageStatusForm";
+import ConfirmForm from "@/features/application/new/components/ConfirmForm";
 
 export default function Page() {
   const [currentStep, setCurrentStep] = useState(3);
@@ -26,6 +27,7 @@ export default function Page() {
       {currentStep === 1 && <URLForm onSkip={handleNext} />}
       {currentStep === 2 && <BasicInfoForm onNext={handleNext} onPrev={handlePrev} />}
       {currentStep === 3 && <StageStatusForm onNext={handleNext} onPrev={handlePrev} />}
+      {currentStep === 4 && <ConfirmForm onPrev={handlePrev} onSubmit={() => { }} />}
     </div>
   );
 }
