@@ -21,6 +21,7 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
           step={item.step}
           label={item.label}
           active={item.step === currentStep}
+          completed={item.step < currentStep}
         />
       ))}
     </div>
