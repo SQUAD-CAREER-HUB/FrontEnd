@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select"
 
 export function DropDown() {
   const [position, setPosition] = React.useState("bottom")
