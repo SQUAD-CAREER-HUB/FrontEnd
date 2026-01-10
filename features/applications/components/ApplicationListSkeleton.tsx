@@ -1,4 +1,4 @@
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Card, CardHeader, CardContent, CardFooter } from '@/shared/components/ui/card';
 import JobApplicationGrid from './ApplicationGrid';
 
 const ApplicationCardSkeleton = () => {
