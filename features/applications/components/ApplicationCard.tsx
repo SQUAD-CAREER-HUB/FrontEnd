@@ -19,7 +19,7 @@ const JobApplicationCard = ({ data }: JobApplicationCardProps) => {
     <Card
       className="relative rounded-2xl gap-6 p-5 border flex flex-col justify-between min-h-[180px] cursor-pointer group bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-brand-300 dark:hover:border-brand-700 shadow-sm hover:shadow-md transition-all duration-200"
       onClick={() => {
-        router.push(`/application/${data.id}`);
+        router.push(`/applications/${data.id}`);
       }}
     >
       <CardHeader className="flex justify-between items-start gap-0 px-0 mb-0">
