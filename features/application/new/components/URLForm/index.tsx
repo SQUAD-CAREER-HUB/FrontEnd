@@ -1,15 +1,33 @@
 'use client'
 
+import { useState } from 'react'
 import { Link } from 'lucide-react'
 import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
 import CardWrapper from '../common/CardWrapper'
+import { useNewApplicationStore } from '../../stores/useNewApplicationStore'
+import { useRouter } from 'next/navigation'
+import GetJobPostButton from './getJobPostButton'
+import { useShallow } from 'zustand/shallow'
 
 interface URLFormProps {
   onSkip?: () => void
 }
 
 export default function URLForm({ onSkip }: URLFormProps) {
+  const [error, setError] = useState<string>('');
+
+  const { url, setUrl } = useNewApplicationStore(useShallow((state) => ({
+    url: state.url,
+    setUrl: state.setUrl,
+  })));
+  const router = useRouter();
+
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUrl(e.target.value);
+    if (error) setError('');
+  };
+
   return (
     <CardWrapper>
       <div className="space-y-6 text-center py-8">
@@ -32,19 +50,29 @@ export default function URLForm({ onSkip }: URLFormProps) {
         <div className="max-w-md mx-auto relative mt-8">
           <Input
             type="url"
+            value={url}
+            onChange={handleUrlChange}
             placeholder="https://recruit.company.com/..."
-            className="w-full h-12 px-4 rounded-xl"
+            className={`w-full h-12 px-4 rounded-xl ${
+              error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : ''
+            }`}
           />
+          {error && (
+            <p className="mt-2 text-sm text-red-500 text-left">{error}</p>
+          )}
         </div>
 
         {/* Buttons */}
         <div className="flex items-center justify-center gap-4 mt-8">
-          <Button variant="ghost" className="text-slate-500">
+          <Button onClick={() => {
+            router.back();
+          }} variant="ghost" className="text-slate-500">
             취소
           </Button>
-          <Button className="bg-brand-500 hover:bg-brand-600 text-white px-8 rounded-xl">
-            정보 불러오기
-          </Button>
+          <GetJobPostButton
+            onError={setError}
+            onClearError={() => setError('')}
+          />
         </div>
 
         {/* Skip Link */}
