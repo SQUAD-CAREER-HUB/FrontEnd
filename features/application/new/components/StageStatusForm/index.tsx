@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from 'react'
 import CardWrapper from '../common/CardWrapper'
 import StepNavigation from '../common/StepNavigation'
+import StepHeader from '../common/StepHeader'
+import FormContainer from '../common/FormContainer'
 import { DropDown } from '@/shared/components/DropDown'
 import StatusButtonGroup from '@/features/application_detail/components/StatusButtonGroup'
+import { useNewApplicationStore, StageType, DocumentStatus, ApplicationMethod } from '../../stores/useNewApplicationStore'
 
 interface StageStatusFormProps {
   onNext?: () => void
@@ -31,24 +33,26 @@ const applicationMethodOptions = [
 ]
 
 export default function StageStatusForm({ onNext, onPrev }: StageStatusFormProps) {
-  const [stage, setStage] = useState('document')
-  const [documentStatus, setDocumentStatus] = useState('not_submitted')
-  const [applicationMethod, setApplicationMethod] = useState('website')
-  const [result, setResult] = useState<'WAITING' | 'PASS' | 'FAILED'>('WAITING')
+  const {
+    stage,
+    documentStatus,
+    applicationMethod,
+    result,
+    setStage,
+    setDocumentStatus,
+    setApplicationMethod,
+    setResult,
+  } = useNewApplicationStore();
 
   return (
     <CardWrapper>
       <div className="max-w-lg mx-auto space-y-8 py-4">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-            전형 상태 설정
-          </h2>
-          <p className="text-slate-500 dark:text-slate-400">
-            현재 지원 단계와 상세 내용을 기록합니다.
-          </p>
-        </div>
+        <StepHeader
+          title="전형 상태 설정"
+          description="현재 지원 단계와 상세 내용을 기록합니다."
+        />
 
-        <div className="space-y-5 bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 text-left">
+        <FormContainer>
           {/* 전형 단계 */}
           <div>
             <label className="block text-sm font-bold text-slate-900 dark:text-white mb-1.5 ml-1">
@@ -57,7 +61,7 @@ export default function StageStatusForm({ onNext, onPrev }: StageStatusFormProps
             <DropDown
               options={stageOptions}
               value={stage}
-              onValueChange={setStage}
+              onValueChange={(value) => setStage(value as StageType)}
               placeholder="전형 단계 선택"
               className="h-12"
             />
@@ -73,7 +77,7 @@ export default function StageStatusForm({ onNext, onPrev }: StageStatusFormProps
               <DropDown
                 options={documentStatusOptions}
                 value={documentStatus}
-                onValueChange={setDocumentStatus}
+                onValueChange={(value) => setDocumentStatus(value as DocumentStatus)}
                 placeholder="상태 선택"
                 className="h-12"
               />
@@ -87,7 +91,7 @@ export default function StageStatusForm({ onNext, onPrev }: StageStatusFormProps
               <DropDown
                 options={applicationMethodOptions}
                 value={applicationMethod}
-                onValueChange={setApplicationMethod}
+                onValueChange={(value) => setApplicationMethod(value as ApplicationMethod)}
                 placeholder="지원 방식 선택"
                 className="h-12"
               />
@@ -104,7 +108,7 @@ export default function StageStatusForm({ onNext, onPrev }: StageStatusFormProps
               />
             </div>
           </div>
-        </div>
+        </FormContainer>
 
         <StepNavigation onPrev={onPrev} onNext={onNext} />
       </div>
