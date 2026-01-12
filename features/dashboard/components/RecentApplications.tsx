@@ -7,12 +7,15 @@ import { Button } from '@/shared/components/ui/button';
 
 export function RecentApplications() {
   const { data } = useGetRecentApplications();
+  console.log('🚀 ~ RecentApplications ~ data:', data);
+
+  const applications = data?.contents ?? [];
+  const isEmpty = applications.length === 0;
 
   return (
     <div className='space-y-4 bg-white dark:bg-slate-900 p-8 rounded-3xl border border-border'>
-      {/* 타이틀 및 더보기 버튼 */}
       <div className='flex items-center justify-between'>
-        <div className='text-xl font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-x-2'>
+        <div className='text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-x-2'>
           <BriefcaseIcon className='stroke-2 w-5 h-5 text-brand-500' />
           <span>진행 중인 서류 전형</span>
         </div>
@@ -25,11 +28,18 @@ export function RecentApplications() {
         </Button>
       </div>
 
-      {/* 그리드 리스트 */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-        {data?.map((application) => (
+        {applications.map((application) => (
           <ApplicationCard key={application.applicationId} {...application} />
         ))}
+
+        {isEmpty && (
+          <div className='col-span-full py-12 flex flex-col items-center justify-center text-slate-400'>
+            <p className='text-sm font-medium'>
+              진행 중인 서류 전형이 없습니다.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

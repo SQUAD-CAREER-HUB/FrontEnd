@@ -13,16 +13,40 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  Cell,
+  TooltipProps,
 } from 'recharts';
+import { useGetApplicationCreationStatistics } from '../hooks/useGetApplicationCreationStatistics';
+
+interface ChartDataItem {
+  xAxisLabel: string;
+  fullPeriod: string;
+  applicationsCount: number;
+  isCurrent: boolean;
+}
+
+interface PayloadItem {
+  payload: ChartDataItem; // 우리가 넣은 원본 데이터
+  value: number; // Bar의 데이터 값 (applicationsCount)
+  name: string; // Bar의 이름
+}
+
+interface CustomTooltipProps extends TooltipProps<number, string> {
+  payload?: PayloadItem[];
+}
 
 export const ActivityChart = () => {
   const [chartView, setChartView] = useState<'WEEKLY' | 'MONTHLY'>('WEEKLY');
+
+  const { data, isLoading } = useGetApplicationCreationStatistics();
+
+  const activeData: ChartDataItem[] = data ? data[chartView] : [];
 
   return (
     <div className='bg-white dark:bg-slate-900 p-8 rounded-3xl border border-border'>
       <div className='flex justify-between mb-8'>
         <div className='flex flex-col gap-y-1'>
-          <div className='flex items-center gap-x-2 font-semibold'>
+          <div className='flex items-center gap-x-2 text-xl font-bold text-slate-900 dark:text-slate-100'>
             <ChartColumnIcon className='w-5 h-5 text-brand-500 stroke-2' /> 지원
             활동 분석
           </div>
@@ -32,48 +56,33 @@ export const ActivityChart = () => {
         </div>
 
         <ButtonGroup className='bg-slate-100 p-1.5 rounded-xl flex text-xs font-bold'>
-          <Button
-            variant='outline'
-            onClick={() => setChartView('WEEKLY')}
-            className={chartView === 'WEEKLY' ? 'bg-white shadow-sm' : ''}
-          >
-            주간
-          </Button>
-          <Button
-            variant='outline'
-            onClick={() => setChartView('MONTHLY')}
-            className={chartView === 'MONTHLY' ? 'bg-white shadow-sm' : ''}
-          >
-            월간
-          </Button>
+          {(['WEEKLY', 'MONTHLY'] as const).map((view) => (
+            <Button
+              key={view}
+              variant='outline'
+              onClick={() => setChartView(view)}
+              className={
+                chartView === view
+                  ? 'bg-white dark:bg-slate-700 shadow-sm border-transparent dark:text-white'
+                  : 'border-transparent bg-transparent text-slate-500'
+              }
+            >
+              {view === 'WEEKLY' ? '주간' : '월간'}
+            </Button>
+          ))}
         </ButtonGroup>
       </div>
 
-      <div className='h-64'>
+      <div className='h-64 relative'>
+        {isLoading && (
+          <div className='w-100 h-100 flex items-center justify-center text-slate-400 text-sm'>
+            차트 데이터를 불러오는 중...
+          </div>
+        )}
+
         <ResponsiveContainer width='100%' height='100%'>
           <BarChart
-            data={[
-              {
-                xAxisLabel: '12/12~',
-                applicationsCount: 1,
-              },
-              {
-                xAxisLabel: '12/19~',
-                applicationsCount: 5,
-              },
-              {
-                xAxisLabel: '12/26~',
-                applicationsCount: 1,
-              },
-              {
-                xAxisLabel: '지난주',
-                applicationsCount: 10,
-              },
-              {
-                xAxisLabel: '이번주',
-                applicationsCount: 1,
-              },
-            ]}
+            data={activeData}
             margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
           >
             <CartesianGrid
@@ -85,7 +94,11 @@ export const ActivityChart = () => {
               dataKey='xAxisLabel'
               axisLine={false}
               tickLine={false}
-              tick={{ fill: designTokens.colors.slate[400], fontSize: 12 }}
+              tick={{
+                fill: designTokens.colors.slate[400],
+                fontSize: 12,
+                fontWeight: 600,
+              }}
               dy={10}
             />
             <YAxis
@@ -95,22 +108,8 @@ export const ActivityChart = () => {
               allowDecimals={false}
             />
             <Tooltip
-              cursor={{ fill: designTokens.colors.slate[50] }}
-              contentStyle={{
-                borderRadius: '16px',
-                border: 'none',
-                boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
-              }}
-              itemStyle={{
-                color: designTokens.colors.slate[700],
-                fontWeight: 'bold',
-                fontSize: '13px',
-              }}
-              labelStyle={{
-                color: designTokens.colors.slate[400],
-                fontSize: '12px',
-                marginBottom: '4px',
-              }}
+              content={<CustomTooltip />}
+              cursor={{ fill: designTokens.colors.slate[50], opacity: 0.5 }}
             />
             <Bar
               dataKey='applicationsCount'
@@ -118,10 +117,46 @@ export const ActivityChart = () => {
               radius={[8, 8, 0, 0]}
               barSize={32}
               name='지원 관리 개수'
-            />
+            >
+              {activeData.map((entry, index: number) => (
+                <Cell
+                  key={`cell-${index}`}
+                  // 이번 주/달은 진한 색상, 나머지는 연한 색상
+                  fill={
+                    entry.isCurrent
+                      ? designTokens.colors.brand[500]
+                      : designTokens.colors.brand[200]
+                  }
+                />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>
     </div>
   );
+};
+
+const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
+  if (active && payload && payload.length > 0) {
+    const data = payload[0].payload;
+
+    return (
+      <div className='bg-white dark:bg-slate-800 p-3 px-4 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700'>
+        {/* 툴팁 상단에 실제 기간 표시 */}
+        <p className='text-[10px] font-bold text-slate-400 mb-1'>
+          {data.fullPeriod}
+        </p>
+        <div className='flex items-center gap-x-2'>
+          <div className='w-2 h-2 rounded-full bg-brand-500' />
+          <p className='text-sm font-extrabold text-slate-700 dark:text-slate-200'>
+            지원 관리{' '}
+            <span className='text-brand-600'>{payload[0].value}건</span>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
 };

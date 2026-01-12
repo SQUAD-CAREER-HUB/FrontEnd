@@ -3,6 +3,7 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { useGetApplicationsStats } from '../hooks/useGetApplicationsStats';
 import { designTokens } from '@/shared/constants/designTokens';
+import { PieChartIcon } from 'lucide-react';
 
 export const StatusPieChart = () => {
   const { data } = useGetApplicationsStats();
@@ -37,9 +38,13 @@ export const StatusPieChart = () => {
 
   return (
     <div className='bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition-colors'>
-      <div className='font-bold text-slate-900 dark:text-slate-100 mb-6 text-xl'>
-        지원 현황 비중
+      <div className='flex gap-x-2 items-center'>
+        <PieChartIcon className='w-5 h-5 text-brand-500' />
+        <div className='font-bold text-slate-900 dark:text-slate-100 text-xl'>
+          지원 현황 비중
+        </div>
       </div>
+
       <div className='h-48'>
         <ResponsiveContainer width='100%' height='100%'>
           <PieChart>
