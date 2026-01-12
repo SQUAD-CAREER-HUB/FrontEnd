@@ -85,8 +85,8 @@ export default function FilterPanelContent() {
                     option.value === 'INTERVIEW' &&
                     PROCESS_TYPE_META.INTERVIEW.styles,
                   isChecked &&
-                    option.value === 'CLOSE' &&
-                    PROCESS_TYPE_META.CLOSE.styles
+                    option.value === 'APPLICATION_CLOSE' &&
+                    PROCESS_TYPE_META.APPLICATION_CLOSE.styles
                 )}
               >
                 <Checkbox
