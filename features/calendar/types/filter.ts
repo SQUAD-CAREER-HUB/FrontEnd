@@ -1,4 +1,8 @@
-export type ProcessType = 'DOCUMENT' | 'INTERVIEW' | 'ETC' | 'CLOSE';
+export type ProcessType =
+  | 'DOCUMENT'
+  | 'INTERVIEW'
+  | 'ETC'
+  | 'APPLICATION_CLOSE';
 
 export type DocumentStatus = 'NOT_SUBMITTED' | 'SUBMITTED';
 
