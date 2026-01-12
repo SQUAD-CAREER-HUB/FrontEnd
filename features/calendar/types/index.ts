@@ -18,9 +18,9 @@ export interface ScheduleItem {
   /** 기업명 */
   companyName: string;
   /** 전형 단계 */
-  stageType: StageType;
+  stageType?: StageType;
   // 서류 상태
-  documentStatus: DocumentStatus;
+  documentStatus?: DocumentStatus;
   /** 일정 명칭 (예: 1차 면접, 서류 마감 등) */
   scheduleName: string;
   /** 시작 일시 (ISO 8601 형식) */
