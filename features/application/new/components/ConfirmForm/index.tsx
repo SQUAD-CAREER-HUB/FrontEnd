@@ -3,20 +3,20 @@
 import CardWrapper from '../common/CardWrapper'
 import SuccessIcon from './SuccessIcon'
 import PreviewSection from './PreviewSection'
+import { useNewApplicationStore } from '../../stores/useNewApplicationStore'
+import { useApplicationCreateRequest } from '../../hooks/useApplicationCreateRequest'
 
 interface ConfirmFormProps {
   onPrev?: () => void
   onSubmit?: () => void
-  companyName?: string
-  position?: string
 }
 
 export default function ConfirmForm({
   onPrev,
   onSubmit,
-  companyName = 'NAVER Cloud',
-  position = 'Backend Developer',
 }: ConfirmFormProps) {
+const data = useApplicationCreateRequest();
+console.log(data.request.jobPosting);
   return (
     <CardWrapper>
       <div className="max-w-lg mx-auto py-4">
@@ -32,7 +32,10 @@ export default function ConfirmForm({
           </p>
         </div>
 
-        <PreviewSection companyName={companyName} position={position} />
+        <PreviewSection
+          companyName={data.request.jobPosting.company || '회사명 미입력'}
+          position={data.request.jobPosting.position || '직무 미입력'}
+        />
 
         {/* 하단 버튼 */}
         <div className="flex justify-between pt-8 border-t border-slate-100 dark:border-slate-800 mt-10">
