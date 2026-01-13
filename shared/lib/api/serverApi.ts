@@ -58,7 +58,12 @@ export async function serverApi<T>(
 
   const accessToken = cookieStore.get('access_token')?.value;
   const headers = new Headers(options.headers);
-  headers.set('Content-Type', 'application/json');
+
+  // FormData/Blob인 경우 Content-Type을 설정하지 않음 (브라우저가 자동 설정)
+  const isFormData = options.body instanceof Blob || options.body instanceof FormData;
+  if (!isFormData) {
+    headers.set('Content-Type', 'application/json');
+  }
 
   if (accessToken) {
     headers.set('Authorization', `Bearer ${accessToken}`);
@@ -69,7 +74,7 @@ export async function serverApi<T>(
     headers,
     redirect: 'manual',
   });
-
+  console.log(response);
   console.log(
     `Debug: Initial fetch to ${path} completed with status:`,
     response.status
@@ -106,5 +111,17 @@ export async function serverApi<T>(
     );
   }
 
-  return response.json();
+  // 응답 본문이 비어있는 경우 (201 No Content 등) 빈 객체 반환
+  const contentLength = response.headers.get('content-length');
+  if (contentLength === '0') {
+    return {} as T;
+  }
+
+  // 응답 본문이 있는지 text로 먼저 확인 후 파싱
+  const text = await response.text();
+  if (!text) {
+    return {} as T;
+  }
+
+  return JSON.parse(text) as T;
 }

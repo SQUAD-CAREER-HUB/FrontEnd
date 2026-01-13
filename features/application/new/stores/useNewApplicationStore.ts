@@ -8,7 +8,7 @@ export type ScheduleResult = 'WAITING' | 'PASS' | 'FAILED';
 export type FinalApplicationStatus = 'FINAL_PASS' | 'FINAL_FAIL' | null;
 
 // ===== API 요청 타입 =====
-export type ApiStageType = 'DOCUMENT' | 'OTHER' | 'INTERVIEW' | 'CLOSED';
+export type ApiStageType = 'DOCUMENT' | 'ETC' | 'INTERVIEW' | 'CLOSED';
 export type ApiSubmissionStatus = 'SUBMITTED' | 'NOT_SUBMITTED';
 export type ApiApplicationMethod = 'HOMEPAGE' | 'EMAIL' | 'PLATFORM' | 'REFERAL';
 
@@ -153,7 +153,7 @@ const initialState = {
 // ===== 변환 유틸리티 함수 =====
 const stageTypeMap: Record<StageType, ApiStageType> = {
   document: 'DOCUMENT',
-  other: 'OTHER',
+  other: 'ETC',
   interview: 'INTERVIEW',
   closed: 'CLOSED',
 };

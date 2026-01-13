@@ -15,15 +15,21 @@ async function proxyHandler(
   // 1. 동적 경로(Catch-all segments)를 추출하여 백엔드 엔드포인트 구성
   const pathList = (await params).path;
   const targetPath = `/${pathList.join('/')}${req.nextUrl.search}`;
-
   try {
+    // Content-Type 헤더 전달 (multipart/form-data의 boundary 정보 포함)
+    const contentType = req.headers.get('Content-Type');
+    const headers: HeadersInit = {};
+    if (contentType) {
+      headers['Content-Type'] = contentType;
+    }
+
     const data = await serverApi(targetPath, {
       method: req.method,
+      headers,
       // GET이 아닐 때만 body 전달
       body:
         req.method !== 'GET' && req.method !== 'HEAD' ? await req.blob() : null,
     });
-
     return NextResponse.json(data);
   } catch (error: unknown) {
     console.error('BFF 에러 발생:', error);

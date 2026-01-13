@@ -5,6 +5,7 @@ import SuccessIcon from './SuccessIcon'
 import PreviewSection from './PreviewSection'
 import { useNewApplicationStore } from '../../stores/useNewApplicationStore'
 import { useApplicationCreateRequest } from '../../hooks/useApplicationCreateRequest'
+import { useCreateApplication } from '../../hooks/useCreateApplication'
 
 interface ConfirmFormProps {
   onPrev?: () => void
@@ -15,8 +16,19 @@ export default function ConfirmForm({
   onPrev,
   onSubmit,
 }: ConfirmFormProps) {
-const data = useApplicationCreateRequest();
-console.log(data.request.jobPosting);
+  const data = useApplicationCreateRequest();
+  const { mutate: createApplication, isPending } = useCreateApplication();
+  console.log(data);
+  const handleSubmit = () => {
+    createApplication(data, {
+      onSuccess: () => {
+        onSubmit?.();
+      },
+      onError: (error) => {
+        console.error('지원 카드 생성 실패:', error);
+      },
+    });
+  };
   return (
     <CardWrapper>
       <div className="max-w-lg mx-auto py-4">
@@ -48,10 +60,11 @@ console.log(data.request.jobPosting);
           </button>
           <button
             type="button"
-            onClick={onSubmit}
-            className="px-10 py-3 bg-brand-500 text-white font-bold rounded-xl hover:bg-brand-600 shadow-lg shadow-brand-200 dark:shadow-none transition-all"
+            onClick={handleSubmit}
+            disabled={isPending}
+            className="px-10 py-3 bg-brand-500 text-white font-bold rounded-xl hover:bg-brand-600 shadow-lg shadow-brand-200 dark:shadow-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            카드 생성하기
+            {isPending ? '생성 중...' : '카드 생성하기'}
           </button>
         </div>
       </div>
