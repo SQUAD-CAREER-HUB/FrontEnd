@@ -28,6 +28,7 @@ export default function BasicInfoForm({ onNext, onPrev }: BasicInfoFormProps) {
     setPosition,
     setDeadline,
     setJobLocation,
+    setFiles,
   } = useNewApplicationStore(useShallow((state) => ({
     company: state.company,
     position: state.position,
@@ -37,6 +38,7 @@ export default function BasicInfoForm({ onNext, onPrev }: BasicInfoFormProps) {
     setPosition: state.setPosition,
     setDeadline: state.setDeadline,
     setJobLocation: state.setJobLocation,
+    setFiles: state.setFiles,
   })));
 
   const handleNext = () => {
@@ -104,7 +106,7 @@ export default function BasicInfoForm({ onNext, onPrev }: BasicInfoFormProps) {
             onChange={(e) => setJobLocation(e.target.value)}
           />
 
-          <FileUploadField />
+          <FileUploadField onFilesChange={setFiles} />
         </FormContainer>
 
         <StepNavigation onPrev={onPrev} onNext={handleNext} />

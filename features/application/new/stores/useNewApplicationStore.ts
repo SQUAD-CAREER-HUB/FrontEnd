@@ -62,7 +62,7 @@ export interface ApplicationCreateRequest {
       finalApplicationStatus: FinalApplicationStatus;
     };
   };
-  files: string[];
+  files: File[];
 }
 
 interface NewApplicationState {
@@ -94,7 +94,7 @@ interface NewApplicationState {
   finalApplicationStatus: FinalApplicationStatus;
 
   // ===== 파일 =====
-  files: string[];
+  files: File[];
 
   // ===== Actions =====
   setCurrentStep: (step: number) => void;
@@ -125,9 +125,9 @@ interface NewApplicationState {
   setFinalApplicationStatus: (status: FinalApplicationStatus) => void;
 
   // 파일 Actions
-  setFiles: (files: string[]) => void;
-  addFile: (file: string) => void;
-  removeFile: (file: string) => void;
+  setFiles: (files: File[]) => void;
+  addFile: (file: File) => void;
+  removeFile: (index: number) => void;
 
   // 전체 초기화
   reset: () => void;
@@ -147,7 +147,7 @@ const initialState = {
   interviewSchedules: [] as InterviewSchedule[],
   otherSchedules: [] as OtherSchedule[],
   finalApplicationStatus: null as FinalApplicationStatus,
-  files: [] as string[],
+  files: [] as File[],
 };
 
 // ===== 변환 유틸리티 함수 =====
@@ -214,7 +214,7 @@ export const useNewApplicationStore = create<NewApplicationState>((set) => ({
   // ===== 파일 Actions =====
   setFiles: (files) => set({ files }),
   addFile: (file) => set((state) => ({ files: [...state.files, file] })),
-  removeFile: (file) => set((state) => ({ files: state.files.filter((f) => f !== file) })),
+  removeFile: (index) => set((state) => ({ files: state.files.filter((_, i) => i !== index) })),
 
   // ===== Reset =====
   reset: () => set(initialState),

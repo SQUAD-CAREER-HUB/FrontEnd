@@ -1,10 +1,16 @@
-import { Button } from "@/shared/components/ui/button";
 import { CardContent } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
 import FileUploadButton from "@/shared/components/FileUploadButton";
-import { Globe, MapPin, Paperclip, X } from "lucide-react";
+import { FileList, FileItem } from "@/shared/components/FileList";
+import { Globe, MapPin } from "lucide-react";
 import FormLabel from "../common/FormLabel";
+
+// TODO: 실제 데이터로 교체 필요
+const mockFiles: FileItem[] = [
+  { name: '음악과 세계', size: 1.8 * 1024 * 1024 },
+  { name: '음악과 세계', size: 1.8 * 1024 * 1024 },
+];
 
 export default function EditCard() {
 
@@ -58,36 +64,10 @@ export default function EditCard() {
             <FileUploadButton variant="compact" />
           </div>
           
-          <div className="space-y-2">
-            <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-xl group transition-all hover:bg-white dark:hover:bg-slate-800">
-              <div className="flex items-center space-x-3 overflow-hidden">
-                <div className="w-8 h-8 rounded-lg bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600 flex items-center justify-center shadow-sm">
-                  <Paperclip className="w-4 h-4 text-slate-400" />
-                </div>
-                <div className='min-w-0'>
-                  <div className='text-xs font-bold text-slate-700 dark:text-slate-300 truncate'>음악과 세계</div>
-                  <div className="text-[9px] text-slate-400">1.8MB</div>
-                </div>
-              </div>
-              <Button size ='xs'  variant="ghost" className="cursor-pointer p-1 text-slate-400 hover:text-red-500 rounded-lg">
-                <X className="w-4 h-4"/>
-              </Button>
-            </div>
-            <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-xl group transition-all hover:bg-white dark:hover:bg-slate-800">
-              <div className="flex items-center space-x-3 overflow-hidden">
-                <div className="w-8 h-8 rounded-lg bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600 flex items-center justify-center shadow-sm">
-                  <Paperclip className="w-4 h-4 text-slate-400" />
-                </div>
-                <div className='min-w-0'>
-                  <div className='text-xs font-bold text-slate-700 dark:text-slate-300 truncate'>음악과 세계</div>
-                  <div className="text-[9px] text-slate-400">1.8MB</div>
-                </div>
-              </div>
-              <Button size ='xs'  variant="ghost" className="cursor-pointer p-1 text-slate-400 hover:text-red-500 rounded-lg">
-                <X className="w-4 h-4"/>
-              </Button>
-            </div>
-          </div>
+          <FileList
+            files={mockFiles}
+            onRemove={(index) => console.log('Remove file:', index)}
+          />
         </div>
       </CardContent>
     </>
