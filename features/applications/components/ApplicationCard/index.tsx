@@ -45,12 +45,12 @@ const ApplicationCard = ({ data }: ApplicationCardProps) => {
 
   return (
     <Card
-      className="relative rounded-2xl gap-6 p-5 border flex flex-col justify-between min-h-[180px] cursor-pointer group bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-brand-300 dark:hover:border-brand-700 shadow-sm hover:shadow-md transition-all duration-200"
+      className="relative rounded-2xl p-6 border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-brand-300 dark:hover:border-brand-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col justify-between min-h-[220px]"
       onClick={() => {
         router.push(`/applications/${data.applicationId}`);
       }}
     >
-      <CardHeader className="flex justify-between items-start gap-0 px-0 mb-0">
+      <CardHeader className="flex justify-between items-start gap-0 px-0 mb-4">
         <div className="flex-1 min-w-0">
           <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors line-clamp-1">
             {data.company}
