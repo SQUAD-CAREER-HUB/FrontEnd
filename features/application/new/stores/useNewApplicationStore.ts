@@ -2,15 +2,15 @@ import { create } from 'zustand';
 
 // ===== 내부 상태 타입 =====
 export type StageType = 'document' | 'other' | 'interview' | 'closed';
-export type DocumentStatus = 'not_submitted' | 'submitted';
-export type ApplicationMethod = 'website' | 'email' | 'platform' | 'referral';
+export type DocumentStatus = 'NOT_SUBMITTED' | 'SUBMITTED';
+export type ApplicationMethod = 'HOMEPAGE' | 'EMAIL' | 'PLATFORM' | 'REFERAL';
 export type ScheduleResult = 'WAITING' | 'PASS' | 'FAILED';
 export type FinalApplicationStatus = 'FINAL_PASS' | 'FINAL_FAIL' | null;
 
 // ===== API 요청 타입 =====
 export type ApiStageType = 'DOCUMENT' | 'OTHER' | 'INTERVIEW' | 'CLOSED';
 export type ApiSubmissionStatus = 'SUBMITTED' | 'NOT_SUBMITTED';
-export type ApiApplicationMethod = 'ONLINE' | 'EMAIL' | 'PLATFORM' | 'REFERRAL';
+export type ApiApplicationMethod = 'HOMEPAGE' | 'EMAIL' | 'PLATFORM' | 'REFERAL';
 
 // 면접 스케줄 타입
 export interface InterviewSchedule {
@@ -46,7 +46,7 @@ export interface ApplicationCreateRequest {
         submissionStatus: ApiSubmissionStatus;
         applicationMethod: ApiApplicationMethod;
         scheduleResult: ScheduleResult;
-      };
+      } | null;
       etcSchedules: Array<{
         scheduleName: string;
         startedAt: string;
@@ -141,8 +141,8 @@ const initialState = {
   deadline: '',
   jobLocation: '',
   stage: 'document' as StageType,
-  documentStatus: 'not_submitted' as DocumentStatus,
-  applicationMethod: 'website' as ApplicationMethod,
+  documentStatus: 'NOT_SUBMITTED' as DocumentStatus,
+  applicationMethod: 'HOMEPAGE' as ApplicationMethod,
   result: 'WAITING' as ScheduleResult,
   interviewSchedules: [] as InterviewSchedule[],
   otherSchedules: [] as OtherSchedule[],
@@ -158,17 +158,7 @@ const stageTypeMap: Record<StageType, ApiStageType> = {
   closed: 'CLOSED',
 };
 
-const submissionStatusMap: Record<DocumentStatus, ApiSubmissionStatus> = {
-  not_submitted: 'NOT_SUBMITTED',
-  submitted: 'SUBMITTED',
-};
 
-const applicationMethodMap: Record<ApplicationMethod, ApiApplicationMethod> = {
-  website: 'ONLINE',
-  email: 'EMAIL',
-  platform: 'PLATFORM',
-  referral: 'REFERRAL',
-};
 
 export const useNewApplicationStore = create<NewApplicationState>((set) => ({
   ...initialState,
@@ -188,7 +178,12 @@ export const useNewApplicationStore = create<NewApplicationState>((set) => ({
   setJobLocation: (jobLocation) => set({ jobLocation }),
 
   // ===== 전형 상태 Actions =====
-  setStage: (stage) => set({ stage }),
+  setStage: (stage) => set({
+    stage,
+    // 전형 변경 시 스케줄 초기화
+    interviewSchedules: [],
+    otherSchedules: [],
+  }),
   setDocumentStatus: (documentStatus) => set({ documentStatus }),
   setApplicationMethod: (applicationMethod) => set({ applicationMethod }),
   setResult: (result) => set({ result }),
@@ -237,11 +232,11 @@ export const selectApplicationCreateRequest = (state: NewApplicationState): Appl
     },
     stage: {
       stageType: stageTypeMap[state.stage],
-      docsStageCreateRequest: {
-        submissionStatus: submissionStatusMap[state.documentStatus],
-        applicationMethod: applicationMethodMap[state.applicationMethod],
+      docsStageCreateRequest: state.stage === 'document' ? {
+        submissionStatus: state.documentStatus,
+        applicationMethod: state.applicationMethod,
         scheduleResult: state.result,
-      },
+      } : null,
       etcSchedules: state.otherSchedules.map(({ id, ...rest }) => rest),
       interviewSchedules: state.interviewSchedules.map(({ id, ...rest }) => rest),
       finalApplicationStatus: state.finalApplicationStatus,

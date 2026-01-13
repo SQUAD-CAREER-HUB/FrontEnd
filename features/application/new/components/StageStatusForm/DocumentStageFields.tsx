@@ -6,15 +6,15 @@ import LabeledStatusGroup from '../common/LabeledStatusGroup'
 import { useNewApplicationStore, DocumentStatus, ApplicationMethod } from '../../stores/useNewApplicationStore'
 
 const documentStatusOptions = [
-  { value: 'not_submitted', label: '미제출' },
-  { value: 'submitted', label: '제출 완료' },
+  { value: 'NOT_SUBMITTED', label: '미제출' },
+  { value: 'SUBMITTED', label: '제출 완료' },
 ]
 
 const applicationMethodOptions = [
-  { value: 'website', label: '홈페이지 지원' },
-  { value: 'email', label: '이메일' },
-  { value: 'platform', label: '채용 플랫폼' },
-  { value: 'referral', label: '지인 추천' },
+  { value: 'HOMEPAGE', label: '홈페이지 지원' },
+  { value: 'EMAIL', label: '이메일' },
+  { value: 'PLATFORM', label: '채용 플랫폼' },
+  { value: 'REFERAL', label: '지인 추천' },
 ]
 
 export default function DocumentStageFields() {
