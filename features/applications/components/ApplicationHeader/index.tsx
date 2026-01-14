@@ -1,3 +1,5 @@
+import FilterButton from "./FilterButton";
+
 const ApplicationHeader = () => {
   return (
     <div className="flex justify-between items-center px-4 py-4 md:px-6 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 z-10 flex-shrink-0">
@@ -9,7 +11,9 @@ const ApplicationHeader = () => {
           지원한 기업들의 진행 상황을 확인하세요.
         </p>
       </div>
-      <div className="flex items-center space-x-2"></div>
+      <div className="flex items-center space-x-2">
+        <FilterButton />
+      </div>
     </div>
   );
 };
