@@ -54,7 +54,7 @@ export default function ApplicationFilterPanelContent() {
 
   return (
     <>
-      <div className='p-4 flex flex-col gap-6'>
+      <div className='p-4 flex flex-col gap-6 bg-white'>
         {/* 검색 */}
         <div className='flex flex-col gap-2'>
           <Label className='text-base font-black text-slate-800'>
