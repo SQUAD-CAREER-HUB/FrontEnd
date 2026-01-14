@@ -10,10 +10,16 @@ export default function ApplicationsPage() {
   const { query, stageTypes, submissionStatus, stageResult } =
     useApplicationFilterValueStore();
 
+  // 서류전형이 선택되어 있거나 아무것도 선택하지 않았을 때만 submissionStatus를 전달
+  const shouldIncludeSubmissionStatus =
+    stageTypes.length === 0 || stageTypes.includes('DOCUMENT');
+
   const filter = {
     query: query || undefined,
     stageType: stageTypes.length > 0 ? stageTypes : undefined,
-    submissionStatus: submissionStatus || undefined,
+    submissionStatus: shouldIncludeSubmissionStatus
+      ? submissionStatus || undefined
+      : undefined,
     stageResult: stageResult || undefined,
   };
 

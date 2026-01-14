@@ -1,4 +1,4 @@
-export type StageType = 'DOCUMENT' | 'INTERVIEW' | 'ETC' | 'CLOSE';
+export type StageType = 'DOCUMENT' | 'INTERVIEW' | 'ETC' | 'APPLICATION_CLOSE';
 
 export type SubmissionStatus = 'NOT_SUBMITTED' | 'SUBMITTED';
 

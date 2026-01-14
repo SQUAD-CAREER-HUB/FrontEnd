@@ -109,37 +109,39 @@ export default function ApplicationFilterPanelContent() {
           })}
         </div>
 
-        {/* 서류 상태 필터 */}
-        <div className='flex flex-col gap-2'>
-          <div className='font-black text-slate-800 flex items-center gap-x-1'>
-            <FileTextIcon className='w-4 h-4 text-primary stroke-3' />
-            서류 상태
-          </div>
+        {/* 서류 상태 필터 - 서류전형이 선택되어 있거나 아무것도 선택하지 않았을 때만 표시 */}
+        {(stageTypes.length === 0 || stageTypes.includes('DOCUMENT')) && (
+          <div className='flex flex-col gap-2'>
+            <div className='font-black text-slate-800 flex items-center gap-x-1'>
+              <FileTextIcon className='w-4 h-4 text-primary stroke-3' />
+              서류 상태
+            </div>
 
-          {SUBMISSION_STATUS_OPTIONS.map((option) => {
-            const isChecked = submissionStatus === option.value;
-            return (
-              <Label
-                htmlFor={`submission-${option.value}`}
-                key={option.value}
-                className={cn(
-                  'flex justify-between font-bold items-center gap-2 text-sm p-2 rounded border cursor-pointer transition-all',
-                  !isChecked && 'hover:bg-brand-50/30 hover:scale-[1.02]',
-                  isChecked && SUBMISSION_STATUS_META[option.value].styles
-                )}
-              >
-                <Checkbox
-                  id={`submission-${option.value}`}
-                  className='hidden'
-                  checked={isChecked}
-                  onCheckedChange={() => setSubmissionStatus(option.value)}
-                />
-                {option.label}
-                {isChecked && <CircleCheckBigIcon className='w-3 h-3' />}
-              </Label>
-            );
-          })}
-        </div>
+            {SUBMISSION_STATUS_OPTIONS.map((option) => {
+              const isChecked = submissionStatus === option.value;
+              return (
+                <Label
+                  htmlFor={`submission-${option.value}`}
+                  key={option.value}
+                  className={cn(
+                    'flex justify-between font-bold items-center gap-2 text-sm p-2 rounded border cursor-pointer transition-all',
+                    !isChecked && 'hover:bg-brand-50/30 hover:scale-[1.02]',
+                    isChecked && SUBMISSION_STATUS_META[option.value].styles
+                  )}
+                >
+                  <Checkbox
+                    id={`submission-${option.value}`}
+                    className='hidden'
+                    checked={isChecked}
+                    onCheckedChange={() => setSubmissionStatus(option.value)}
+                  />
+                  {option.label}
+                  {isChecked && <CircleCheckBigIcon className='w-3 h-3' />}
+                </Label>
+              );
+            })}
+          </div>
+        )}
 
         {/* 결과 필터 */}
         <div className='flex flex-col gap-2'>
