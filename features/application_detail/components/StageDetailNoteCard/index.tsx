@@ -38,9 +38,9 @@ export default function StageDetailNoteCard() {
         )}
       </CardHeader>
       {isEditing ? (
-        <ViewCard />
-      ) : (
         <EditCard />
+      ) : (
+        <ViewCard />
       )}
     </Card>
   );

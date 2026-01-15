@@ -1,18 +1,24 @@
-'use client'
-import { Plus } from "lucide-react";
-import OtherStageItem from "./OtherStageItem";
-import { useTimelineStore } from "../stores/useTimeLineStore";
-import { useApplicationStore } from "../stores/useApplicationStore";
-import { ScheduleResult } from "@/shared/types";
-import { useState } from "react";
-import AddSchedule from "./AddSchedule";
-import StageWrapper from "./common/StageWrapper";
-import { ACTIVE_STAGE_STYLES, STATUS_FONT_STYLES } from "../constants/styles";
+'use client';
+
+import { Plus } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import OtherStageItem from './OtherStageItem';
+import { useTimelineStore } from '../stores/useTimeLineStore';
+import { ScheduleResult } from '@/shared/types';
+import { useState } from 'react';
+import AddSchedule from './AddSchedule';
+import StageWrapper from './common/StageWrapper';
+import { ACTIVE_STAGE_STYLES, STATUS_FONT_STYLES } from '../constants/styles';
+import { useGetApplicationDetail } from '../hooks/useGetApplicationDetail';
 
 export default function InterViewStage() {
+  const params = useParams();
+  const applicationId = Number(params.id);
+  const { data } = useGetApplicationDetail(applicationId);
+
   const interviewStageTimeLine =
-    useApplicationStore(state => state.data?.applicationStageTimeLine.interviewStageTimeLine ?? []);
-  const activeStage = useTimelineStore(state => state.activeStage);
+    data?.applicationStageTimeLine.interviewStageTimeLine ?? [];
+  const activeStage = useTimelineStore((state) => state.activeStage);
   const [open, setOpen] = useState(false);
 
   const result: ScheduleResult = interviewStageTimeLine.every(

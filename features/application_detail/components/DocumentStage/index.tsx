@@ -1,17 +1,27 @@
-"use client"
-import { useState } from "react"
-import { useTimelineStore } from "../../stores/useTimeLineStore"
-import { ScheduleResult } from "@/shared/types"
-import DocumentStageForm from "./DocumentStageForm"
-import ViewCard from "./ViewCard"
-import StageWrapper from "../common/StageWrapper"
-import StageEditButton from "../common/StageEditButton"
-import { useStageEdit } from "../../hooks/useStageEdit"
-import { STATUS_BG_STYLES, STATUS_FONT_STYLES, ACTIVE_STAGE_STYLES } from "../../constants/styles"
+'use client';
+
+import { useParams } from 'next/navigation';
+import { useTimelineStore } from '../../stores/useTimeLineStore';
+import DocumentStageForm from './DocumentStageForm';
+import ViewCard from './ViewCard';
+import StageWrapper from '../common/StageWrapper';
+import StageEditButton from '../common/StageEditButton';
+import { useStageEdit } from '../../hooks/useStageEdit';
+import {
+  STATUS_BG_STYLES,
+  STATUS_FONT_STYLES,
+  ACTIVE_STAGE_STYLES,
+} from '../../constants/styles';
+import { useGetApplicationDetail } from '../../hooks/useGetApplicationDetail';
 
 export default function DocumentStage() {
-  const activeStage = useTimelineStore(state => state.activeStage);
-  const [status] = useState<ScheduleResult>('WAITING');
+  const params = useParams();
+  const applicationId = Number(params.id);
+  const { data } = useGetApplicationDetail(applicationId);
+
+  const activeStage = useTimelineStore((state) => state.activeStage);
+  const docsStage = data?.applicationStageTimeLine.docsStageTimeLine;
+  const status = docsStage?.scheduleResult ?? 'WAITING';
   const { isEditing, toggleEdit } = useStageEdit(false);
 
   return (

@@ -1,15 +1,21 @@
-'use client'
-import { PanelRight, PanelRightClose, Save, Trash2 } from 'lucide-react'
-import { Button } from '../../../shared/components/ui/button'
-import { useState } from 'react'
-import { useTimelineStore } from '../stores/useTimeLineStore'
+'use client';
+
+import { PanelRight, PanelRightClose, Save, Trash2 } from 'lucide-react';
+import { Button } from '../../../shared/components/ui/button';
+import { useTimelineStore } from '../stores/useTimeLineStore';
+import { useParams } from 'next/navigation';
+import { useGetApplicationDetail } from '../hooks/useGetApplicationDetail';
 
 export default function JobDetailHeader() {
-  const togglePanel = useTimelineStore(state => state.togglePanel);
-  const isPanelOpened = useTimelineStore(state => state.isPanelOpened)
-  // ===== Local State =====
-  const [companyName] = useState('비바리퍼블리카')
-  const [position] = useState('프로덕트 디자이너')
+  const params = useParams();
+  const applicationId = Number(params.id);
+  const { data } = useGetApplicationDetail(applicationId);
+  console.log(data);
+  const togglePanel = useTimelineStore((state) => state.togglePanel);
+  const isPanelOpened = useTimelineStore((state) => state.isPanelOpened);
+
+  const companyName = data?.applicationInfo.company ?? '';
+  const position = data?.applicationInfo.position ?? '';
 
   // ===== Local Handlers =====
 

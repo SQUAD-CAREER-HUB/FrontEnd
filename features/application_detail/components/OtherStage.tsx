@@ -1,18 +1,23 @@
-'use client'
-import { Plus } from "lucide-react";
-import OtherStageItem from "./OtherStageItem";
-import { useState } from "react";
-import { useTimelineStore } from "../stores/useTimeLineStore";
-import { useApplicationStore } from "../stores/useApplicationStore";
-import AddSchedule from "./AddSchedule";
-import StageWrapper from "./common/StageWrapper";
-import { ACTIVE_STAGE_STYLES } from "../constants/styles";
+'use client';
+
+import { Plus } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import OtherStageItem from './OtherStageItem';
+import { useState } from 'react';
+import { useTimelineStore } from '../stores/useTimeLineStore';
+import AddSchedule from './AddSchedule';
+import StageWrapper from './common/StageWrapper';
+import { ACTIVE_STAGE_STYLES } from '../constants/styles';
+import { useGetApplicationDetail } from '../hooks/useGetApplicationDetail';
 
 export default function OtherStage() {
-  const etcStageTimeLine =
-    useApplicationStore(state => state.data?.applicationStageTimeLine.etcStageTimeLine);
-  const [open, setOpen] = useState(true);
-  const activeStage = useTimelineStore(state => state.activeStage);
+  const params = useParams();
+  const applicationId = Number(params.id);
+  const { data } = useGetApplicationDetail(applicationId);
+
+  const etcStageTimeLine = data?.applicationStageTimeLine.etcStageTimeLine;
+  const [open, setOpen] = useState(false);
+  const activeStage = useTimelineStore((state) => state.activeStage);
 
   return (
     <StageWrapper number={2} stage="other">
