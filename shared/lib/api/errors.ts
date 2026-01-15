@@ -17,7 +17,9 @@ export class ApiError extends Error {
     this.statusCode = data.statusCode;
     this.validation = data.validation;
 
-    // 인스턴스 체크(instanceof)가 정상 작동하게 하기 위함
+    /**
+     * 이게 없으면 구형 브라우저나 일부 환경에서 instanceof ApiError가 false로 나오는 버그가 생김
+     */
     Object.setPrototypeOf(this, ApiError.prototype);
   }
 }
