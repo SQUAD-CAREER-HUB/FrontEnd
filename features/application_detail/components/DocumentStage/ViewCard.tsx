@@ -5,6 +5,7 @@ import { Label } from '@/shared/components/ui/label';
 import { Clock } from 'lucide-react';
 import { StatusButton } from '../StatusButton';
 import { useGetApplicationDetail } from '../../hooks/useGetApplicationDetail';
+import { formatDateTime } from '@/shared/lib/utils';
 
 const SUBMISSION_STATUS_LABEL = {
   NOT_SUBMITTED: '미제출',
@@ -47,7 +48,7 @@ export default function ViewCard() {
           </Label>
           <div className="text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5 opacity-50" />
-            {applicationInfo?.deadline ?? '-'}
+            {formatDateTime(applicationInfo?.deadline)}
           </div>
         </div>
       </div>
