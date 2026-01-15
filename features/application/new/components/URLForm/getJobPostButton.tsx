@@ -42,7 +42,7 @@ export default function GetJobPostButton({ onError, onClearError }: GetJobPostBu
       onSuccess: (data) => {
         setCompany(data.company);
         setPosition(data.position);
-        setDeadline(data.deadline);
+        setDeadline(data.deadline?.replace(' ', 'T'));
         setJobLocation(data.workplace);
         nextStep();
       },
