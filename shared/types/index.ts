@@ -16,5 +16,5 @@ export interface StageData {
 
 export type ApplicationStage = 'document' | 'interview' | 'other' | 'result';
 
-export type ScheduleResult = 'WAITING' | 'PASS' | 'FAILED';
+export type ScheduleResult = 'WAITING' | 'PASS' | 'FAIL';
 ;

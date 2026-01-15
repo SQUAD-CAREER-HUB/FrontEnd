@@ -6,7 +6,7 @@ import { Button } from '@/shared/components/ui/button'
 import { StatusButton } from '@/features/application_detail/components/StatusButton'
 import { STATUS_BG_STYLES, STATUS_FONT_STYLES, LABEL_STYLES } from '@/features/application_detail/constants/styles'
 
-type ScheduleResult = 'WAITING' | 'PASS' | 'FAILED'
+type ScheduleResult = 'WAITING' | 'PASS' | 'FAIL'
 
 interface OtherSchedule {
   id: string

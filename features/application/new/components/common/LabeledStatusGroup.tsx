@@ -3,7 +3,7 @@
 import FormLabel from './FormLabel'
 import StatusButtonGroup from '@/features/application_detail/components/StatusButtonGroup'
 
-type StatusType = 'WAITING' | 'PASS' | 'FAILED'
+type StatusType = 'WAITING' | 'PASS' | 'FAIL'
 
 interface LabeledStatusGroupProps {
   label: string

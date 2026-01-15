@@ -9,7 +9,7 @@ interface ViewCardProps {
   id: number;
   title: string;
   datetime: string;
-  scheduleResult: 'WAITING' | 'PASS' | 'FAILED';
+  scheduleResult: 'WAITING' | 'PASS' | 'FAIL';
   type: 'interview' | 'other';
 }
 

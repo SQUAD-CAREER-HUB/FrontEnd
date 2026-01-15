@@ -20,9 +20,9 @@ export default function InterViewStage() {
   )
     ? 'PASS'
     : interviewStageTimeLine.every(
-      stage => stage.scheduleResult === 'FAILED'
+      stage => stage.scheduleResult === 'FAIL'
     )
-      ? 'FAILED'
+      ? 'FAIL'
       : 'WAITING';
 
   return (

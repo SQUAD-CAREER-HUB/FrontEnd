@@ -4,7 +4,7 @@ import { create } from 'zustand';
 export type StageType = 'document' | 'other' | 'interview' | 'closed';
 export type DocumentStatus = 'NOT_SUBMITTED' | 'SUBMITTED';
 export type ApplicationMethod = 'HOMEPAGE' | 'EMAIL' | 'PLATFORM' | 'REFERAL';
-export type ScheduleResult = 'WAITING' | 'PASS' | 'FAILED';
+export type ScheduleResult = 'WAITING' | 'PASS' | 'FAIL';
 export type FinalApplicationStatus = 'FINAL_PASS' | 'FINAL_FAIL' | null;
 
 // ===== API 요청 타입 =====
