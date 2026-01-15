@@ -33,7 +33,7 @@ export default function DocumentStage() {
         </div>
 
         {isEditing ? (
-          <DocumentStageForm />
+          <DocumentStageForm onCancel={toggleEdit} onSave={toggleEdit} />
         ) : (
           <ViewCard />
         )}

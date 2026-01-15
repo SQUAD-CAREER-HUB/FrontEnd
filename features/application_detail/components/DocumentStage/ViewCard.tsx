@@ -10,6 +10,7 @@ import { formatDateTime } from '@/shared/lib/utils';
 const SUBMISSION_STATUS_LABEL = {
   NOT_SUBMITTED: '미제출',
   SUBMITTED: '제출 완료',
+  NO_INPUT: '미입력',
 } as const;
 
 export default function ViewCard() {
@@ -20,7 +21,7 @@ export default function ViewCard() {
   const applicationInfo = data?.applicationInfo;
   const docsStage = data?.applicationStageTimeLine.docsStageTimeLine;
 
-  const submissionStatus = docsStage?.submissionStatus ?? 'NOT_SUBMITTED';
+  const submissionStatus = docsStage?.submissionStatus ?? 'NO_INPUT';
   const scheduleResult = docsStage?.scheduleResult ?? 'WAITING';
 
   return (
