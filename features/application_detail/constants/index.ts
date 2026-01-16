@@ -4,10 +4,11 @@ export const documentStatusOptions = [
   ]
 
 export const applicationMethodOptions = [
-    { value: "홈페이지 지원", label: "홈페이지 지원" },
-    { value: "이메일", label: "이메일" },
-    { value: "채용 플랫폼", label: "채용 플랫폼" },
-    { value: "지인 추천", label: "지인 추천" }
+    { value: "HOMEPAGE", label: "홈페이지 지원" },
+    { value: "EMAIL", label: "이메일" },
+    { value: "PLATFORM", label: "채용 플랫폼" },
+    { value: "REFERRAL", label: "지인 추천" },
+    { value: "EMPTY", label: "미선택" }
   ]
 
   // 마감일시는 실제로는 DatePicker를 사용하는 것이 좋지만, 

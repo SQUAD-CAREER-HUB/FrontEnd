@@ -3,14 +3,14 @@ import { create } from 'zustand';
 // ===== 내부 상태 타입 =====
 export type StageType = 'document' | 'other' | 'interview' | 'closed';
 export type DocumentStatus = 'NOT_SUBMITTED' | 'SUBMITTED';
-export type ApplicationMethod = 'HOMEPAGE' | 'EMAIL' | 'PLATFORM' | 'REFERAL';
+export type ApplicationMethod = 'HOMEPAGE' | 'EMAIL' | 'PLATFORM' | 'REFERRAL' | 'EMPTY';
 export type ScheduleResult = 'WAITING' | 'PASS' | 'FAIL';
 export type FinalApplicationStatus = 'FINAL_PASS' | 'FINAL_FAIL' | null;
 
 // ===== API 요청 타입 =====
 export type ApiStageType = 'DOCUMENT' | 'ETC' | 'INTERVIEW' | 'CLOSED';
 export type ApiSubmissionStatus = 'SUBMITTED' | 'NOT_SUBMITTED';
-export type ApiApplicationMethod = 'HOMEPAGE' | 'EMAIL' | 'PLATFORM' | 'REFERAL';
+export type ApiApplicationMethod = 'HOMEPAGE' | 'EMAIL' | 'PLATFORM' | 'REFERRAL' | 'EMPTY';
 
 // 면접 스케줄 타입
 export interface InterviewSchedule {
