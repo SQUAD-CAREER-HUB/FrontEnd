@@ -11,7 +11,7 @@ import {
   AvatarImage,
 } from '@/shared/components/ui/avatar';
 import { cn } from '@/shared/lib/utils';
-import { useGetMyProfile } from '@/features/navigation/hooks/useGetMyProfile';
+import { useGetMyProfile } from '@/features/my-profile/hooks/useGetMyProfile';
 
 export default function PostWriteSection() {
   const [isWritingMode, setIsWritingMode] = useState(false);

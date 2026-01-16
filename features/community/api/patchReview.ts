@@ -20,7 +20,6 @@ export const patchReview = (
     })),
     content: formData.content,
   };
-  console.log('🚀 ~ patchReview ~ requestBody:', requestBody);
 
   return clientApi.patch<void>(`/v1/reviews/${reviewId}`, requestBody);
 };
