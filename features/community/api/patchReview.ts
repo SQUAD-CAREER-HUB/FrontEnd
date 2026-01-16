@@ -14,12 +14,13 @@ export const patchReview = (
     company: formData.companyName,
     position: formData.position,
     interviewType: formData.interviewType,
-    interviewQuestions: formData.questions.map((q, idx) => ({
-      id: q.id ?? idx + 1,
+    interviewQuestions: formData.questions.map((q) => ({
+      ...(q.id && { id: q.id }),
       question: q.content,
     })),
     content: formData.content,
   };
+  console.log('🚀 ~ patchReview ~ requestBody:', requestBody);
 
   return clientApi.patch<void>(`/v1/reviews/${reviewId}`, requestBody);
 };
