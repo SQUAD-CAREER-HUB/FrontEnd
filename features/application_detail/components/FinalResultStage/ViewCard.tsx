@@ -9,7 +9,7 @@ import { StatusButton } from '../StatusButton';
 const APPLICATION_STATUS_TO_RESULT: Record<ApplicationStatus, ScheduleResult> = {
   IN_PROGRESS: 'WAITING',
   FINAL_PASS: 'PASS',
-  FINAL_FAIL: 'FAILED',
+  FINAL_FAIL: 'FAIL',
 };
 
 export default function ViewCard() {
