@@ -6,6 +6,19 @@ import { Label } from '@/shared/components/ui/label';
 import { ExternalLink, Paperclip } from 'lucide-react';
 import { useGetApplicationDetail } from '../../hooks/useGetApplicationDetail';
 
+// S3 URL에서 파일명 추출 (UUID prefix 제거)
+function getFileNameFromUrl(url: string): string {
+  try {
+    const pathname = new URL(url).pathname;
+    let fileName = pathname.split('/').pop() || url;
+    fileName = decodeURIComponent(fileName);
+    // UUID prefix 제거 (예: 59af0068-ad19-4f41-ad5e-2cb5ceee3a7b-)
+    return fileName.replace(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}-/i, '');
+  } catch {
+    return url;
+  }
+}
+
 export default function ViewCard() {
   const params = useParams();
   const applicationId = Number(params.id);
@@ -73,9 +86,12 @@ export default function ViewCard() {
           <div className="space-y-2">
             {attachedFiles.length > 0 ? (
               attachedFiles.map((file, index) => (
-                <div
+                <a
                   key={index}
-                  className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-xl group transition-all hover:bg-white dark:hover:bg-slate-800"
+                  href={file}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-xl group transition-all hover:bg-white dark:hover:bg-slate-800 cursor-pointer"
                 >
                   <div className="flex items-center space-x-3 overflow-hidden">
                     <div className="w-8 h-8 rounded-lg bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600 flex items-center justify-center shadow-sm">
@@ -83,12 +99,12 @@ export default function ViewCard() {
                     </div>
                     <div className="min-w-0">
                       <div className="text-xs font-bold text-slate-700 dark:text-slate-300 truncate">
-                        {file}
+                        {getFileNameFromUrl(file)}
                       </div>
                     </div>
                   </div>
-                  <ExternalLink className="w-3.5 h-3.5 text-slate-300 group-hover:text-brand-500 transition-colors cursor-pointer" />
-                </div>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-300 group-hover:text-brand-500 transition-colors" />
+                </a>
               ))
             ) : (
               <div className="text-sm text-slate-400">첨부파일이 없습니다.</div>
