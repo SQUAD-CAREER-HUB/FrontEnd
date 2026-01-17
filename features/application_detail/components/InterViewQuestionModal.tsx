@@ -6,7 +6,7 @@ import { Label } from "@/shared/components/ui/label";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Plus } from "lucide-react";
 
-export default function InterViewModal() {
+export default function InterViewQuestionModal() {
   const interviewOptions = [
     { label: '1차 면접', value: '1차 면접' },
     { label: '2차 면접', value: '2차 면접' },
