@@ -8,14 +8,30 @@ interface ApplicationCardProps {
   deadline: string;
   applicationMethod: string;
   submissionStatus: string;
+  /** 전형 단계 (예: 서류 전형, 1차 면접, 최종 면접 등) */
+  stage?: string;
+  /** 카드 클릭 시 호출되는 핸들러 */
+  onClick?: (applicationId: number) => void;
+  /** 푸터 액션 텍스트 (기본값: "상세 보기") */
+  actionLabel?: string;
+  /** 푸터 숨김 여부 */
+  hideFooter?: boolean;
+  /** 추가 className */
+  className?: string;
 }
 
 export function ApplicationCard({
+  applicationId,
   company,
   position,
   deadline,
   applicationMethod,
   submissionStatus,
+  stage = '서류 전형',
+  onClick,
+  actionLabel = '상세 보기',
+  hideFooter = false,
+  className,
 }: ApplicationCardProps) {
   // 날짜 포맷팅 로직 (예: 2025. 12. 31.)
   const dateObj = new Date(deadline);
@@ -34,8 +50,26 @@ export function ApplicationCard({
   const dDayText =
     diffDays === 0 ? 'D-Day' : diffDays > 0 ? `D-${diffDays}` : '마감';
 
+  const handleClick = () => {
+    onClick?.(applicationId);
+  };
+
   return (
-    <div className='relative rounded-2xl p-6 border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-brand-300 dark:hover:border-brand-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col justify-between min-h-[220px]'>
+    <div
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onClick={handleClick}
+      onKeyDown={(e) => {
+        if (onClick && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
+      className={cn(
+        'relative rounded-2xl p-6 border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-brand-300 dark:hover:border-brand-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group flex flex-col justify-between min-h-[220px]',
+        className
+      )}
+    >
       <div className='flex flex-col h-full'>
         <div className='flex justify-between items-start mb-5'>
           <div className='pr-2 min-w-0'>
@@ -63,7 +97,7 @@ export function ApplicationCard({
               {submissionStatus}
             </span>
             <span className='px-2.5 py-1 rounded-lg text-[11px] font-bold border bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800'>
-              서류 전형
+              {stage}
             </span>
           </div>
         </div>
@@ -83,10 +117,10 @@ export function ApplicationCard({
                 </span>
                 <span
                   className={cn(
-                    'ml-2 flex-shrink-0 font-bold',
-                    diffDays <= 3
-                      ? 'text-red-600 dark:text-red-400'
-                      : 'text-slate-700 dark:text-slate-200'
+                    'flex-shrink-0 font-bold',
+                    diffDays <= 7
+                      ? 'ml-2 text-red-600 dark:text-red-400'
+                      : 'text-brand-600 dark:text-brand-400'
                   )}
                 >
                   {dDayText}
@@ -109,11 +143,13 @@ export function ApplicationCard({
         </div>
       </div>
 
-      <div className='mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end'>
-        <span className='text-xs font-bold text-slate-400 group-hover:text-brand-500 transition-colors flex items-center'>
-          상세 보기 <ChevronRight className='w-3 h-3 ml-0.5' />
-        </span>
-      </div>
+      {!hideFooter && (
+        <div className='mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end'>
+          <span className='text-xs font-bold text-slate-400 group-hover:text-brand-500 transition-colors flex items-center'>
+            {actionLabel} <ChevronRight className='w-3 h-3 ml-0.5' />
+          </span>
+        </div>
+      )}
     </div>
   );
 }
