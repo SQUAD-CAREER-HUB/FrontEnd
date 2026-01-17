@@ -24,7 +24,6 @@ const getStatusLabel = (status: string) => {
 
 // 현재 전형 결과에 따른 스타일
 const getScheduleResultStyle = (result: string) => {
-  console.log(result);
   switch (result) {
     case 'PASS':
       return 'text-green-600 bg-green-50 border-green-100 dark:bg-green-900/20 dark:text-green-400 dark:border-green-900/50';
@@ -39,18 +38,17 @@ const getScheduleResultStyle = (result: string) => {
 
 // D-day 라벨 스타일
 const getDdayStyle = (dDay: number | null) => {
-  if (dDay === null) return '';
+  if (dDay === null) return 'text-brand-600 dark:text-brand-400';
 
   if (dDay <= 7) {
-    return 'text-slate-700 dark:text-slate-200';
+    return 'text-red-600 dark:text-red-400';
   }
 
-  return 'text-red-600 dark:text-red-400 font-bold';
+  return 'text-brand-600 dark:text-brand-400';
 };
 
 // 현재 전형 결과 라벨
 const getScheduleResultLabel = (result: string) => {
-  console.log(result);
   switch (result) {
     case 'PASS':
       return '전형 합격';
