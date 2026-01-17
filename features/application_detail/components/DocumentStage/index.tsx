@@ -25,8 +25,8 @@ export default function DocumentStage() {
   const { isEditing, toggleEdit } = useStageEdit(false);
 
   return (
-    <StageWrapper number={1} stage='document'>
-      <div className={`rounded-xl p-5 shadow-sm transition-all border ${activeStage === 'document' && status === 'WAITING' && ACTIVE_STAGE_STYLES.border} ${STATUS_BG_STYLES[status]}`}>
+    <StageWrapper number={1} stage='DOCUMENT'>
+      <div className={`rounded-xl p-5 shadow-sm transition-all border ${activeStage === 'DOCUMENT' && status === 'WAITING' && ACTIVE_STAGE_STYLES.border} ${STATUS_BG_STYLES[status]}`}>
         <div className='flex justify-between items-center mb-5'>
           <h3 className={`font-bold text-lg ${STATUS_FONT_STYLES[status]}`}>서류 전형</h3>
           <StageEditButton onClick={toggleEdit} />

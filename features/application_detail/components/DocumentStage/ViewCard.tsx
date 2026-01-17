@@ -13,6 +13,14 @@ const SUBMISSION_STATUS_LABEL = {
   NO_INPUT: '미입력',
 } as const;
 
+const APPLICATION_METHOD_LABEL = {
+  HOMEPAGE: '홈페이지 지원',
+  EMAIL: '이메일',
+  PLATFORM: '채용 플랫폼',
+  REFERRAL: '지인 추천',
+  EMPTY: '미선택',
+} as const;
+
 export default function ViewCard() {
   const params = useParams();
   const applicationId = Number(params.id);
@@ -40,7 +48,9 @@ export default function ViewCard() {
             지원 방식
           </Label>
           <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
-            {applicationInfo?.applicationMethod ?? '-'}
+            {applicationInfo?.applicationMethod
+              ? APPLICATION_METHOD_LABEL[applicationInfo.applicationMethod as keyof typeof APPLICATION_METHOD_LABEL] ?? applicationInfo.applicationMethod
+              : '-'}
           </div>
         </div>
         <div>

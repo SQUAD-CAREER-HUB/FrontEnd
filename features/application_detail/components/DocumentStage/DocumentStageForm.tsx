@@ -1,10 +1,15 @@
 import { Label } from "@/shared/components/ui/label";
 import { DropDown } from "@/shared/components/DropDown";
-import { useState } from "react";
-import { applicationMethodOptions, deadlineOptions, documentStatusOptions } from "../../constants"
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import { applicationMethodOptions, documentStatusOptions } from "../../constants"
 import StatusButtonGroup from "../StatusButtonGroup";
 import { BottomActiveButtons } from "../BottomActiveButtons";
 import { ScheduleResult } from "@/shared/types";
+import { useGetApplicationDetail } from "../../hooks/useGetApplicationDetail";
+import { useUpdateDocumentStage } from "../../hooks/useUpdateDocumentStage";
+import { ApplicationMethod, SubmissionStatus } from "../../types";
+import { Input } from "@/shared/components/ui/input";
 
 interface DocumentStageFormProps {
   onCancel?: () => void;
@@ -12,10 +17,47 @@ interface DocumentStageFormProps {
 }
 
 export default function DocumentStageForm({ onCancel, onSave }: DocumentStageFormProps) {
-  const [documentStatus, setDocumentStatus] = useState("")
-  const [applicationMethod, setApplicationMethod] = useState("")
-  const [deadline, setDeadline] = useState("");
-  const [currentStatus, setCurrentStatus] = useState<ScheduleResult>('WAITING');
+  const params = useParams();
+  const applicationId = Number(params.id);
+  const { data } = useGetApplicationDetail(applicationId);
+  const { mutate: updateDocumentStage, isPending } = useUpdateDocumentStage(applicationId);
+
+  const [submissionStatus, setSubmissionStatus] = useState<string>("");
+  const [applicationMethod, setApplicationMethod] = useState<string>("");
+  const [deadline, setDeadline] = useState<string>("");
+  const [scheduleResult, setScheduleResult] = useState<ScheduleResult>('WAITING');
+
+  useEffect(() => {
+    if (data) {
+      const { applicationInfo, applicationStageTimeLine } = data;
+      const docsStage = applicationStageTimeLine.docsStageTimeLine;
+
+      setSubmissionStatus(docsStage?.submissionStatus ?? '');
+      setApplicationMethod(applicationInfo?.applicationMethod ?? '');
+      setDeadline(applicationInfo?.deadline ?? '');
+      setScheduleResult(docsStage?.scheduleResult ?? 'WAITING');
+    }
+  }, [data]);
+
+  const isFormValid = deadline && applicationMethod && submissionStatus && scheduleResult;
+
+  const handleSave = () => {
+    if (!isFormValid) return;
+
+    updateDocumentStage(
+      {
+        deadline,
+        applicationMethod: applicationMethod as ApplicationMethod,
+        submissionStatus: submissionStatus as SubmissionStatus,
+        scheduleResult,
+      },
+      {
+        onSuccess: () => {
+          onSave?.();
+        },
+      }
+    );
+  };
 
   return (
     <>
@@ -26,8 +68,8 @@ export default function DocumentStageForm({ onCancel, onSave }: DocumentStageFor
           </Label>
           <DropDown
             options={documentStatusOptions}
-            value={documentStatus}
-            onValueChange={setDocumentStatus}
+            value={submissionStatus}
+            onValueChange={setSubmissionStatus}
             placeholder="상태 선택"
           />
         </div>
@@ -46,11 +88,11 @@ export default function DocumentStageForm({ onCancel, onSave }: DocumentStageFor
           <Label className="text-[10px] text-slate-400 font-bold mb-1.5 block uppercase tracking-wider">
             마감 일시
           </Label>
-          <DropDown
-            options={deadlineOptions}
-            value={deadline}
-            onValueChange={setDeadline}
-            placeholder="날짜 선택"
+          <Input
+            type="datetime-local"
+            value={deadline ? deadline.slice(0, 16) : ''}
+            onChange={(e) => setDeadline(e.target.value ? `${e.target.value}:00` : '')}
+            className="h-9 text-sm"
           />
         </div>
       </div>
@@ -60,9 +102,9 @@ export default function DocumentStageForm({ onCancel, onSave }: DocumentStageFor
             <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
               전형 결과
             </span>
-            <StatusButtonGroup status={currentStatus} onStatusChange={setCurrentStatus} />
+            <StatusButtonGroup status={scheduleResult} onStatusChange={setScheduleResult} />
           </div>
-          <BottomActiveButtons onCancel={onCancel} onSave={onSave} />
+          <BottomActiveButtons onCancel={onCancel} onSave={handleSave} loading={isPending} disabled={!isFormValid} />
         </div>
       </div>
     </>
