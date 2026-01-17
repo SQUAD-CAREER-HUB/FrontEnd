@@ -23,7 +23,7 @@ export function StatusButton({
   const statusLabel = {
     WAITING: '대기',
     PASS: '합격',
-    FAILED: '불합격'
+    FAIL: '불합격'
   }
   const statusStyles = {
     WAITING: isActive 
@@ -32,7 +32,7 @@ export function StatusButton({
     PASS: isActive 
       ? 'bg-green-500 text-white' 
       : 'hover:text-green-600',
-    FAILED: isActive 
+    FAIL: isActive 
       ? 'bg-red-500 text-white' 
       : 'hover:text-red-600'
   };

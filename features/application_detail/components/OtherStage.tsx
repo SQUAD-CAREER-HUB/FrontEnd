@@ -18,12 +18,12 @@ export default function OtherStage() {
   const etcStageTimeLine = data?.applicationStageTimeLine.etcStageTimeLine;
   const [open, setOpen] = useState(false);
   const activeStage = useTimelineStore((state) => state.activeStage);
-
+  console.log(etcStageTimeLine);
   return (
-    <StageWrapper number={2} stage="other">
+    <StageWrapper number={2} stage="ETC">
       <div className='transition-opacity opacity-90'>
         <div className='flex justify-between items-center mb-4'>
-          <h3 className={`font-bold text-lg text-slate-900 dark:text-slate-100 ${activeStage === 'other' && ACTIVE_STAGE_STYLES.font}`}>
+          <h3 className={`font-bold text-lg text-slate-900 dark:text-slate-100 ${activeStage === 'ETC' && ACTIVE_STAGE_STYLES.font}`}>
             기타 전형
           </h3>
           <div
@@ -34,18 +34,19 @@ export default function OtherStage() {
             <Plus className='w-5 h-5 mr-1' />
           </div>
         </div>
-        <div className={`space-y-3 p-3 rounded-xl transition-all ${activeStage === 'other' && ACTIVE_STAGE_STYLES.bg}`}>
+        <div className={`space-y-3 p-3 rounded-xl transition-all ${activeStage === 'ETC' && ACTIVE_STAGE_STYLES.bg}`}>
           {etcStageTimeLine?.map((stage) => (
             <OtherStageItem
-              key={stage.stageId}
-              id={stage.stageId}
+              key={stage.scheduleId}
+              id={stage.scheduleId}
               title={stage.scheduleName}
               datetime={stage.startedAt}
+              endDatetime={stage.endedAt}
               scheduleResult={stage.scheduleResult}
               type='other'
             />
           ))}
-          {open && <AddSchedule setOpen={setOpen} />}
+          {open && <AddSchedule type="other" setOpen={setOpen} />}
         </div>
       </div>
     </StageWrapper>
