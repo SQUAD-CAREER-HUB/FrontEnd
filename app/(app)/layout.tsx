@@ -3,9 +3,14 @@ import MobileFloatingActionButton from '@/features/navigation/components/MobileF
 import MobileHeader from '@/features/navigation/components/MobileHeader';
 import MobileNav from '@/features/navigation/components/MobileNav';
 
-import { PropsWithChildren } from 'react';
+import { ReactNode } from 'react';
 
-export default function Layout({ children }: PropsWithChildren) {
+interface LayoutProps {
+  children: ReactNode;
+  modal: ReactNode;
+}
+
+export default function Layout({ children, modal }: LayoutProps) {
   return (
     // 전체 화면을 꽉 채우는 컨테이너 (스크롤 방지)
     <div className='flex h-screen w-full overflow-hidden bg-white dark:bg-slate-950'>
@@ -26,6 +31,9 @@ export default function Layout({ children }: PropsWithChildren) {
         <MobileFloatingActionButton />
         <MobileNav />
       </div>
+
+      {/* Parallel Route - Modal */}
+      {modal}
     </div>
   );
 }

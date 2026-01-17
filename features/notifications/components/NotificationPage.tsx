@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import NotificationHeader from './NotificationHeader';
 import NotificationList from './NotificationList';
 import { NotificationType } from './NotificationItem';
@@ -33,8 +34,10 @@ const MOCK_NOTIFICATIONS = [
 ];
 
 export default function NotificationPage() {
+  const router = useRouter();
+
   const handleSettingsClick = () => {
-    // TODO: 알림 설정 모달 열기
+    router.push('/notifications/settings');
   };
 
   const handleMarkAllReadClick = () => {
