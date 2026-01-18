@@ -29,5 +29,58 @@ export const clientApi = {
       body: JSON.stringify(body),
     });
   },
-  // put, delete 등 필요한 메서드 추가
+
+  async postFormData<T>(path: string, formData: FormData, options?: RequestInit): Promise<T> {
+    const bffUrl = `/api/bff${path.startsWith('/') ? path : `/${path}`}`;
+
+    const response = await fetch(bffUrl, {
+      ...options,
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || '클라이언트 요청 에러');
+    }
+
+    return response.json();
+  },
+
+  async patchFormData<T>(path: string, formData: FormData, options?: RequestInit): Promise<T> {
+    const bffUrl = `/api/bff${path.startsWith('/') ? path : `/${path}`}`;
+
+    const response = await fetch(bffUrl, {
+      ...options,
+      method: 'PATCH',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || '클라이언트 요청 에러');
+    }
+
+    return response.json();
+  },
+
+  put<T>(path: string, body: unknown, options?: RequestInit) {
+    return this.request<T>(path, {
+      ...options,
+      method: 'PUT',
+      body: JSON.stringify(body),
+    });
+  },
+
+  patch<T>(path: string, body: unknown, options?: RequestInit) {
+    return this.request<T>(path, {
+      ...options,
+      method: 'PATCH',
+      body: JSON.stringify(body),
+    });
+  },
+
+  delete<T>(path: string, options?: RequestInit) {
+    return this.request<T>(path, { ...options, method: 'DELETE' });
+  },
 };

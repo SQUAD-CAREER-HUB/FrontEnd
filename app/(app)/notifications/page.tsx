@@ -1,4 +1,4 @@
-import { NotificationPage } from '@/features/notifications/components';
+import NotificationPage from '@/features/notifications/components/NotificationPage';
 
 export default function Page() {
   return <NotificationPage />;
