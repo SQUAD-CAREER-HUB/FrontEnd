@@ -1,48 +1,69 @@
 'use client';
 
-import { Calendar, AlertCircle, Info, Trash2, LucideIcon } from 'lucide-react';
+import {
+  Calendar,
+  AlertCircle,
+  Info,
+  Trash2,
+  LucideIcon,
+  RefreshCw,
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Notification, NotificationType } from '../types/notification';
+import { useReadNotification } from '../hooks/useReadNotification';
+import { useDeleteNotification } from '../hooks/useDeleteNotification';
 
-export type NotificationType = 'schedule' | 'deadline' | 'info';
-
-export interface NotificationItemProps {
-  id: number;
-  type: NotificationType;
-  title: string;
-  description: string;
-  date: string;
-  isRead: boolean;
-  onDelete?: (id: number) => void;
-  onClick?: (id: number) => void;
-}
+export interface NotificationItemProps extends Notification {}
 
 const ICON_MAP: Record<NotificationType, LucideIcon> = {
-  schedule: Calendar,
-  deadline: AlertCircle,
-  info: Info,
+  INTERVIEW_REMINDER: Calendar,
+  DOCUMENT_DEADLINE: AlertCircle,
+  STATUS_CHANGE: RefreshCw,
+  SCHEDULE_REMINDER: Info,
 };
 
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
 export default function NotificationItem({
-  id,
+  notificationId,
   type,
   title,
-  description,
-  date,
-  isRead,
-  onDelete,
-  onClick,
+  message,
+  is_read,
+  createdAt,
+  targetId,
 }: NotificationItemProps) {
-  const Icon = ICON_MAP[type];
+  const router = useRouter();
+  const { mutate: readNotification } = useReadNotification();
+  const { mutate: deleteNotification } = useDeleteNotification();
+  const Icon = ICON_MAP[type] || Info;
+
+  const handleClick = () => {
+    if (!is_read) {
+      readNotification(notificationId);
+    }
+    router.push(`/application_detail/${targetId}`);
+  };
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onDelete?.(id);
+    deleteNotification(notificationId);
   };
 
   return (
     <div
-      onClick={() => onClick?.(id)}
+      onClick={handleClick}
       className={`p-5 flex gap-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer group ${
-        !isRead ? 'bg-brand-50/20 dark:bg-brand-900/10' : ''
+        !is_read ? 'bg-brand-50/20 dark:bg-brand-900/10' : ''
       }`}
     >
       <div className="mt-1 flex-shrink-0 bg-white dark:bg-slate-800 p-2 rounded-full border border-slate-100 dark:border-slate-700 shadow-sm h-fit">
@@ -53,16 +74,16 @@ export default function NotificationItem({
         <div className="flex justify-between items-start">
           <h3 className="text-base font-bold mb-1 truncate pr-4 text-slate-900 dark:text-slate-100">
             {title}
-            {!isRead && (
+            {!is_read && (
               <span className="ml-2 inline-block w-2 h-2 rounded-full bg-red-500 align-middle" />
             )}
           </h3>
           <span className="text-xs text-slate-400 whitespace-nowrap flex-shrink-0">
-            {date}
+            {formatDate(createdAt)}
           </span>
         </div>
         <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-          {description}
+          {message}
         </p>
       </div>
 

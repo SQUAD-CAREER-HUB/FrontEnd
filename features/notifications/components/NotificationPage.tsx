@@ -3,60 +3,67 @@
 import { useRouter } from 'next/navigation';
 import NotificationHeader from './NotificationHeader';
 import NotificationList from './NotificationList';
-import { NotificationType } from './NotificationItem';
-
-// 임시 더미 데이터
-const MOCK_NOTIFICATIONS = [
-  {
-    id: 1,
-    type: 'schedule' as NotificationType,
-    title: '면접 D-1',
-    description: '우아한형제들 - 2차 마케팅 과제 발표 일정이 내일입니다. 준비는 되셨나요?',
-    date: '2026. 1. 17. 오후 9:37:42',
-    isRead: false,
-  },
-  {
-    id: 2,
-    type: 'deadline' as NotificationType,
-    title: '서류 마감 D-3',
-    description: '라인플러스 - Global SW Engineer 포지션의 서류 마감이 3일 남았습니다.',
-    date: '2026. 1. 17. 오전 9:00:00',
-    isRead: false,
-  },
-  {
-    id: 3,
-    type: 'info' as NotificationType,
-    title: 'CareerHub에 오신 것을 환영합니다!',
-    description: '성공적인 취업 준비를 위한 첫 걸음을 내딛으셨네요. 지금 바로 새 지원 카드를 생성해보세요.',
-    date: '2026. 1. 16. 오후 2:00:00',
-    isRead: true,
-  },
-];
+import { useGetNotifications } from '../hooks/useGetNotifications';
+import { useReadAllNotifications } from '../hooks/useReadAllNotifications';
+import { useTestNotification } from '../hooks/useTestNotification';
 
 export default function NotificationPage() {
   const router = useRouter();
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+  } = useGetNotifications();
+  const { mutate: readAllNotifications } = useReadAllNotifications();
+  const { mutate: testNotification } = useTestNotification();
+
+  const notifications = data?.pages.flatMap((page) => page.notifications) ?? [];
 
   const handleSettingsClick = () => {
     router.push('/notifications/settings');
   };
 
   const handleMarkAllReadClick = () => {
-    // TODO: 모든 알림 읽음 처리
+    readAllNotifications();
   };
 
   const handleDeleteAllClick = () => {
-    // TODO: 전체 삭제 처리
+    // TODO: 전체 삭제 API 연동 후 교체
+    testNotification();
   };
 
-  const handleNotificationClick = (id: number) => {
-    // TODO: 알림 클릭 처리 (읽음 처리 등)
-    console.log('clicked', id);
-  };
+  if (isLoading) {
+    return (
+      <div className="animate-fade-in p-4">
+        <NotificationHeader
+          onSettingsClick={handleSettingsClick}
+          onMarkAllReadClick={handleMarkAllReadClick}
+          onDeleteAllClick={handleDeleteAllClick}
+        />
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm min-h-[400px] flex items-center justify-center">
+          <div className="text-slate-500">알림을 불러오는 중...</div>
+        </div>
+      </div>
+    );
+  }
 
-  const handleNotificationDelete = (id: number) => {
-    // TODO: 알림 삭제 처리
-    console.log('delete', id);
-  };
+  if (isError) {
+    return (
+      <div className="animate-fade-in p-4">
+        <NotificationHeader
+          onSettingsClick={handleSettingsClick}
+          onMarkAllReadClick={handleMarkAllReadClick}
+          onDeleteAllClick={handleDeleteAllClick}
+        />
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm min-h-[400px] flex items-center justify-center">
+          <div className="text-red-500">알림을 불러오는데 실패했습니다.</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="animate-fade-in p-4">
@@ -67,9 +74,10 @@ export default function NotificationPage() {
       />
 
       <NotificationList
-        notifications={MOCK_NOTIFICATIONS}
-        onClick={handleNotificationClick}
-        onDelete={handleNotificationDelete}
+        notifications={notifications}
+        onLoadMore={fetchNextPage}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
       />
     </div>
   );
