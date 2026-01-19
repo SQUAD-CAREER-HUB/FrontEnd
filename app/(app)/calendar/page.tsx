@@ -6,7 +6,7 @@ import DateScheduleListModal from '@/features/calendar/components/DateScheduleLi
 export default function CalendarPage() {
   return (
     <div className='flex h-full w-full relative'>
-      <main className='flex-1 h-full min-w-0'>
+      <main className='flex-1 h-full'>
         <CalendarContainer />
       </main>
 
