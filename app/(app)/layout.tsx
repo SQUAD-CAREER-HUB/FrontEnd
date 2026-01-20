@@ -2,6 +2,7 @@ import MainSidebar from '@/features/navigation/components/MainSidebar';
 import MobileFloatingActionButton from '@/features/navigation/components/MobileFloatingActionButton';
 import MobileHeader from '@/features/navigation/components/MobileHeader';
 import MobileNav from '@/features/navigation/components/MobileNav';
+import FCMInitializer from '@/features/notifications/components/FCMInitializer';
 
 import { ReactNode } from 'react';
 
@@ -14,6 +15,9 @@ export default function Layout({ children, modal }: LayoutProps) {
   return (
     // 전체 화면을 꽉 채우는 컨테이너 (스크롤 방지)
     <div className='flex h-screen w-full overflow-hidden bg-white dark:bg-slate-950'>
+      {/* FCM 푸시 알림 초기화 */}
+      <FCMInitializer />
+
       {/* 사이드바 (데스크탑) */}
       <MainSidebar />
 
