@@ -1,45 +1,11 @@
 'use client';
 
-import { BellRing, X, Calendar, Clock, FileText } from 'lucide-react';
+import { BellRing, X, Calendar, Clock, FileText, Smartphone } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
-interface ToggleSwitchProps {
-  enabled: boolean;
-  onChange: (enabled: boolean) => void;
-}
-
-function ToggleSwitch({ enabled, onChange }: ToggleSwitchProps) {
-  return (
-    <button
-      onClick={() => onChange(!enabled)}
-      className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors duration-300 ${
-        enabled ? 'bg-brand-500' : 'bg-slate-300 dark:bg-slate-600'
-      }`}
-    >
-      <div
-        className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${
-          enabled ? 'translate-x-5' : 'translate-x-0'
-        }`}
-      />
-    </button>
-  );
-}
-
-interface SettingItemProps {
-  label: string;
-  enabled: boolean;
-  onChange: (enabled: boolean) => void;
-}
-
-function SettingItem({ label, enabled, onChange }: SettingItemProps) {
-  return (
-    <div className="flex justify-between items-center">
-      <span className="text-sm text-slate-600 dark:text-slate-400">{label}</span>
-      <ToggleSwitch enabled={enabled} onChange={onChange} />
-    </div>
-  );
-}
+import { useFCM } from '@/shared/hooks/useFCM';
+import { ToggleSwitch } from '@/shared/components/ui/toggle-switch';
+import { SettingItem } from './SettingItem';
 
 interface NotificationSettingsModalProps {
   onClose?: () => void;
@@ -47,6 +13,10 @@ interface NotificationSettingsModalProps {
 
 export default function NotificationSettingsModal({ onClose }: NotificationSettingsModalProps) {
   const router = useRouter();
+  const { permission, isLoading, isRegistering, requestPermissionAndToken } = useFCM();
+
+  const isPushEnabled = permission === 'granted';
+  const isPushDenied = permission === 'denied';
 
   const [deadlineSettings, setDeadlineSettings] = useState({
     sevenDays: true,
@@ -67,6 +37,12 @@ export default function NotificationSettingsModal({ onClose }: NotificationSetti
     morning: true,
   });
 
+  const handlePushToggle = async (enabled: boolean) => {
+    if (enabled && permission !== 'granted') {
+      await requestPermissionAndToken();
+    }
+  };
+
   const handleClose = () => {
     if (onClose) {
       onClose();
@@ -86,12 +62,19 @@ export default function NotificationSettingsModal({ onClose }: NotificationSetti
     }
   };
 
+  const getPushStatusMessage = () => {
+    if (isPushDenied) return '브라우저 설정에서 알림을 허용해주세요';
+    if (isPushEnabled) return '푸시 알림이 활성화되었습니다';
+    return '알림을 받으려면 허용해주세요';
+  };
+
   return (
     <div
       className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
       onClick={handleBackdropClick}
     >
       <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-6 shadow-2xl animate-fade-in-up">
+        {/* 헤더 */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <BellRing className="w-5 h-5 text-brand-500" />
@@ -103,8 +86,30 @@ export default function NotificationSettingsModal({ onClose }: NotificationSetti
         </div>
 
         <div className="space-y-6 max-h-[60vh] overflow-y-auto custom-scrollbar pr-1">
+          {/* 푸시 알림 허용 */}
+          <div className="bg-brand-50 dark:bg-brand-900/20 p-5 rounded-xl border border-brand-200 dark:border-brand-800">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <Smartphone className="w-5 h-5 text-brand-500" />
+                <div>
+                  <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                    푸시 알림 허용
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    {getPushStatusMessage()}
+                  </p>
+                </div>
+              </div>
+              <ToggleSwitch
+                enabled={isPushEnabled}
+                onChange={handlePushToggle}
+                disabled={isLoading || isRegistering || isPushDenied}
+              />
+            </div>
+          </div>
+
           {/* 채용 공고 마감일 알림 */}
-          <div className="bg-slate-50 dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
+          <section className="bg-slate-50 dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
             <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-3 flex items-center">
               <Calendar className="w-4 h-4 mr-2 text-slate-400" />
               채용 공고 마감일 알림
@@ -126,10 +131,10 @@ export default function NotificationSettingsModal({ onClose }: NotificationSetti
                 onChange={(v) => setDeadlineSettings((s) => ({ ...s, oneDay: v }))}
               />
             </div>
-          </div>
+          </section>
 
           {/* 면접 일정 알림 */}
-          <div className="bg-slate-50 dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
+          <section className="bg-slate-50 dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
             <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-3 flex items-center">
               <Clock className="w-4 h-4 mr-2 text-slate-400" />
               면접 일정 알림
@@ -156,10 +161,10 @@ export default function NotificationSettingsModal({ onClose }: NotificationSetti
                 onChange={(v) => setInterviewSettings((s) => ({ ...s, oneHour: v }))}
               />
             </div>
-          </div>
+          </section>
 
           {/* 기타 전형 알림 */}
-          <div className="bg-slate-50 dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
+          <section className="bg-slate-50 dark:bg-slate-800 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
             <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-3 flex items-center">
               <FileText className="w-4 h-4 mr-2 text-slate-400" />
               기타 전형 알림 (코딩테스트/과제 등)
@@ -181,9 +186,10 @@ export default function NotificationSettingsModal({ onClose }: NotificationSetti
                 onChange={(v) => setEtcSettings((s) => ({ ...s, morning: v }))}
               />
             </div>
-          </div>
+          </section>
         </div>
 
+        {/* 푸터 버튼 */}
         <div className="mt-8 flex justify-end space-x-3">
           <button
             onClick={handleClose}

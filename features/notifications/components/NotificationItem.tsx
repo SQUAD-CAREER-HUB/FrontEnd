@@ -12,26 +12,14 @@ import { useRouter } from 'next/navigation';
 import { Notification, NotificationType } from '../types/notification';
 import { useReadNotification } from '../hooks/useReadNotification';
 import { useDeleteNotification } from '../hooks/useDeleteNotification';
+import { formatDateTime } from '@/shared/lib/utils';
 
-export interface NotificationItemProps extends Notification {}
-
-const ICON_MAP: Record<NotificationType, LucideIcon> = {
+const NOTIFICATION_ICONS: Record<NotificationType, LucideIcon> = {
   INTERVIEW_REMINDER: Calendar,
   DOCUMENT_DEADLINE: AlertCircle,
   STATUS_CHANGE: RefreshCw,
   SCHEDULE_REMINDER: Info,
 };
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-}
 
 export default function NotificationItem({
   notificationId,
@@ -41,11 +29,12 @@ export default function NotificationItem({
   is_read,
   createdAt,
   targetId,
-}: NotificationItemProps) {
+}: Notification) {
   const router = useRouter();
   const { mutate: readNotification } = useReadNotification();
   const { mutate: deleteNotification } = useDeleteNotification();
-  const Icon = ICON_MAP[type] || Info;
+
+  const Icon = NOTIFICATION_ICONS[type] || Info;
 
   const handleClick = () => {
     if (!is_read) {
@@ -79,7 +68,7 @@ export default function NotificationItem({
             )}
           </h3>
           <span className="text-xs text-slate-400 whitespace-nowrap flex-shrink-0">
-            {formatDate(createdAt)}
+            {formatDateTime(createdAt)}
           </span>
         </div>
         <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
