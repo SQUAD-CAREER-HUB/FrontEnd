@@ -5,7 +5,9 @@ import { Button } from "@/shared/components/ui/button";
 import { CardContent } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { Globe, MapPin, Paperclip, Upload, X } from "lucide-react";
+import FileUploadButton from "@/shared/components/FileUploadButton";
+import { FileList, FileItem } from "@/shared/components/FileList";
+import { Globe, MapPin } from "lucide-react";
 import FormLabel from "../common/FormLabel";
 import { StageDetailFormData } from './index';
 

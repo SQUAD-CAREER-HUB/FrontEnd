@@ -102,40 +102,76 @@ export const clientApi = {
     });
   },
 
+  /** HTTP POST with FormData: 파일 업로드 등 */
   async postFormData<T>(path: string, formData: FormData, options?: RequestInit): Promise<T> {
     const bffUrl = `/api/bff${path.startsWith('/') ? path : `/${path}`}`;
+    const context = `POST ${path}`;
 
-    const response = await fetch(bffUrl, {
-      ...options,
-      method: 'POST',
-      body: formData,
-    });
+    try {
+      const response = await fetch(bffUrl, {
+        ...options,
+        method: 'POST',
+        body: formData,
+        // Content-Type은 FormData 사용 시 브라우저가 자동 설정 (boundary 포함)
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || '클라이언트 요청 에러');
+      if (!response.ok) {
+        const errorData: BackendErrorResponse = await response
+          .json()
+          .catch(() => ({
+            statusCode: response.status,
+            message: '클라이언트 요청 에러',
+          }));
+
+        const apiError = new ApiError(errorData);
+        apiLogger.error(apiError, context);
+        throw apiError;
+      }
+
+      return response.json();
+    } catch (error) {
+      if (!(error instanceof ApiError)) {
+        apiLogger.error(error, context);
+      }
+      throw error;
     }
-
-    return response.json();
   },
 
+  /** HTTP PATCH with FormData: 파일 포함 일부 수정 */
   async patchFormData<T>(path: string, formData: FormData, options?: RequestInit): Promise<T> {
     const bffUrl = `/api/bff${path.startsWith('/') ? path : `/${path}`}`;
+    const context = `PATCH ${path}`;
 
-    const response = await fetch(bffUrl, {
-      ...options,
-      method: 'PATCH',
-      body: formData,
-    });
+    try {
+      const response = await fetch(bffUrl, {
+        ...options,
+        method: 'PATCH',
+        body: formData,
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || '클라이언트 요청 에러');
+      if (!response.ok) {
+        const errorData: BackendErrorResponse = await response
+          .json()
+          .catch(() => ({
+            statusCode: response.status,
+            message: '클라이언트 요청 에러',
+          }));
+
+        const apiError = new ApiError(errorData);
+        apiLogger.error(apiError, context);
+        throw apiError;
+      }
+
+      return response.json();
+    } catch (error) {
+      if (!(error instanceof ApiError)) {
+        apiLogger.error(error, context);
+      }
+      throw error;
     }
-
-    return response.json();
   },
 
+  /** HTTP PUT: 리소스 전체 수정 */
   put<T>(path: string, body: unknown, options?: RequestInit) {
     return this.request<T>(path, {
       ...options,

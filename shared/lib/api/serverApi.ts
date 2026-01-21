@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { ENV } from '@/shared/constants/env';
-import { setAuthSession } from '@/features/login/server-actions/auth'; // 쿠키 설정을 위해 기존 서버 액션 재사용
+import { setAuthSession } from '@/features/login/server-actions/auth';
 
 /**
  * 전역 상태 관리를 통한 동시성 제어
@@ -51,21 +51,19 @@ async function refreshTokenFlow(): Promise<string> {
  * 서버 사이드 전용 Fetch 래퍼 함수입니다.
  * 인증 헤더 자동 주입 및 401 에러 시 토큰 자동 재발급(Silent Refresh)을 수행합니다.
  */
-export async function serverApi(
+export async function serverApi<T = any>(
   path: string,
   options: RequestInit = {}
-): Promise<Response> {
+): Promise<T> {
   const cookieStore = await cookies();
   const backendUrl = `${ENV.BACKEND_API_URL}${path}`;
   const accessToken = cookieStore.get('access_token')?.value;
   const headers = new Headers(options.headers);
-  // Content-Type이 전달되지 않은 경우에만 기본값 설정 (multipart/form-data 유지를 위해)
-  if (!headers.has('Content-Type')) {
-    headers.set('Content-Type', 'application/json');
-  }
 
-  // FormData 전송 시 브라우저가 자동으로 경계값(Boundary)을 설정하도록 Content-Type 수동 설정을 피함
-  if (!(options.body instanceof FormData)) {
+  // FormData/Blob인 경우 Content-Type을 설정하지 않음 (브라우저가 자동 설정)
+  const isFormData = options.body instanceof Blob || options.body instanceof FormData;
+  
+  if (!isFormData && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
 
@@ -107,9 +105,9 @@ export async function serverApi(
     }
   }
 
+  // HTTP 에러 응답 처리
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    // 백엔드 에러 메시지를 우선적으로 사용
     throw new Error(
       errorData.message || `HTTP error! status: ${response.status}`
     );
