@@ -7,7 +7,7 @@ import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
 import FileUploadButton from "@/shared/components/FileUploadButton";
 import { FileList, FileItem } from "@/shared/components/FileList";
-import { Globe, MapPin } from "lucide-react";
+import { Globe, MapPin, Paperclip, Upload, X } from "lucide-react";
 import FormLabel from "../common/FormLabel";
 import { StageDetailFormData } from './index';
 
