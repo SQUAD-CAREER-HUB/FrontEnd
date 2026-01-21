@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { SidebarNavItem } from './SidebarNavItem';
-import { MENU_GROUPS } from './constants';
+import { MENU_GROUPS } from '../../constants';
 
 interface SidebarNavProps {
   isExpanded: boolean;

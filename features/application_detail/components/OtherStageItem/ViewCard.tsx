@@ -4,6 +4,7 @@ import { StatusButton } from "../StatusButton";
 import StageEditButton from "../common/StageEditButton";
 import { useStageEditor } from "../../hooks/useStageEditor";
 import { STATUS_BG_STYLES, STATUS_FONT_STYLES, LABEL_STYLES } from "../../constants/styles";
+import { formatDateTime } from "@/shared/lib/utils";
 
 interface ViewCardProps {
   id: number;
@@ -36,7 +37,7 @@ export default function ViewCard({
             </h4>
             <div className="text-[11px] text-slate-500 mt-1.5">
               <Clock className="w-3 h-3 inline mr-1" />
-              시작: {datetime}
+              시작: {formatDateTime(datetime)}
             </div>
           </div>
           <StageEditButton onClick={handleEdit} />

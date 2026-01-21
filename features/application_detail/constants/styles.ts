@@ -24,7 +24,7 @@ export const STATUS_FONT_STYLES: Record<ScheduleResult, string> = {
 export const ACTIVE_STAGE_STYLES = {
   font: 'font-bold text-lg text-brand-600 dark:text-brand-400',
   bg: 'bg-brand-50/30 dark:bg-brand-900/10 border border-brand-100 dark:border-brand-900/50',
-  border: 'border-brand-500 ring-2 ring-brand-100 shadow-md transform scale-[1.01] dark:bg-slate-900 dark:ring-brand-900/30 dark:border-slate-800',
+  border: 'border-brand-500 ring-2 ring-brand-100 shadow-md transform scale-[1.01] dark:bg-slate-900 dark:ring-brand-900/30 dark:bg-slate-900',
 } as const;
 
 /**

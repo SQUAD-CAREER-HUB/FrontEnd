@@ -1,8 +1,22 @@
 'use client'
 
 import { ApplicationStage } from "@/shared/types";
-import { useTimelineStore } from "../stores/useTimeLineStore";
 import { Check } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useGetApplicationDetail } from "../hooks/useGetApplicationDetail";
+
+const STAGE_ORDER: ApplicationStage[] = ['DOCUMENT', 'ETC', 'INTERVIEW', 'APPLICATION_CLOSE'];
+
+const STAGE_KO_TO_EN: Record<string, ApplicationStage> = {
+  '서류 전형': 'DOCUMENT',
+  '기타 전형': 'ETC',
+  '면접 전형': 'INTERVIEW',
+  '지원 종료': 'APPLICATION_CLOSE',
+};
+
+function toStageEnum(value: string): ApplicationStage {
+  return STAGE_KO_TO_EN[value] || (value as ApplicationStage);
+}
 
 interface TimelineStepNumberProps {
   number?: number;
@@ -14,8 +28,17 @@ export default function TimelineStepNumber({
   number,
   stage
 }: TimelineStepNumberProps) {
-  const isActive = useTimelineStore((state) => state.isStageActive(stage))
-  const isCompleted = useTimelineStore((state) => state.isStageCompleted(stage))
+  const params = useParams();
+  const applicationId = Number(params.id);
+  const { data } = useGetApplicationDetail(applicationId);
+
+  const rawStage = data?.applicationInfo.currentStageType || 'DOCUMENT';
+  const currentStage = toStageEnum(rawStage);
+  const currentIndex = STAGE_ORDER.indexOf(currentStage);
+  const stageIndex = STAGE_ORDER.indexOf(stage);
+
+  const isActive = currentStage === stage;
+  const isCompleted = stageIndex < currentIndex;
   const getStatusClasses = () => {
     if (isCompleted) {
       return 'bg-green-500 border-green-500 text-white'

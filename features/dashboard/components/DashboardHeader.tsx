@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetMyProfile } from '@/features/navigation/hooks/useGetMyProfile';
+import { useGetMyProfile } from '@/features/my-profile/hooks/useGetMyProfile';
 import { differenceInDays, parseISO } from 'date-fns';
 
 export default function DashboardHeader() {

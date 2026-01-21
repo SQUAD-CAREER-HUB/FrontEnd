@@ -5,7 +5,7 @@ import {
 } from '@/shared/components/ui/avatar';
 import { Button } from '@/shared/components/ui/button';
 import { EllipsisIcon, LogOutIcon } from 'lucide-react';
-import { useGetMyProfile } from '../../hooks/useGetMyProfile';
+import { useGetMyProfile } from '../../../my-profile/hooks/useGetMyProfile';
 import {
   DropdownMenu,
   DropdownMenuContent,

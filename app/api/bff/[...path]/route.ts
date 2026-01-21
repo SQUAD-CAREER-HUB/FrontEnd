@@ -3,20 +3,19 @@ import { NextRequest, NextResponse } from 'next/server';
 
 /**
  * BFF (Backend For Frontend) 전용 프록시 핸들러
- * [핵심 역할]
- * 1. 클라이언트의 요청을 백엔드 API 서버로 중계합니다.
- * 2. 미들웨어에서 주입된 인증 헤더(Authorization)를 백엔드로 전달합니다.
- * 3. 클라이언트 코드에 백엔드 주소를 노출하지 않고 보안(CORS, Token)을 강화합니다.
+ * [주요 역할]
+ * 1. 보안: 클라이언트 브라우저에 백엔드 실제 도메인을 노출하지 않습니다.
+ * 2. 인증: 미들웨어 등을 통해 주입된 인증 정보(예: 쿠키, 토큰)를 안전하게 백엔드로 전달합니다.
+ * 3. 호환성: 백엔드의 불완전한 응답(비어있는 Body 등)을 표준에 맞게 보정하여 클라이언트에 전달합니다.
  */
 async function proxyHandler(
   req: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
-  // 1. 동적 경로(Catch-all segments)를 추출하여 백엔드 엔드포인트 구성
   const pathList = (await params).path;
   const targetPath = `/${pathList.join('/')}${req.nextUrl.search}`;
   try {
-    // Content-Type 헤더 전달 (multipart/form-data의 boundary 정보 포함)
+    // Content-Type 헤더 전달 (multipart/form-data 등 유지를 위해)
     const contentType = req.headers.get('Content-Type');
     const headers: HeadersInit = {};
     if (contentType) {
@@ -28,14 +27,23 @@ async function proxyHandler(
       headers,
       // GET이 아닐 때만 body 전달
       body:
-        req.method !== 'GET' && req.method !== 'HEAD' ? await req.blob() : null,
+        req.method !== 'GET' && req.method !== 'HEAD' ? await req.text() : null,
+
+      /**
+       * duplex: 'half' 설정 (Node.js/Next.js 환경 필수)
+       * fetch API에서 요청 본문을 스트림으로 보낼 때,
+       * 읽기와 쓰기가 동시에 발생하는 'full duplex'가 아닌 'half duplex'임을 명시합니다.
+       */
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      duplex: 'half',
     });
     return NextResponse.json(data);
   } catch (error: unknown) {
     console.error('BFF 에러 발생:', error);
     return NextResponse.json(
-      { message: (error as Error).message },
-      { status: (error as Error).message.includes('Unauthorized') ? 401 : 500 }
+      { message: 'Internal BFF Server Error' },
+      { status: 500 }
     );
   }
 }
