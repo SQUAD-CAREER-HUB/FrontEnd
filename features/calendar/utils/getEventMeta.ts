@@ -7,12 +7,21 @@ type EventMeta = {
   styles: string;
 };
 
+const DEFAULT_META: EventMeta = {
+  label: '기타',
+  styles: 'bg-slate-100 text-slate-700',
+};
+
 export function getEventMeta(event: RbcEvent): EventMeta {
   const resource = event.resource;
 
-  if (resource.stageType === 'DOCUMENT') {
-    return DOCUMENT_STATUS_META[resource.documentStatus];
+  if (resource.stageType === 'DOCUMENT' && resource.documentStatus) {
+    return DOCUMENT_STATUS_META[resource.documentStatus] ?? DEFAULT_META;
   }
 
-  return PROCESS_TYPE_META[resource.stageType];
+  if (resource.stageType) {
+    return PROCESS_TYPE_META[resource.stageType] ?? DEFAULT_META;
+  }
+
+  return DEFAULT_META;
 }
