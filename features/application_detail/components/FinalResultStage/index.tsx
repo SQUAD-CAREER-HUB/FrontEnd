@@ -15,7 +15,7 @@ export default function FinalResultStage() {
   const { isEditing, toggleEdit } = useStageEdit(false);
 
   return (
-    <StageWrapper number={4} stage='result'>
+    <StageWrapper number={4} stage='APPLICATION_CLOSE'>
       <div className='rounded-xl p-5 shadow-sm transition-all border bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800'>
         <div className="flex justify-between items-start mb-4">
           <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">최종 결과</h3>
@@ -23,7 +23,7 @@ export default function FinalResultStage() {
         </div>
         <div className='pt-3 border-t border-slate-100 dark:border-slate-800'>
           {isEditing ? (
-            <EditCard />
+            <EditCard onClose={toggleEdit} />
           ) : (
             <ViewCard />
           )}

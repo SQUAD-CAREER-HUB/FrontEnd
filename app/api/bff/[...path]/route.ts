@@ -16,9 +16,17 @@ async function proxyHandler(
   const targetPath = `/${pathList.join('/')}${req.nextUrl.search}`;
 
   try {
-    // 서버 사이드 API 호출 (백엔드 서버로 요청 중계)
-    const response = await serverApi(targetPath, {
+    // Content-Type 헤더 전달 (multipart/form-data 등 유지를 위해)
+    const contentType = req.headers.get('Content-Type');
+    const headers: HeadersInit = {};
+    if (contentType) {
+      headers['Content-Type'] = contentType;
+    }
+
+    const data = await serverApi(targetPath, {
       method: req.method,
+      headers,
+      // GET이 아닐 때만 body 전달
       body:
         req.method !== 'GET' && req.method !== 'HEAD' ? await req.text() : null,
 

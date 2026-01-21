@@ -1,7 +1,6 @@
 'use client'
 
 import { ScheduleResult } from "@/shared/types";
-import { useState } from "react";
 import ViewCard from "./ViewCard";
 import EditCard from "./EditCard";
 import { useStageEditor } from "../../hooks/useStageEditor";
@@ -12,8 +11,9 @@ interface OtherStageItemProps {
   id: number;
   title: string;
   datetime: string;
+  endDatetime?: string;
+  location?: string;
   scheduleResult: ScheduleResult;
-  isEditing?: boolean;
   type: 'interview' | 'other'
 }
 
@@ -21,22 +21,33 @@ export default function OtherStageItem({
   id,
   title,
   datetime,
+  endDatetime,
+  location,
   scheduleResult,
   type,
 }: OtherStageItemProps) {
-  const [result] = useState<ScheduleResult>(scheduleResult);
   const { isEditing } = useStageEditor(id, type);
 
   return (
     <>
       {isEditing ? (
-        <EditCard type={type} />
+        <EditCard
+          id={id}
+          type={type}
+          initialData={{
+            scheduleName: title,
+            startedAt: datetime,
+            endedAt: endDatetime,
+            location,
+            scheduleResult,
+          }}
+        />
       ) : (
         <ViewCard
           id={id}
           title={title}
           datetime={datetime}
-          scheduleResult={result}
+          scheduleResult={scheduleResult}
           type={type}
         />
       )}

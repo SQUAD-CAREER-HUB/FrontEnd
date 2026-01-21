@@ -102,7 +102,40 @@ export const clientApi = {
     });
   },
 
-  /** HTTP PUT: 리소스 전체 수정 */
+  async postFormData<T>(path: string, formData: FormData, options?: RequestInit): Promise<T> {
+    const bffUrl = `/api/bff${path.startsWith('/') ? path : `/${path}`}`;
+
+    const response = await fetch(bffUrl, {
+      ...options,
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || '클라이언트 요청 에러');
+    }
+
+    return response.json();
+  },
+
+  async patchFormData<T>(path: string, formData: FormData, options?: RequestInit): Promise<T> {
+    const bffUrl = `/api/bff${path.startsWith('/') ? path : `/${path}`}`;
+
+    const response = await fetch(bffUrl, {
+      ...options,
+      method: 'PATCH',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || '클라이언트 요청 에러');
+    }
+
+    return response.json();
+  },
+
   put<T>(path: string, body: unknown, options?: RequestInit) {
     return this.request<T>(path, {
       ...options,

@@ -26,7 +26,7 @@ const dummyApplications: JobApplication[] = [
     companyName: "우아한형제들",
     position: "Web Frontend",
     currentStage: "서류 전형",
-    status: "FAILED",
+    status: "FAIL",
     appliedDate: "2025-10-01",
     deadlineDate: "2025-10-15",
     nextInterviewDate: null, // 탈락이라 면접일 없음
