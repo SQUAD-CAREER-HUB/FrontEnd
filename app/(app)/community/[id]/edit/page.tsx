@@ -33,7 +33,7 @@ export default async function EditPage({
           </div>
 
           <div className='p-8'>
-            <PostEditView postId={postId} mode='page' />
+            <PostEditView postId={Number(postId)} mode='page' />
           </div>
         </section>
       </div>

@@ -6,7 +6,7 @@ export function useTestNotification() {
 
   return useMutation({
     mutationFn: async () => {
-      return clientApi.post('/v1/notifications/test?platform=WEB');
+      return clientApi.post('/v1/notifications/test?platform=WEB', {});
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
