@@ -1,5 +1,8 @@
-import { ConfirmModal } from '../ConfirmModal';
+'use client';
+
 import MswProvider from './MswProvider';
+import { Toaster } from 'sonner';
+import { ConfirmModal } from '../ConfirmModal';
 import TanstackQueryProvider from './TanstackQueryProvider';
 import ThemeProvider from './ThemeProvider';
 
@@ -19,6 +22,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           </ThemeProvider>
         </TanstackQueryProvider>
       </MswProvider>
+      <Toaster position="bottom-right" richColors closeButton />
     </>
   );
 }

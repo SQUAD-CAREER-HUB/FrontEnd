@@ -59,6 +59,10 @@ export async function serverApi<T = any>(
   const backendUrl = `${ENV.BACKEND_API_URL}${path}`;
   const accessToken = cookieStore.get('access_token')?.value;
   const headers = new Headers(options.headers);
+  // Content-Type이 전달되지 않은 경우에만 기본값 설정 (multipart/form-data 유지를 위해)
+  if (!headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json');
+  }
 
   // FormData/Blob인 경우 Content-Type을 설정하지 않음 (브라우저가 자동 설정)
   const isFormData = options.body instanceof Blob || options.body instanceof FormData;

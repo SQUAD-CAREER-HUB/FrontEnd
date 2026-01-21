@@ -2,13 +2,20 @@ import MainSidebar from '@/features/navigation/components/MainSidebar';
 import MobileFloatingActionButton from '@/features/navigation/components/MobileFloatingActionButton';
 import MobileHeader from '@/features/navigation/components/MobileHeader';
 import MobileNav from '@/features/navigation/components/MobileNav';
+import FCMInitializer from '@/features/notifications/components/FCMInitializer';
 
-import { PropsWithChildren } from 'react';
+import { ReactNode } from 'react';
 
-export default function Layout({ children }: PropsWithChildren) {
+interface LayoutProps {
+  children: ReactNode;
+  modal: ReactNode;
+}
+
+export default function Layout({ children, modal }: LayoutProps) {
   return (
     // 전체 화면을 꽉 채우는 컨테이너 (스크롤 방지)
     <div className='flex bg-white dark:bg-slate-950'>
+       <FCMInitializer />
       {/* 사이드바 (데스크탑) */}
       <MainSidebar />
 
@@ -26,6 +33,9 @@ export default function Layout({ children }: PropsWithChildren) {
         <MobileFloatingActionButton />
         <MobileNav />
       </div>
+
+      {/* Parallel Route - Modal */}
+      {modal}
     </div>
   );
 }
