@@ -1,24 +1,42 @@
-'use client'
-import { PanelRight, PanelRightClose, Save, Trash2 } from 'lucide-react'
-import { Button } from '../../../shared/components/ui/button'
-import { useState } from 'react'
-import { useTimelineStore } from '../stores/useTimeLineStore'
+'use client';
+
+import { PanelRight, PanelRightClose, Save, Trash2 } from 'lucide-react';
+import { Button } from '../../../shared/components/ui/button';
+import { useTimelineStore } from '../stores/useTimeLineStore';
+import { useParams } from 'next/navigation';
+import { useGetApplicationDetail } from '../hooks/useGetApplicationDetail';
+import { useUpdateApplication } from '../hooks/useUpdateApplication';
 
 export default function JobDetailHeader() {
-  const togglePanel = useTimelineStore(state => state.togglePanel);
-  const isPanelOpened = useTimelineStore(state => state.isPanelOpened)
-  // ===== Local State =====
-  const [companyName] = useState('비바리퍼블리카')
-  const [position] = useState('프로덕트 디자이너')
+  const params = useParams();
+  const applicationId = Number(params.id);
+  const { data } = useGetApplicationDetail(applicationId);
+  const updateApplication = useUpdateApplication(applicationId);
+
+  const togglePanel = useTimelineStore((state) => state.togglePanel);
+  const isPanelOpened = useTimelineStore((state) => state.isPanelOpened);
+
+  const companyName = data?.applicationInfo.company ?? '';
+  const position = data?.applicationInfo.position ?? '';
 
   // ===== Local Handlers =====
 
   const handleDelete = () => {
-    console.log('삭제')
+    // TODO: 삭제 기능 구현
   }
 
   const handleSave = () => {
-    console.log('저장')
+    if (!data) return;
+
+    updateApplication.mutate({
+      request: {
+        company: data.applicationInfo.company,
+        position: data.applicationInfo.position,
+        jobPostingUrl: data.applicationInfo.jobPostingUrl,
+        jobLocation: data.applicationInfo.jobLocation,
+        memo: data.applicationInfo.memo,
+      },
+    });
   }
 
   return (
@@ -64,10 +82,11 @@ export default function JobDetailHeader() {
         <Button
           size="smButton"
           onClick={handleSave}
-          className="bg-brand-500 hover:bg-brand-600 text-white rounded-xl font-bold shadow-lg shadow-brand-200 dark:shadow-none transition-all flex items-center gap-1"
+          disabled={updateApplication.isPending}
+          className="bg-brand-500 hover:bg-brand-600 text-white rounded-xl font-bold shadow-lg shadow-brand-200 dark:shadow-none transition-all flex items-center gap-1 disabled:opacity-50"
         >
           <Save className="w-4 h-4" />
-          <span>저장</span>
+          <span>{updateApplication.isPending ? '저장 중...' : '저장'}</span>
         </Button>
       </div>
     </div>

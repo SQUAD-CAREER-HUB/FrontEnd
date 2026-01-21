@@ -1,24 +1,29 @@
-'use client'
-import { Plus } from "lucide-react";
-import OtherStageItem from "./OtherStageItem";
-import { useState } from "react";
-import { useTimelineStore } from "../stores/useTimeLineStore";
-import { useApplicationStore } from "../stores/useApplicationStore";
-import AddSchedule from "./AddSchedule";
-import StageWrapper from "./common/StageWrapper";
-import { ACTIVE_STAGE_STYLES } from "../constants/styles";
+'use client';
+
+import { Plus } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import OtherStageItem from './OtherStageItem';
+import { useState } from 'react';
+import { useTimelineStore } from '../stores/useTimeLineStore';
+import AddSchedule from './AddSchedule';
+import StageWrapper from './common/StageWrapper';
+import { ACTIVE_STAGE_STYLES } from '../constants/styles';
+import { useGetApplicationDetail } from '../hooks/useGetApplicationDetail';
 
 export default function OtherStage() {
-  const etcStageTimeLine =
-    useApplicationStore(state => state.data?.applicationStageTimeLine.etcStageTimeLine);
-  const [open, setOpen] = useState(true);
-  const activeStage = useTimelineStore(state => state.activeStage);
+  const params = useParams();
+  const applicationId = Number(params.id);
+  const { data } = useGetApplicationDetail(applicationId);
+
+  const etcStageTimeLine = data?.applicationStageTimeLine.etcStageTimeLine;
+  const [open, setOpen] = useState(false);
+  const activeStage = useTimelineStore((state) => state.activeStage);
 
   return (
-    <StageWrapper number={2} stage="other">
+    <StageWrapper number={2} stage="ETC">
       <div className='transition-opacity opacity-90'>
         <div className='flex justify-between items-center mb-4'>
-          <h3 className={`font-bold text-lg text-slate-900 dark:text-slate-100 ${activeStage === 'other' && ACTIVE_STAGE_STYLES.font}`}>
+          <h3 className={`font-bold text-lg text-slate-900 dark:text-slate-100 ${activeStage === 'ETC' && ACTIVE_STAGE_STYLES.font}`}>
             기타 전형
           </h3>
           <div
@@ -29,18 +34,19 @@ export default function OtherStage() {
             <Plus className='w-5 h-5 mr-1' />
           </div>
         </div>
-        <div className={`space-y-3 p-3 rounded-xl transition-all ${activeStage === 'other' && ACTIVE_STAGE_STYLES.bg}`}>
+        <div className={`space-y-3 p-3 rounded-xl transition-all ${activeStage === 'ETC' && ACTIVE_STAGE_STYLES.bg}`}>
           {etcStageTimeLine?.map((stage) => (
             <OtherStageItem
-              key={stage.stageId}
-              id={stage.stageId}
+              key={stage.scheduleId}
+              id={stage.scheduleId}
               title={stage.scheduleName}
               datetime={stage.startedAt}
+              endDatetime={stage.endedAt}
               scheduleResult={stage.scheduleResult}
               type='other'
             />
           ))}
-          {open && <AddSchedule setOpen={setOpen} />}
+          {open && <AddSchedule type="other" setOpen={setOpen} />}
         </div>
       </div>
     </StageWrapper>

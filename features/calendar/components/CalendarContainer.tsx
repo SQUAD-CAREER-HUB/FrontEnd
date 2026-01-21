@@ -1,50 +1,30 @@
 'use client';
 
+import { startOfMonth, endOfMonth, format } from 'date-fns';
 import RbcCalendarWrapper from './RbcCalendarWrapper';
-import DateScheduleCreateModal from './DateScheduleCreateModal';
-import DateScheduleListModal from './DateScheduleListModal';
-import CalendarFilterPanel from './CalendarFilterPanel';
-import { useFilterPanelStore } from '../stores/useFilterPanelStore';
-import CalendarFilterPanelMobile from './CalendarFilterPanelMobile';
-import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
-import { useQuery } from '@tanstack/react-query';
+import { useGetSchedules } from '../hooks/useGetSchedules';
+import { useCalendarViewStore } from '../stores/useCalendarViewStore';
 
 /**
- * 캘린더 + 필터 UI 컨테이너
- * @returns
+ * 캘린더의 비즈니스 로직(데이터 페칭, 날짜 상태 관리)을 담당하는 컨테이너
  */
 export default function CalendarContainer() {
-  const { isOpen } = useFilterPanelStore();
-  const isDesktop = useMediaQuery('(min-width: 768px)');
+  const { date } = useCalendarViewStore();
 
-  const { data } = useQuery({
-    queryKey: ['calendar-events'],
-    queryFn: async () => {
-      const response = await fetch('/api/calendar/events');
-      if (!response.ok) {
-        throw new Error('캘린더 이벤트를 불러오는 데 실패했습니다.');
-      }
-      return response.json();
-    },
-  });
-  console.log('🚀 ~ CalendarContainer ~ data:', data);
+  const from = format(startOfMonth(date), 'yyyy-MM-dd');
+  const to = format(endOfMonth(date), 'yyyy-MM-dd');
+
+  const { data, isLoading, isError } = useGetSchedules(from, to);
 
   return (
-    <>
-      <div className='flex h-full w-full'>
-        {/* react-big-calendar 래퍼 (캘린더 라이브러리 의존 영역) */}
-        <RbcCalendarWrapper events={data} />
+    <div className='h-full w-full relative'>
+      <RbcCalendarWrapper events={data?.items || []} />
 
-        {/* Desktop 사이드 패널 */}
-        {isDesktop && isOpen && <CalendarFilterPanel />}
-      </div>
-
-      {/* Mobile Drawer (Sheet는 모바일에서만 렌더) */}
-      {!isDesktop && <CalendarFilterPanelMobile />}
-
-      {/* 캘린더 페이지 전용 UI 레이어 */}
-      <DateScheduleListModal />
-      <DateScheduleCreateModal />
-    </>
+      {isLoading && (
+        <div className='absolute inset-0 bg-white/50 dark:bg-slate-950/50 z-10 flex items-center justify-center'>
+          {/* 여기에 스켈레톤이나 스피너 배치 */}
+        </div>
+      )}
+    </div>
   );
 }

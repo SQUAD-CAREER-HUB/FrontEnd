@@ -10,9 +10,9 @@ type EventMeta = {
 export function getEventMeta(event: RbcEvent): EventMeta {
   const resource = event.resource;
 
-  if (resource.processType === 'DOCUMENT') {
+  if (resource.stageType === 'DOCUMENT') {
     return DOCUMENT_STATUS_META[resource.documentStatus];
   }
 
-  return PROCESS_TYPE_META[resource.processType];
+  return PROCESS_TYPE_META[resource.stageType];
 }

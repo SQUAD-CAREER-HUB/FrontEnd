@@ -1,0 +1,121 @@
+import { ScheduleResult } from '@/shared/types';
+
+// API 응답 타입 정의
+export type SubmissionStatus = 'NOT_SUBMITTED' | 'SUBMITTED';
+export type ApplicationStatus = 'IN_PROGRESS' | 'FINAL_PASS' | 'FINAL_FAIL';
+
+// 지원 정보
+export interface ApplicationInfo {
+  applicationId: number;
+  company: string;
+  position: string;
+  jobLocation: string;
+  jobPostingUrl: string;
+  currentStageType: string;
+  applicationStatus: ApplicationStatus;
+  deadline: string;
+  applicationMethod: string;
+  memo: string;
+  attachedFiles: string[];
+}
+
+// 서류 전형 타임라인
+export interface DocsStageTimeLine {
+  stageId: number;
+  scheduleName: string;
+  scheduleResult: ScheduleResult;
+  submissionStatus: SubmissionStatus;
+}
+
+// 기타 전형 타임라인
+export interface EtcStageTimeLine {
+  stageId: number;
+  scheduleId: number;
+  scheduleName: string;
+  scheduleResult: ScheduleResult;
+  startedAt: string;
+  endedAt: string;
+}
+
+// 면접 전형 타임라인
+export interface InterviewStageTimeLine {
+  stageId: number;
+  scheduleId: number;
+  scheduleName: string;
+  scheduleResult: ScheduleResult;
+  location: string;
+  startedAt: string;
+}
+
+// 전체 타임라인
+export interface ApplicationStageTimeLine {
+  docsStageTimeLine: DocsStageTimeLine;
+  etcStageTimeLine: EtcStageTimeLine[];
+  interviewStageTimeLine: InterviewStageTimeLine[];
+}
+
+// 전체 데이터 구조 (API 응답)
+export interface ApplicationDetailResponse {
+  applicationInfo: ApplicationInfo;
+  applicationStageTimeLine: ApplicationStageTimeLine;
+}
+
+// 지원서 수정 요청 타입
+export interface ApplicationUpdateRequestData {
+  jobPostingUrl?: string;
+  company?: string;
+  position?: string;
+  jobLocation?: string;
+  memo?: string;
+}
+
+export interface ApplicationUpdateRequest {
+  request: ApplicationUpdateRequestData;
+  files?: File[];
+}
+
+// 스케줄 API 응답 타입
+export type StageType = 'DOCUMENT' | 'ETC' | 'INTERVIEW' | 'APPLICATION_CLOSE';
+
+export interface ScheduleResponse {
+  id: number;
+  applicationId: number;
+  company: string;
+  position: string;
+  stageType: StageType;
+  scheduleName: string;
+  startedAt: string;
+  endedAt: string;
+  location: string;
+  scheduleResult: ScheduleResult;
+  submissionStatus: SubmissionStatus;
+  applicationStatus: ApplicationStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 면접 스케줄 생성/수정 요청
+export interface InterviewScheduleRequest {
+  scheduleName: string;
+  startedAt: string;
+  location: string;
+  result: ScheduleResult;
+}
+
+// 기타 스케줄 생성/수정 요청
+export interface EtcScheduleRequest {
+  scheduleName: string;
+  startedAt: string;
+  endedAt: string;
+  scheduleResult: ScheduleResult;
+}
+
+// 서류 전형 수정 요청
+export type ApplicationMethod = 'PLATFORM' | 'EMAIL' | 'REFERRAL' | 'HOMEPAGE' | 'EMPTY';
+
+export interface DocumentStageUpdateRequest {
+  deadline: string;
+  applicationMethod: ApplicationMethod;
+  submissionStatus: SubmissionStatus;
+  scheduleResult: ScheduleResult;
+}

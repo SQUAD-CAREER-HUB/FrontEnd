@@ -12,7 +12,6 @@ import { Toolbar } from './Toolbar';
 import { useDateScheduleListStore } from '../../stores/useDateScheduleListStore';
 import { WeekViewHeader } from './WeekViewHeader';
 import TimeGutterHeader from './TimeGutterHeader';
-import { CalendarEvent } from '@/features/calendar/types/calendar';
 import { mapCalendarEventsToRbcEvents } from '../../utils/mapCalendarEventsToRbcEvents';
 import { useCalendarViewStore } from '../../stores/useCalendarViewStore';
 import DayViewHeader from './DayViewHeader';
@@ -21,6 +20,7 @@ import WeekViewEvent from './WeekViewEvent';
 import { MonthViewDateHeader } from './MonthViewDateHeader';
 import DateCellWrapper from './DateCellWrapper';
 import { MonthViewHeader } from './MonthViewHeader';
+import { ScheduleItem } from '../../types';
 
 const locales = {
   ko: ko,
@@ -51,7 +51,7 @@ const localizer = dateFnsLocalizer({
 export default function RbcCalendarWrapper({
   events,
 }: {
-  events: CalendarEvent[];
+  events: ScheduleItem[];
 }) {
   const { view, date, setView, setDate } = useCalendarViewStore();
 
@@ -60,7 +60,7 @@ export default function RbcCalendarWrapper({
   const rbcEvents = mapCalendarEventsToRbcEvents(events);
 
   return (
-    <div id='calendar-wrapper' className='w-[calc(100%-320px)] h-full flex-1'>
+    <div id='calendar-wrapper' className='h-full flex-1'>
       <Calendar
         view={view}
         views={{

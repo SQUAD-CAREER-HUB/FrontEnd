@@ -21,7 +21,10 @@ export default function EventCard({ event }: { event: RbcEvent }) {
   };
 
   return (
-    <Card key={event.resource.id} className={cn('rounded-lg border', styles)}>
+    <Card
+      key={event.resource.applicationId}
+      className={cn('rounded-lg border', styles)}
+    >
       <CardHeader className='flex flex-col'>
         <span className='text-sm font-bold text-nowrap'>
           {event.resource.companyName}

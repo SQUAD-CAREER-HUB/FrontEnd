@@ -16,7 +16,7 @@ export const PROCESS_TYPE_META: Record<
     label: '기타 전형',
     styles: 'text-indigo-700 bg-indigo-100 border-indigo-200',
   },
-  CLOSE: {
+  APPLICATION_CLOSE: {
     label: '지원 종료',
     styles: 'text-slate-700 bg-slate-100 border-slate-200',
   },
@@ -26,5 +26,5 @@ export const PROCESS_TYPE_OPTIONS: { label: string; value: ProcessType }[] = [
   { label: '서류 전형', value: 'DOCUMENT' },
   { label: '면접 전형', value: 'INTERVIEW' },
   { label: '기타 전형', value: 'ETC' },
-  { label: '지원 종료', value: 'CLOSE' },
+  { label: '지원 종료', value: 'APPLICATION_CLOSE' },
 ];

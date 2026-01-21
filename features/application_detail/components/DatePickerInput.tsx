@@ -7,7 +7,8 @@ interface DatePickerInputProps {
   onChange?: (date: Date | undefined) => void
   placeholder?: string
   className?: string
-  id?: string
+  id?: string;
+  required?: boolean;
 }
 
 export function DatePickerInput({
@@ -17,11 +18,12 @@ export function DatePickerInput({
   label = "",
   className = "",
   id,
+  required = false,
 }: DatePickerInputProps) {
   return (
     <div className={`flex flex-col gap-1 ${className}`}>
       {label && (
-        <FormLabel htmlFor={id} className="ml-1">
+        <FormLabel htmlFor={id} required={required} className="ml-1">
           {label}
         </FormLabel>
       )}

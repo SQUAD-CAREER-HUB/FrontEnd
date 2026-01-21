@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { CalendarEvent } from '@/features/calendar/types/calendar';
+import { ScheduleItem } from '@/features/calendar/types';
 
 const startDate = new Date('2025-12-01T00:00:00');
 const endDate = new Date('2026-01-31T23:59:59');
@@ -17,7 +17,7 @@ export const mockCalendarEvents = Array.from({
     'DOCUMENT',
     'INTERVIEW',
     'ETC',
-  ]) as CalendarEvent['processType'];
+  ]) as ScheduleItem['stageType'];
   const startDateTime = randomDate(startDate, endDate);
   const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 2000); // 2시간
 
