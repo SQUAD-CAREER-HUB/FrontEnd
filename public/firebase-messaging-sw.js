@@ -7,7 +7,13 @@ importScripts('https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-com
 // Firebase 설정 (환경변수 대신 직접 설정이 필요합니다)
 // TODO: Replace the following with your app's
 const firebaseConfig = {
-  //...
+  apiKey: "AIzaSyCIz1JkqqahEFXOrM78tDXKMGvmcXWaHsw",
+  authDomain: "career-hub-28926.firebaseapp.com",
+  projectId: "career-hub-28926",
+  storageBucket: "career-hub-28926.firebasestorage.app",
+  messagingSenderId: "784355645472",
+  appId: "1:784355645472:web:b0bd22313959e6f8188445",
+  measurementId: "G-YB0G58XR7T"
 };
 // Firebase 초기화
 firebase.initializeApp(firebaseConfig);
