@@ -22,7 +22,7 @@ export default function JobDetailHeader() {
   // ===== Local Handlers =====
 
   const handleDelete = () => {
-    console.log('삭제')
+    // TODO: 삭제 기능 구현
   }
 
   const handleSave = () => {

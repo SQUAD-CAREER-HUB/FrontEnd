@@ -22,7 +22,6 @@ export function useUpdateFinalResult(applicationId: number) {
           { currentStageType: 'APPLICATION_CLOSE' }
         );
       }
-      console.log(shouldClose);
       return { applicationStatus, shouldClose };
     },
     onSuccess: ({ applicationStatus, shouldClose }) => {
@@ -30,14 +29,6 @@ export function useUpdateFinalResult(applicationId: number) {
         applicationDetailKeys.detail(applicationId),
         (oldData: ApplicationDetailResponse | undefined) => {
           if (!oldData) return oldData;
-          console.log({
-            ...oldData,
-            applicationInfo: {
-              ...oldData.applicationInfo,
-              applicationStatus,
-              ...(shouldClose && { currentStageType: 'APPLICATION_CLOSE' as const }),
-            },
-          });
 
           return {
             ...oldData,

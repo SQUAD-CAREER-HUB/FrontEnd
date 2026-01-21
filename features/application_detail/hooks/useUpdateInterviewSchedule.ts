@@ -24,7 +24,6 @@ export function useUpdateInterviewSchedule(applicationId: number) {
       );
     },
     onSuccess: (updatedSchedule) => {
-      console.log(updatedSchedule);
       queryClient.setQueryData(
         applicationDetailKeys.detail(applicationId),
         (oldData: ApplicationDetailResponse | undefined) => {

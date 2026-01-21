@@ -18,7 +18,7 @@ export default function OtherStage() {
   const etcStageTimeLine = data?.applicationStageTimeLine.etcStageTimeLine;
   const [open, setOpen] = useState(false);
   const activeStage = useTimelineStore((state) => state.activeStage);
-  console.log(etcStageTimeLine);
+
   return (
     <StageWrapper number={2} stage="ETC">
       <div className='transition-opacity opacity-90'>

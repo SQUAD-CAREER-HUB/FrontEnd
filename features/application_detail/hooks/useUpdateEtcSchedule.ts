@@ -18,7 +18,6 @@ export function useUpdateEtcSchedule(applicationId: number) {
       scheduleId: number;
       data: EtcScheduleRequest;
     }) => {
-      console.log(data);
       const newData = clientApi.put<ScheduleResponse>(
         `/v1/applications/${applicationId}/schedules/etc/${scheduleId}`,
         data
@@ -30,27 +29,7 @@ export function useUpdateEtcSchedule(applicationId: number) {
         applicationDetailKeys.detail(applicationId),
         (oldData: ApplicationDetailResponse | undefined) => {
           if (!oldData) return oldData;
-          console.log({
-            ...oldData,
-            applicationStageTimeLine: {
-              ...oldData.applicationStageTimeLine,
-              etcStageTimeLine:
-                oldData.applicationStageTimeLine.etcStageTimeLine.map(
-                  (schedule) =>
-                    schedule.scheduleId === updatedSchedule.id
-                      ? {
-                          stageId: schedule.stageId,
-                          scheduleId: updatedSchedule.id,
-                          scheduleName: updatedSchedule.scheduleName,
-                          scheduleResult: updatedSchedule.scheduleResult,
-                          startedAt: updatedSchedule.startedAt,
-                          endedAt: updatedSchedule.endedAt,
-                        }
-                      : schedule
-                ),
-            },
-          });
-          console.log(updatedSchedule.scheduleResult);
+
           return {
             ...oldData,
             applicationStageTimeLine: {

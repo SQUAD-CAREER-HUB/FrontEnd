@@ -15,7 +15,6 @@ export default function InterViewStage() {
   const params = useParams();
   const applicationId = Number(params.id);
   const { data } = useGetApplicationDetail(applicationId);
-  console.log(data)
   const interviewStageTimeLine =
     data?.applicationStageTimeLine.interviewStageTimeLine ?? [];
   const activeStage = useTimelineStore((state) => state.activeStage);
@@ -30,7 +29,7 @@ export default function InterViewStage() {
     )
       ? 'FAIL'
       : 'WAITING';
-  console.log(interviewStageTimeLine);
+
   return (
     <StageWrapper number={3} stage="INTERVIEW">
       <div className='transition-opacity opacity-90'>
