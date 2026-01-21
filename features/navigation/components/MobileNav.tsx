@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 export default function MobileNav() {
   return (
-    <div className='md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-30 pb-safe transition-colors'>
+    <div className='h-[60px] md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 z-30 pb-safe transition-colors'>
       <div className='flex justify-between items-center px-2'>
         <Link
           href='/dashboard'

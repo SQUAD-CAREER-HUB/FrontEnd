@@ -1,16 +1,16 @@
-import { CalendarEvent } from '../types/calendar';
+import { ScheduleItem } from '../types';
 import { RbcEvent } from '../types/rbcEvent';
 
-function getEventTitle(event: CalendarEvent) {
-  switch (event.processType) {
+function getEventTitle(event: ScheduleItem) {
+  switch (event.stageType) {
     case 'DOCUMENT':
       return event.documentStatus === 'SUBMITTED' ? '제출' : '미제출';
 
     case 'INTERVIEW':
-      return `${event.interviewTitle}`;
+      return `${event.scheduleName}`;
 
     case 'ETC':
-      return `${event.etcTitle}`;
+      return `${event.scheduleName}`;
 
     default:
       return '';
@@ -18,22 +18,22 @@ function getEventTitle(event: CalendarEvent) {
 }
 
 export function mapCalendarEventsToRbcEvents(
-  events: CalendarEvent[]
+  events: ScheduleItem[]
 ): RbcEvent[] {
   return events?.map((event) => {
-    if (event.processType === 'DOCUMENT') {
+    if (event.stageType === 'DOCUMENT') {
       return {
         title: getEventTitle(event),
-        start: new Date(event.applicationDeadline),
-        end: new Date(event.applicationDeadline),
+        start: new Date(event.startedAt),
+        end: new Date(event.endedAt),
         allDay: true,
         resource: event,
       };
     } else {
       return {
         title: getEventTitle(event),
-        start: new Date(event.startDateTime),
-        end: new Date(event.endDateTime),
+        start: new Date(event.startedAt),
+        end: new Date(event.endedAt),
         allDay: false,
         resource: event,
       };

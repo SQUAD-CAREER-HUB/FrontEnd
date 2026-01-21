@@ -1,4 +1,6 @@
+import { ApplicationCreationStatisticsResponse } from '@/features/dashboard/types/api';
 import { ENV } from '@/shared/constants/env';
+import { endOfWeek, format, startOfWeek, subMonths, subWeeks } from 'date-fns';
 import { http, HttpResponse } from 'msw';
 
 export const applicationHandlers = [
@@ -18,39 +20,80 @@ export const applicationHandlers = [
   }),
 
   http.get(`${ENV.BFF_API_URL}/v1/applications/before-deadline`, () => {
-    return HttpResponse.json([
-      {
-        applicationId: 1,
-        company: '라인플러스',
-        position: 'Global SW Engineer',
-        deadline: '2025-12-31T14:00:00.000Z',
-        applicationMethod: '홈페이지 지원',
-        submissionStatus: '마감 임박', // "제출", "미제출", "마감 임박" 등으로 가정
-      },
-      {
-        applicationId: 2,
-        company: '버킷플레이스 (오늘의집)',
-        position: '데이터 분석가',
-        deadline: '2026-01-12T14:00:00.000Z',
-        applicationMethod: '홈페이지 지원',
-        submissionStatus: '미제출',
-      },
-      {
-        applicationId: 3,
-        company: '두나무',
-        position: 'iOS 개발자',
-        deadline: '2026-01-08T14:00:00.000Z',
-        applicationMethod: '홈페이지 지원',
-        submissionStatus: '제출 완료',
-      },
-      {
-        applicationId: 4,
-        company: '쿠팡',
-        position: 'PO',
-        deadline: '2026-01-03T14:00:00.000Z',
-        applicationMethod: '홈페이지 지원',
-        submissionStatus: '제출 완료',
-      },
-    ]);
+    return HttpResponse.json({
+      contents: [
+        {
+          applicationId: 101,
+          company: 'Naver',
+          position: 'Frontend Developer',
+          deadline: '2026-01-15T23:59:59',
+          applicationMethod: '홈페이지 접수',
+          submissionStatus: 'SUBMITTED',
+        },
+        {
+          applicationId: 102,
+          company: 'Toss',
+          position: 'Product Designer',
+          deadline: '2026-01-18T18:00:00',
+          applicationMethod: '이메일 지원',
+          submissionStatus: 'NOT_SUBMITTED',
+        },
+        {
+          applicationId: 103,
+          company: 'Naver',
+          position: 'Frontend Developer',
+          deadline: '2026-01-15T23:59:59',
+          applicationMethod: '홈페이지 접수',
+          submissionStatus: 'SUBMITTED',
+        },
+        {
+          applicationId: 104,
+          company: 'Toss',
+          position: 'Product Designer',
+          deadline: '2026-01-18T18:00:00',
+          applicationMethod: '이메일 지원',
+          submissionStatus: 'NOT_SUBMITTED',
+        },
+      ],
+      hasNext: false,
+      nextCursorId: null,
+    });
+  }),
+
+  http.get('*/v1/applications/statistics/creation', ({ request }) => {
+    const url = new URL(request.url);
+    const weekCount = Number(url.searchParams.get('weekCount')) || 6;
+    const monthCount = Number(url.searchParams.get('monthCount')) || 6;
+
+    const now = new Date();
+
+    // 주간 데이터 생성 (실제 날짜 계산)
+    const weeklyStatistics = Array.from({ length: weekCount }, (_, i) => {
+      const targetDate = subWeeks(now, i);
+      const start = startOfWeek(targetDate, { weekStartsOn: 1 }); // 월요일 시작
+      const end = endOfWeek(targetDate, { weekStartsOn: 1 }); // 일요일 종료
+
+      return {
+        period: `${format(start, 'MM.dd')} - ${format(end, 'MM.dd')}`,
+        count: Math.floor(Math.random() * 10),
+        isCurrentWeek: i === 0,
+      };
+    }).reverse();
+
+    // 2. 월간 데이터 생성 (실제 날짜 계산)
+    const monthlyStatistics = Array.from({ length: monthCount }, (_, i) => {
+      const targetDate = subMonths(now, i);
+
+      return {
+        period: format(targetDate, 'yyyy.MM'),
+        count: Math.floor(Math.random() * 30) + 10,
+        isCurrentMonth: i === 0,
+      };
+    }).reverse();
+
+    return HttpResponse.json<ApplicationCreationStatisticsResponse>({
+      weeklyStatistics,
+      monthlyStatistics,
+    });
   }),
 ];
