@@ -70,7 +70,7 @@ export default function NotificationSettingsModal({ onClose }: NotificationSetti
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4"
       onClick={handleBackdropClick}
     >
       <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-6 shadow-2xl animate-fade-in-up">
