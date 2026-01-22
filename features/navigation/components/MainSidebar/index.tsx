@@ -9,6 +9,7 @@ import SidebarToggleButton from './SidebarToggleButton';
 import { SidebarLogo } from './SidebarLogo';
 import { SidebarProfileDropdownMenu } from './SidebarProfileDropdownMenu';
 import { SidebarNav } from './SidebarNav';
+import { useRouter } from 'next/navigation';
 
 export default function MainSidebar() {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -16,7 +17,7 @@ export default function MainSidebar() {
   const toggleSidebar = () => {
     setIsExpanded((prev) => !prev);
   };
-
+  const router = useRouter();
   return (
     <aside
       className={cn(
@@ -30,6 +31,7 @@ export default function MainSidebar() {
 
       <div>
         <Button
+          onClick = {() => {router.push('/applications/new')}}
           className={cn(
             'w-full rounded-3xl shadow-md shadow-brand-200 font-extrabold',
             'hover:-translate-y-0.5 transition-all',
