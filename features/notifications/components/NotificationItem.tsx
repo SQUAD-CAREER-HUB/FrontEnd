@@ -40,7 +40,7 @@ export default function NotificationItem({
     if (!is_read) {
       readNotification(notificationId);
     }
-    router.push(`/application_detail/${targetId}`);
+    router.push(`/applications/${targetId}`);
   };
 
   const handleDelete = (e: React.MouseEvent) => {
