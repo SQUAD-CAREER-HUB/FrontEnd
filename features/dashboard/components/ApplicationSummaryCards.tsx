@@ -1,39 +1,39 @@
 'use client';
 
-import { useGetApplicationsStats } from '../hooks/useGetApplicationsStats';
+import { useGetApplicationStatistics } from '../hooks/useGetApplicationStatistics';
 
-export const DashboardStats = () => {
-  const { data } = useGetApplicationsStats();
+export default function ApplicationSummaryCards() {
+  const { data } = useGetApplicationStatistics();
 
   const statItems = [
     {
       label: '전체 지원',
-      value: data?.totalApplicationCount ?? 0,
+      value: data.totalApplicationCount ?? 0,
       color: 'bg-slate-100 text-slate-800',
     },
     {
       label: '서류 전형',
-      value: data?.docStageCount ?? 0,
+      value: data.docStageCount ?? 0,
       color: 'bg-blue-100 text-blue-800',
     },
     {
       label: '기타 전형',
-      value: data?.etcStageCount ?? 0,
+      value: data.etcStageCount ?? 0,
       color: 'bg-indigo-100 text-indigo-800',
     },
     {
       label: '면접 전형',
-      value: data?.interviewStageCount ?? 0,
+      value: data.interviewStageCount ?? 0,
       color: 'bg-orange-100 text-orange-800',
     },
     {
       label: '최종 합격',
-      value: data?.finalPassedCount ?? 0,
+      value: data.finalPassedCount ?? 0,
       color: 'bg-green-100 text-green-800',
     },
     {
       label: '최종 불합격',
-      value: data?.finalFailedCount ?? 0,
+      value: data.finalFailedCount ?? 0,
       color: 'bg-rose-100 text-rose-800',
     },
   ];
@@ -60,4 +60,4 @@ export const DashboardStats = () => {
       ))}
     </div>
   );
-};
+}

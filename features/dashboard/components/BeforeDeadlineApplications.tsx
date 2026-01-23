@@ -1,15 +1,15 @@
 'use client';
 
 import { BriefcaseIcon, ChevronRightIcon } from 'lucide-react';
-import { ApplicationCard } from './ApplicationCard';
-import { useGetRecentApplications } from '../hooks/useGetRecentApplications';
+
 import { Button } from '@/shared/components/ui/button';
+import { useGetBeforeDeadlineApplications } from '../hooks/useGetBeforeDeadlineApplications';
+import ClosingApplicationItem from './BeforeDeadlineApplicationItem';
 
-export function RecentApplications() {
-  const { data } = useGetRecentApplications();
-  console.log('🚀 ~ RecentApplications ~ data:', data);
+export default function BeforeDeadlineApplications() {
+  const { data } = useGetBeforeDeadlineApplications();
 
-  const applications = data?.contents ?? [];
+  const applications = data.contents ?? [];
   const isEmpty = applications.length === 0;
 
   return (
@@ -17,7 +17,7 @@ export function RecentApplications() {
       <div className='flex items-center justify-between'>
         <div className='text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-x-2'>
           <BriefcaseIcon className='stroke-2 w-5 h-5 text-brand-500' />
-          <span>진행 중인 서류 전형</span>
+          <span>곧 마감되는 서류 전형</span>
         </div>
         <Button
           variant='link'
@@ -30,7 +30,10 @@ export function RecentApplications() {
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
         {applications.map((application) => (
-          <ApplicationCard key={application.applicationId} {...application} />
+          <ClosingApplicationItem
+            key={application.applicationId}
+            application={application}
+          />
         ))}
 
         {isEmpty && (
