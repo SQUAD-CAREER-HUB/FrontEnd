@@ -11,7 +11,7 @@ import {
 
 export default function MobileHeader() {
   return (
-    <header className='md:hidden h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sticky top-0 z-30 shrink-0 transition-colors'>
+    <header className='w-full md:hidden h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sticky top-0 z-30 shrink-0 transition-colors'>
       <div className='flex items-center space-x-2'>
         <Link href='/'>
           <Image src={Logo} alt='CareerHub Logo' className='h-8 w-auto' />

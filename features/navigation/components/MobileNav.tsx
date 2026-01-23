@@ -33,7 +33,7 @@ export default function MobileNav() {
           <span className='text-[10px] font-medium'>캘린더</span>
         </Link>
         <Link
-          href='/interviews'
+          href='/questions'
           className='flex flex-col items-center justify-center p-2 flex-1 space-y-1 text-slate-400 dark:text-slate-500'
         >
           <BookMarkedIcon className='w-6 h-6' />
