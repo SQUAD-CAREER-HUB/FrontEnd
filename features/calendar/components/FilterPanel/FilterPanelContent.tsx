@@ -4,16 +4,16 @@ import { Label } from '@/shared/components/ui/label';
 import {
   PROCESS_TYPE_META,
   PROCESS_TYPE_OPTIONS,
-} from '../constants/processType';
+} from '../../constants/processType';
 import { Checkbox } from '@/shared/components/ui/checkbox';
 import {
   DOCUMENT_STATUS_META,
   DOCUMENT_STATUS_OPTIONS,
-} from '../constants/documentStatus';
+} from '../../constants/documentStatus';
 import {
   RESULT_STATUS_META,
   RESULT_STATUS_OPTIONS,
-} from '../constants/resultStatus';
+} from '../../constants/resultStatus';
 import {
   CircleCheckBigIcon,
   FileTextIcon,
@@ -27,18 +27,21 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from '@/shared/components/ui/input-group';
-import { useFilterValueStore } from '../stores/useFilterValueStore';
 import { cn } from '@/shared/lib/utils';
+import { useSearchParamsBasedRoute } from '@/shared/hooks/useSearchParamsBasedRoute';
+import { useState } from 'react';
 
 export default function FilterPanelContent() {
-  const {
-    processTypes,
-    documentStatuses,
-    resultStatuses,
-    toggleProcessType,
-    toggleDocumentStatus,
-    toggleResultStatus,
-  } = useFilterValueStore();
+  const { toggleSearchParam, getSearchParams, getSearchParam, updateRoute } =
+    useSearchParamsBasedRoute();
+
+  const processTypes = getSearchParams('processTypes');
+  const documentStatuses = getSearchParams('documentStatuses');
+  const resultStatuses = getSearchParams('resultStatuses');
+
+  const [searchInputValue, setSearchInputValue] = useState(
+    getSearchParam('query'),
+  );
 
   return (
     <>
@@ -48,15 +51,26 @@ export default function FilterPanelContent() {
             <SearchIcon className='w-4 h-4 text-primary stroke-3' />
             기업 검색
           </Label>
-          <InputGroup>
-            <InputGroupInput placeholder='기업명 검색' />
-            <InputGroupAddon>
-              <SearchIcon className='stroke-3' />
-            </InputGroupAddon>
-            <InputGroupAddon align='inline-end'>
-              <InputGroupButton>검색</InputGroupButton>
-            </InputGroupAddon>
-          </InputGroup>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              updateRoute({ query: searchInputValue });
+            }}
+          >
+            <InputGroup>
+              <InputGroupInput
+                placeholder='기업명 검색'
+                value={searchInputValue}
+                onChange={(e) => setSearchInputValue(e.target.value)}
+              />
+              <InputGroupAddon>
+                <SearchIcon className='stroke-3' />
+              </InputGroupAddon>
+              <InputGroupAddon align='inline-end'>
+                <InputGroupButton type='submit'>검색</InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
+          </form>
         </div>
 
         {/* 전형 필터 */}
@@ -76,23 +90,17 @@ export default function FilterPanelContent() {
                   'flex justify-between font-bold items-center gap-2 text-sm p-2 rounded border cursor-pointer transition-all',
                   !isChecked && 'hover:bg-brand-50/30 hover:scale-[1.02]',
                   isChecked &&
-                    option.value === 'DOCUMENT' &&
-                    PROCESS_TYPE_META.DOCUMENT.styles,
-                  isChecked &&
-                    option.value === 'ETC' &&
-                    PROCESS_TYPE_META.ETC.styles,
-                  isChecked &&
-                    option.value === 'INTERVIEW' &&
-                    PROCESS_TYPE_META.INTERVIEW.styles,
-                  isChecked &&
-                    option.value === 'APPLICATION_CLOSE' &&
-                    PROCESS_TYPE_META.APPLICATION_CLOSE.styles
+                    PROCESS_TYPE_META[
+                      option.value as keyof typeof PROCESS_TYPE_META
+                    ].styles,
                 )}
               >
                 <Checkbox
                   id={option.value}
-                  checked={processTypes.includes(option.value)}
-                  onCheckedChange={() => toggleProcessType(option.value)}
+                  checked={isChecked}
+                  onCheckedChange={() =>
+                    toggleSearchParam('processTypes', option.value)
+                  }
                   className='hidden'
                 />
                 {option.label}
@@ -119,18 +127,18 @@ export default function FilterPanelContent() {
                   'flex justify-between font-bold items-center gap-2 text-sm p-2 rounded border cursor-pointer transition-all',
                   !isChecked && 'hover:bg-brand-50/30 hover:scale-[1.02]',
                   isChecked &&
-                    option.value === 'SUBMITTED' &&
-                    DOCUMENT_STATUS_META.SUBMITTED.styles,
-                  isChecked &&
-                    option.value === 'NOT_SUBMITTED' &&
-                    DOCUMENT_STATUS_META.NOT_SUBMITTED.styles
+                    DOCUMENT_STATUS_META[
+                      option.value as keyof typeof DOCUMENT_STATUS_META
+                    ].styles,
                 )}
               >
                 <Checkbox
                   id={option.value}
                   className='hidden'
-                  checked={documentStatuses.includes(option.value)}
-                  onCheckedChange={() => toggleDocumentStatus(option.value)}
+                  checked={isChecked}
+                  onCheckedChange={() =>
+                    toggleSearchParam('documentStatuses', option.value)
+                  }
                 />
                 {option.label}
                 {isChecked && <CircleCheckBigIcon className='w-3 h-3' />}
@@ -157,20 +165,17 @@ export default function FilterPanelContent() {
                   'flex justify-between items-center gap-2 font-bold text-sm p-2 rounded border cursor-pointer transition-all',
                   !isChecked && 'hover:bg-brand-50/30 hover:scale-[1.02]',
                   isChecked &&
-                    option.value === 'PROCESS_PASS' &&
-                    RESULT_STATUS_META.PROCESS_PASS.styles,
-                  isChecked &&
-                    option.value === 'FINAL_PASS' &&
-                    RESULT_STATUS_META.FINAL_PASS.styles,
-                  isChecked &&
-                    option.value === 'FINAL_FAIL' &&
-                    RESULT_STATUS_META.FINAL_FAIL.styles
+                    RESULT_STATUS_META[
+                      option.value as keyof typeof RESULT_STATUS_META
+                    ].styles,
                 )}
               >
                 <Checkbox
                   id={option.value}
-                  checked={resultStatuses.includes(option.value)}
-                  onCheckedChange={() => toggleResultStatus(option.value)}
+                  checked={isChecked}
+                  onCheckedChange={() =>
+                    toggleSearchParam('resultStatuses', option.value)
+                  }
                   className='hidden'
                 />
                 {option.label}

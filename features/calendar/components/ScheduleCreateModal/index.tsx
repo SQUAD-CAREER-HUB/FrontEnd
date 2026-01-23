@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -8,20 +9,19 @@ import {
   DialogDescription,
 } from '@/shared/components/ui/dialog';
 
-import { useDateScheduleCreateStore } from '../stores/useDateScheduleCreateStore';
+import { useDateScheduleCreateStore } from '../../stores/useDateScheduleCreateStore';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale/ko';
-import { ScheduleTypeSelect } from './ScheduleTypeSelect';
+import ScheduleTypeRadioGroup from './ScheduleTypeRadioGroup';
 
 import InterviewScheduleForm from './InterviewScheduleForm';
 
-import { useState } from 'react';
 import EtcScheduleForm from './EtcScheduleForm';
 
-export default function DateScheduleCreateModal() {
+export default function ScheduleCreateModal() {
   const { isOpen, close, selectedDate } = useDateScheduleCreateStore();
   const [scheduleType, setScheduleType] = useState<'INTERVIEW' | 'ETC'>(
-    'INTERVIEW'
+    'INTERVIEW',
   );
 
   return (
@@ -40,7 +40,7 @@ export default function DateScheduleCreateModal() {
         </DialogHeader>
 
         <div className='space-y-6'>
-          <ScheduleTypeSelect
+          <ScheduleTypeRadioGroup
             value={scheduleType}
             onChange={(val) => setScheduleType(val as 'INTERVIEW' | 'ETC')}
           />

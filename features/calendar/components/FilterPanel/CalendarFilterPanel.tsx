@@ -2,7 +2,7 @@
 
 import { FunnelIcon, PanelRightCloseIcon } from 'lucide-react';
 import FilterPanelContent from './FilterPanelContent';
-import { useFilterPanelStore } from '../stores/useFilterPanelStore';
+import { useFilterPanelStore } from '../../stores/useFilterPanelStore';
 import { Button } from '@/shared/components/ui/button';
 
 // 데스크탑, 테블릿 (min-width >= 764px)용 필터 패널

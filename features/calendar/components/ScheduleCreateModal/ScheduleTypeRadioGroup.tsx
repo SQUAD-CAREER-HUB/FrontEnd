@@ -1,7 +1,7 @@
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import { Label } from '@/shared/components/ui/label';
 
-export function ScheduleTypeSelect({
+export default function ScheduleTypeRadioGroup({
   value,
   onChange,
 }: {

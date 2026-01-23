@@ -1,7 +1,7 @@
 'use client';
 
 import { Sheet, SheetContent, SheetTitle } from '@/shared/components/ui/sheet';
-import { useFilterPanelStore } from '../stores/useFilterPanelStore';
+import { useFilterPanelStore } from '../../stores/useFilterPanelStore';
 import FilterPanelContent from './FilterPanelContent';
 import { FunnelIcon } from 'lucide-react';
 

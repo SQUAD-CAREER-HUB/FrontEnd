@@ -1,6 +1,6 @@
 'use client';
 
-import { useFilterPanelStore } from '../stores/useFilterPanelStore';
+import { useFilterPanelStore } from '../../stores/useFilterPanelStore';
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
 import CalendarFilterPanel from './CalendarFilterPanel';
 import CalendarFilterPanelMobile from './CalendarFilterPanelMobile';
