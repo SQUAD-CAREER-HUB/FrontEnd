@@ -14,18 +14,18 @@ interface LayoutProps {
 export default function Layout({ children, modal }: LayoutProps) {
   return (
     // 전체 화면을 꽉 채우는 컨테이너 (스크롤 방지)
-    <div className='flex bg-white dark:bg-slate-950'>
+    <div id = "root" className='flex bg-white dark:bg-slate-950'>
        <FCMInitializer />
       {/* 사이드바 (데스크탑) */}
       <MainSidebar />
 
       {/* 메인 콘텐츠 영역 (세로로 헤더-본문-네비 순서 배치) */}
-      <div className='flex-1 flex flex-col'>
+      <div className='flex-1 flex flex-col min-w-0'>
         {/* 모바일 상단 헤더 */}
         <MobileHeader />
 
         {/* 실제 스크롤이 일어나는 유일한 영역 */}
-        <div className='flex-1 bg-slate-50 dark:bg-slate-900/50'>
+        <div className='flex-1 bg-slate-50 dark:bg-slate-900/50 min-w-0 pb-[60px] md:pb-0'>
           {children}
         </div>
 
