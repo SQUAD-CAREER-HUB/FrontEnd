@@ -15,9 +15,8 @@ export default function Layout({ children, modal }: LayoutProps) {
   return (
     <div className='flex flex-col md:flex-row min-h-screen'>
       {/* 사이드바 (데스크탑 전용) */}
-    // 전체 화면을 꽉 채우는 컨테이너 (스크롤 방지)
-    <div className='flex bg-white dark:bg-slate-950'>
-       <FCMInitializer />
+      {/* 전체 화면을 꽉 채우는 컨테이너 (스크롤 방지) */}
+      <FCMInitializer />
       {/* 사이드바 (데스크탑) */}
       <MainSidebar />
       {/* 모바일 전용 UI (고정 요소들) */}
