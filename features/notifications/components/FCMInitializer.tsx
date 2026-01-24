@@ -14,8 +14,8 @@ export default function FCMInitializer() {
   const queryClient = useQueryClient();
   const hasRequested = useRef(false);
   const [showModal, setShowModal] = useState(false);
-  const [isIOSDevice, setIsIOSDevice] = useState(false);
-  const [isPWA, setIsPWA] = useState(false);
+  const [isIOSDevice, setIsIOSDevice] = useState<boolean | null>(null);
+  const [isPWA, setIsPWA] = useState<boolean | null>(null);
   const [isDenied, setIsDenied] = useState(false);
 
   const handleMessage = useCallback((message: FCMMessage) => {
@@ -41,6 +41,11 @@ export default function FCMInitializer() {
   }, []);
 
   useEffect(() => {
+    // 디바이스 감지가 완료될 때까지 대기
+    if (isIOSDevice === null || isPWA === null) {
+      return;
+    }
+
     if (hasRequested.current) {
       return;
     }
@@ -149,7 +154,7 @@ export default function FCMInitializer() {
       isOpen={showModal}
       onClose={handleCloseModal}
       onAllow={handleAllowNotification}
-      isIOSSafari={isIOSDevice && !isPWA}
+      isIOSSafari={!!isIOSDevice && !isPWA}
       isDenied={isDenied}
     />
   );
