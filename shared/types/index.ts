@@ -14,7 +14,7 @@ export interface StageData {
   datetime: string;
 }
 
-export type ApplicationStage = 'document' | 'interview' | 'other' | 'result';
+export type ApplicationStage = 'DOCUMENT' | 'INTERVIEW' | 'ETC' | 'APPLICATION_CLOSE';
 
-export type ScheduleResult = 'WAITING' | 'PASS' | 'FAILED';
+export type ScheduleResult = 'WAITING' | 'PASS' | 'FAIL';
 ;

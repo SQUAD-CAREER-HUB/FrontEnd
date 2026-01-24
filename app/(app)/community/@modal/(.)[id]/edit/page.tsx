@@ -25,7 +25,7 @@ export default function EditModalPage({
       */}
       <DialogContent className='max-w-2xl p-0 bg-white dark:bg-slate-900 border-none rounded-3xl overflow-hidden shadow-2xl'>
         <DialogTitle className='sr-only'>후기 수정하기</DialogTitle>
-        <PostEditView postId={id} mode='modal' />
+        <PostEditView postId={Number(id)} mode='modal' />
       </DialogContent>
     </Dialog>
   );

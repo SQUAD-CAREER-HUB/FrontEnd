@@ -6,7 +6,7 @@ import { ScheduleResult } from "@/shared/types";
 export const STATUS_BG_STYLES: Record<ScheduleResult, string> = {
   WAITING: 'bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800',
   PASS: 'bg-green-50 border-green-200 dark:bg-green-900/10 dark:border-green-800',
-  FAILED: 'bg-red-50 border-red-200 dark:bg-red-900/10 dark:border-red-800',
+  FAIL: 'bg-red-50 border-red-200 dark:bg-red-900/10 dark:border-red-800',
 };
 
 /**
@@ -15,7 +15,7 @@ export const STATUS_BG_STYLES: Record<ScheduleResult, string> = {
 export const STATUS_FONT_STYLES: Record<ScheduleResult, string> = {
   WAITING: 'text-slate-900 dark:text-slate-100',
   PASS: 'text-green-800 dark:text-green-400',
-  FAILED: 'text-red-800 dark:text-red-400',
+  FAIL: 'text-red-800 dark:text-red-400',
 };
 
 /**
@@ -24,7 +24,7 @@ export const STATUS_FONT_STYLES: Record<ScheduleResult, string> = {
 export const ACTIVE_STAGE_STYLES = {
   font: 'font-bold text-lg text-brand-600 dark:text-brand-400',
   bg: 'bg-brand-50/30 dark:bg-brand-900/10 border border-brand-100 dark:border-brand-900/50',
-  border: 'border-brand-500 ring-2 ring-brand-100 shadow-md transform scale-[1.01] dark:bg-slate-900 dark:ring-brand-900/30 dark:border-slate-800',
+  border: 'border-brand-500 ring-2 ring-brand-100 shadow-md transform scale-[1.01] dark:bg-slate-900 dark:ring-brand-900/30 dark:bg-slate-900',
 } as const;
 
 /**

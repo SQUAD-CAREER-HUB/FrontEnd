@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { ENV } from '@/shared/constants/env';
-import { setAuthSession } from '@/features/login/server-actions/auth'; // 쿠키 설정을 위해 기존 서버 액션 재사용
+import { setAuthSession } from '@/features/login/server-actions/auth';
 
 /**
  * 전역 상태 관리를 통한 동시성 제어
@@ -51,17 +51,23 @@ async function refreshTokenFlow(): Promise<string> {
  * 서버 사이드 전용 Fetch 래퍼 함수입니다.
  * 인증 헤더 자동 주입 및 401 에러 시 토큰 자동 재발급(Silent Refresh)을 수행합니다.
  */
-export async function serverApi(
+export async function serverApi<T = any>(
   path: string,
   options: RequestInit = {}
-): Promise<Response> {
+): Promise<T> {
   const cookieStore = await cookies();
   const backendUrl = `${ENV.BACKEND_API_URL}${path}`;
   const accessToken = cookieStore.get('access_token')?.value;
   const headers = new Headers(options.headers);
+  // Content-Type이 전달되지 않은 경우에만 기본값 설정 (multipart/form-data 유지를 위해)
+  if (!headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json');
+  }
 
-  // FormData 전송 시 브라우저가 자동으로 경계값(Boundary)을 설정하도록 Content-Type 수동 설정을 피함
-  if (!(options.body instanceof FormData)) {
+  // FormData/Blob인 경우 Content-Type을 설정하지 않음 (브라우저가 자동 설정)
+  const isFormData = options.body instanceof Blob || options.body instanceof FormData;
+  
+  if (!isFormData && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
 
@@ -103,19 +109,25 @@ export async function serverApi(
     }
   }
 
-  /**
-   * [왜 response.json()을 여기서 호출하지 않나요?]
-   * * 1. 응답 유연성 유지:
-   * 이 함수는 공통 API 래퍼입니다. 어떤 API는 JSON을 반환하지만, 어떤 API는 이미지(Blob),
-   * 텍스트, 혹은 204 No Content(빈 응답)를 반환합니다.
-   * 여기서 .json()을 해버리면 JSON이 아닌 응답에서 파싱 에러가 발생합니다.
-   * * 2. BFF 프록시로의 원본 전달:
-   * BFF(Next.js Route Handler)는 백엔드에서 받은 상태 코드, 헤더, 원본 본문을
-   * 그대로 클라이언트에 전달해야 합니다. 파싱되지 않은 'Response' 객체를 넘겨야
-   * BFF가 .text()나 .status 등을 자유롭게 활용하여 가공할 수 있습니다.
-   * * 3. 이중 파싱 방지 (성능):
-   * 여기서 .json()을 하고 다시 BFF에서 NextResponse.json()을 하면
-   * [문자열 -> 객체 -> 문자열]의 불필요한 직렬화 과정이 반복됩니다.
-   */
-  return response;
+  // HTTP 에러 응답 처리
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.message || `HTTP error! status: ${response.status}`
+    );
+  }
+
+  // 응답 본문이 비어있는 경우 (204 No Content 등) 빈 객체 반환
+  const contentLength = response.headers.get('content-length');
+  if (contentLength === '0') {
+    return {} as T;
+  }
+
+  // 응답 본문이 있는지 text로 먼저 확인 후 파싱
+  const text = await response.text();
+  if (!text) {
+    return {} as T;
+  }
+
+  return JSON.parse(text) as T;
 }

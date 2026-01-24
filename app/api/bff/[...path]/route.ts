@@ -14,11 +14,18 @@ async function proxyHandler(
 ) {
   const pathList = (await params).path;
   const targetPath = `/${pathList.join('/')}${req.nextUrl.search}`;
-
   try {
-    // 서버 사이드 API 호출 (백엔드 서버로 요청 중계)
-    const response = await serverApi(targetPath, {
+    // Content-Type 헤더 전달 (multipart/form-data 등 유지를 위해)
+    const contentType = req.headers.get('Content-Type');
+    const headers: HeadersInit = {};
+    if (contentType) {
+      headers['Content-Type'] = contentType;
+    }
+
+    const data = await serverApi(targetPath, {
       method: req.method,
+      headers,
+      // GET이 아닐 때만 body 전달
       body:
         req.method !== 'GET' && req.method !== 'HEAD' ? await req.text() : null,
 
@@ -31,29 +38,7 @@ async function proxyHandler(
       // @ts-expect-error
       duplex: 'half',
     });
-
-    /**
-     * HTTP 204 No Content 특수 처리 (에러 방지 핵심)
-     * Next.js의 NextResponse(Web Response API)는 204 상태 코드일 때
-     * 아주 미세한 데이터(빈 문자열 "" 포함)라도 본문에 들어있으면 TypeError를 발생시킵니다.
-     * 따라서 명시적으로 null을 전달하여 본문이 없음을 보장해야 서버 에러를 피할 수 있습니다.
-     */
-    if (response.status === 204) {
-      return new NextResponse(null, { status: 204 }); // 표준 준수
-    }
-
-    /**
-     * 응답 본문 추출
-     * .json() 대신 .text()를 사용하는 이유:
-     * 백엔드가 200/201 OK를 주면서 본문을 비워뒀을 경우,
-     * .json()은 즉시 파싱 에러를 내지만 .text()는 빈 문자열("")을 안전하게 반환합니다.
-     */
-    const rawData = await response.text();
-
-    return new NextResponse(rawData, {
-      status: response.status,
-      headers: response.headers,
-    });
+    return NextResponse.json(data);
   } catch (error: unknown) {
     console.error('BFF 에러 발생:', error);
     return NextResponse.json(
