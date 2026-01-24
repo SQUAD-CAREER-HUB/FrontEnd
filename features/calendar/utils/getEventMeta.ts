@@ -15,6 +15,8 @@ const DEFAULT_META: EventMeta = {
 export function getEventMeta(event: RbcEvent): EventMeta {
   const resource = event.resource;
 
+  if (resource.stageType === 'DOCUMENT') {
+    return DOCUMENT_STATUS_META[resource.submissionStatus];
   if (resource.stageType === 'DOCUMENT' && resource.documentStatus) {
     return DOCUMENT_STATUS_META[resource.documentStatus] ?? DEFAULT_META;
   }
