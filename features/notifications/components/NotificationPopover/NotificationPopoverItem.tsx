@@ -1,7 +1,7 @@
 'use client';
 
 import { Trash2 } from 'lucide-react';
-import { Notification } from '../../types/notification';
+import { Notification } from '../../types';
 import { RelativeTime } from '@/shared/components/RelativeTime';
 import { getNotificationIcon } from './notificationIcon';
 

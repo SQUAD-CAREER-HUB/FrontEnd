@@ -9,7 +9,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { Notification, NotificationType } from '../types/notification';
+import { Notification, NotificationType } from '../types';
 import { useReadNotification } from '../hooks/useReadNotification';
 import { useDeleteNotification } from '../hooks/useDeleteNotification';
 import { formatDateTime } from '@/shared/lib/utils';

@@ -1,5 +1,5 @@
 import { Calendar, CircleAlert, Info } from 'lucide-react';
-import { NotificationType } from '../../types/notification';
+import { NotificationType } from '../../types';
 
 export function getNotificationIcon(type: NotificationType) {
   switch (type) {
