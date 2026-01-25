@@ -1,4 +1,9 @@
-import { redirect } from 'next/navigation';
+import CTA from '@/features/landing/CTA';
+import Features from '@/features/landing/Features';
+import Footer from '@/features/landing/Footer';
+import Header from '@/features/landing/Header';
+import Hero from '@/features/landing/Hero';
+import StepDetails from '@/features/landing/StepDetails';
 import AuthInitializer from '@/features/login/components/AuthInitializer';
 
 /**
@@ -40,7 +45,16 @@ export default async function LandingPage({
       )}
 
       {/* 실제 사용자에게 보여지는 랜딩 페이지 UI 영역 */}
-      <h1>Landing Page</h1>
+      <Header />
+
+      <main>
+        <Hero />
+        <Features />
+        <StepDetails />
+        <CTA />
+      </main>
+
+      <Footer />
     </div>
   );
 }
