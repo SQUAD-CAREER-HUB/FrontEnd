@@ -2,8 +2,11 @@
 
 import { BellRing, X, Calendar, Clock, FileText } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFCM } from '@/shared/hooks/useFCM';
+import { useGetNotificationPreferences } from '../../hooks/useGetNotificationPreferences';
+import { useUpdateNotificationPreference } from '../../hooks/useUpdateNotificationPreference';
+import { NOTIFICATION_SECTIONS } from '../../constants';
 import PushNotificationSection from './PushNotificationSection';
 import SettingsSection from './SettingsSection';
 
@@ -11,31 +14,29 @@ interface NotificationSettingsModalProps {
   onClose?: () => void;
 }
 
+const SECTION_ICONS = {
+  recruitment: Calendar,
+  interview: Clock,
+  etc: FileText,
+} as const;
+
 export default function NotificationSettingsModal({ onClose }: NotificationSettingsModalProps) {
   const router = useRouter();
   const { permission, isLoading, isRegistering, requestPermissionAndToken } = useFCM();
+  const { data: preferences } = useGetNotificationPreferences('WEB');
+  const { mutate: updatePreference } = useUpdateNotificationPreference('WEB');
+
+  // 로컬 state로 변경사항 관리
+  const [localPreferences, setLocalPreferences] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    if (preferences) {
+      setLocalPreferences(preferences);
+    }
+  }, [preferences]);
 
   const isPushEnabled = permission === 'granted';
   const isPushDenied = permission === 'denied';
-
-  const [deadlineSettings, setDeadlineSettings] = useState({
-    sevenDays: true,
-    threeDays: true,
-    oneDay: true,
-  });
-
-  const [interviewSettings, setInterviewSettings] = useState({
-    threeDays: true,
-    oneDay: true,
-    morning: true,
-    oneHour: true,
-  });
-
-  const [etcSettings, setEtcSettings] = useState({
-    threeDays: true,
-    oneDay: true,
-    morning: true,
-  });
 
   const handlePushToggle = async (enabled: boolean) => {
     if (enabled && permission !== 'granted') {
@@ -51,35 +52,26 @@ export default function NotificationSettingsModal({ onClose }: NotificationSetti
     }
   };
 
-  const handleSave = () => {
-    // TODO: 설정 저장 로직
-    handleClose();
-  };
-
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       handleClose();
     }
   };
 
-  const deadlineSettingsOptions = [
-    { key: 'sevenDays', label: '마감 7일 전', enabled: deadlineSettings.sevenDays },
-    { key: 'threeDays', label: '마감 3일 전', enabled: deadlineSettings.threeDays },
-    { key: 'oneDay', label: '마감 1일 전 (D-1)', enabled: deadlineSettings.oneDay },
-  ];
+  // 토글 시 로컬 state만 변경
+  const handleSettingChange = (eventId: string, enabled: boolean) => {
+    setLocalPreferences((prev) => ({ ...prev, [eventId]: enabled }));
+  };
 
-  const interviewSettingsOptions = [
-    { key: 'threeDays', label: '면접 3일 전', enabled: interviewSettings.threeDays },
-    { key: 'oneDay', label: '면접 1일 전 (D-1)', enabled: interviewSettings.oneDay },
-    { key: 'morning', label: '면접 당일 오전 9시', enabled: interviewSettings.morning },
-    { key: 'oneHour', label: '면접 1시간 전', enabled: interviewSettings.oneHour },
-  ];
-
-  const etcSettingsOptions = [
-    { key: 'threeDays', label: '전형 3일 전', enabled: etcSettings.threeDays },
-    { key: 'oneDay', label: '전형 1일 전 (D-1)', enabled: etcSettings.oneDay },
-    { key: 'morning', label: '전형 당일 오전 9시', enabled: etcSettings.morning },
-  ];
+  // 저장 버튼 클릭 시 변경된 항목들만 API 호출
+  const handleSave = () => {
+    Object.entries(localPreferences).forEach(([event, enabled]) => {
+      if (preferences?.[event] !== enabled) {
+        updatePreference({ event, enabled });
+      }
+    });
+    handleClose();
+  };
 
   return (
     <div
@@ -108,29 +100,25 @@ export default function NotificationSettingsModal({ onClose }: NotificationSetti
             onToggle={handlePushToggle}
           />
 
-          {/* 채용 공고 마감일 알림 */}
-          <SettingsSection
-            icon={Calendar}
-            title="채용 공고 마감일 알림"
-            settings={deadlineSettingsOptions}
-            onSettingChange={(key, v) => setDeadlineSettings((s) => ({ ...s, [key]: v }))}
-          />
+          {/* 알림 설정 섹션들 */}
+          {NOTIFICATION_SECTIONS.map((section) => {
+            const Icon = SECTION_ICONS[section.id as keyof typeof SECTION_ICONS];
+            const settings = section.items.map((item) => ({
+              key: item.id,
+              label: item.label,
+              enabled: localPreferences[item.id] ?? true,
+            }));
 
-          {/* 면접 일정 알림 */}
-          <SettingsSection
-            icon={Clock}
-            title="면접 일정 알림"
-            settings={interviewSettingsOptions}
-            onSettingChange={(key, v) => setInterviewSettings((s) => ({ ...s, [key]: v }))}
-          />
-
-          {/* 기타 전형 알림 */}
-          <SettingsSection
-            icon={FileText}
-            title="기타 전형 알림 (코딩테스트/과제 등)"
-            settings={etcSettingsOptions}
-            onSettingChange={(key, v) => setEtcSettings((s) => ({ ...s, [key]: v }))}
-          />
+            return (
+              <SettingsSection
+                key={section.id}
+                icon={Icon}
+                title={section.title}
+                settings={settings}
+                onSettingChange={handleSettingChange}
+              />
+            );
+          })}
         </div>
 
         {/* 푸터 버튼 */}
@@ -145,7 +133,7 @@ export default function NotificationSettingsModal({ onClose }: NotificationSetti
             onClick={handleSave}
             className="px-6 py-2.5 bg-brand-500 text-white font-bold rounded-xl hover:bg-brand-600 shadow-md transition-all"
           >
-            설정 저장
+            저장
           </button>
         </div>
       </div>
