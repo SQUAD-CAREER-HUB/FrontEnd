@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useGetNotifications } from '../../hooks/useGetNotifications';
+import { useNotificationPopoverStore } from '../../stores/useNotificationPopoverStore';
 import { useReadNotification } from '../../hooks/useReadNotification';
 import { useReadAllNotifications } from '../../hooks/useReadAllNotifications';
 import { useDeleteNotification } from '../../hooks/useDeleteNotification';
@@ -15,6 +16,7 @@ export default function NotificationPopover() {
   const { mutate: readNotification } = useReadNotification();
   const { mutate: readAllNotifications } = useReadAllNotifications();
   const { mutate: deleteNotification } = useDeleteNotification();
+  const { close } = useNotificationPopoverStore();
   const router = useRouter();
 
   const notifications = useMemo(() => {
@@ -28,6 +30,7 @@ export default function NotificationPopover() {
 
   const handleRead = (id: number) => {
     readNotification(id);
+    close();
   };
 
   const handleDelete = (id: number) => {
@@ -40,6 +43,7 @@ export default function NotificationPopover() {
 
   const handleRouting = () => {
     router.push('/notifications');
+    close();
   };
 
   return (

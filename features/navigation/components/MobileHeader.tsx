@@ -12,10 +12,12 @@ import {
 } from '@/shared/components/ui/popover';
 import NotificationPopover from '@/features/notifications/components/NotificationPopover';
 import { useGetNotifications } from '@/features/notifications/hooks/useGetNotifications';
+import { useNotificationPopoverStore } from '@/features/notifications/stores/useNotificationPopoverStore';
 import { useMemo } from 'react';
 
 export default function MobileHeader() {
   const { data } = useGetNotifications(10);
+  const { isOpen, setOpen } = useNotificationPopoverStore();
 
   const unreadCount = useMemo(() => {
     if (!data?.pages) return 0;
@@ -32,7 +34,7 @@ export default function MobileHeader() {
         </Link>
       </div>
       <div className='flex items-center space-x-2'>
-        <Popover>
+        <Popover open={isOpen} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <button className='relative p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors'>
               <BellIcon className='w-5 h-5' />
