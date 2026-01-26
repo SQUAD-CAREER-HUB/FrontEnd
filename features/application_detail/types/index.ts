@@ -119,3 +119,50 @@ export interface DocumentStageUpdateRequest {
   submissionStatus: SubmissionStatus;
   scheduleResult: ScheduleResult;
 }
+
+// 면접 질문 생성 요청
+export interface InterviewQuestionRequest {
+  applicationId: number;
+  interviewQuestionId?: number | null;
+  interviewType: string;
+  question: string;
+  memo: string;
+}
+
+// 면접 질문 응답
+export interface InterviewQuestionResponse {
+  interviewQuestionId: number;
+  applicationId: number;
+  interviewType: string;
+  question: string;
+  memo: string;
+}
+
+// 면접 질문 아카이브 아이템
+export interface InterviewQuestionArchiveItem {
+  questionArchiveId: number;
+  interviewQuestionId: number;
+  applicationId: number;
+  company: string;
+  interviewType: string;
+  question: string;
+  memo: string;
+  createdAt: string;
+}
+
+// 면접 질문 목록 조회 응답
+export interface InterviewQuestionsResponse {
+  contents: InterviewQuestionArchiveItem[];
+  hasNext: boolean;
+  nextCursorId: number | null;
+}
+
+// 면접 질문 목록 조회 필터
+export type LinkStatus = 'LINKED' | 'UNLINKED';
+
+export interface InterviewQuestionsFilter {
+  query?: string;
+  linkStatus?: LinkStatus;
+  applicationId?: number;
+  size?: string;
+}
