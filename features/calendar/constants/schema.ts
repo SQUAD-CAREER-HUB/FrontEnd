@@ -1,9 +1,7 @@
 import * as z from 'zod';
 
 const baseSchema = z.object({
-  applicationId: z
-    .number() // 여기서 인자를 비우면 TS 에러가 나지 않습니다.
-    .min(1, '대상 기업을 선택해주세요.'),
+  applicationId: z.number().min(1, '대상 기업을 선택해주세요.'),
   startedAt: z.string().min(1, '시작 일시를 입력해주세요.'),
   scheduleResult: z.string().optional(),
 });

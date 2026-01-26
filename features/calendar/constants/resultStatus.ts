@@ -1,10 +1,10 @@
-import { ResultStatus } from '../types/filter';
+import { ResultCriteria } from '../types';
 
 export const RESULT_STATUS_META: Record<
-  ResultStatus,
+  ResultCriteria,
   { label: string; styles: string }
 > = {
-  PROCESS_PASS: {
+  STAGE_PASS: {
     label: '전형 합격',
     styles: 'text-green-700 bg-green-50 border-green-200',
   },
@@ -18,8 +18,9 @@ export const RESULT_STATUS_META: Record<
   },
 } as const;
 
-export const RESULT_STATUS_OPTIONS: { label: string; value: ResultStatus }[] = [
-  { label: '전형 합격', value: 'PROCESS_PASS' },
-  { label: '최종 합격', value: 'FINAL_PASS' },
-  { label: '최종 불합격', value: 'FINAL_FAIL' },
-];
+export const RESULT_STATUS_OPTIONS: { label: string; value: ResultCriteria }[] =
+  [
+    { label: '전형 합격', value: 'STAGE_PASS' },
+    { label: '최종 합격', value: 'FINAL_PASS' },
+    { label: '최종 불합격', value: 'FINAL_FAIL' },
+  ];
