@@ -1,7 +1,7 @@
-import { ProcessType } from '../types/filter';
+import { StageType } from '../types';
 
 export const PROCESS_TYPE_META: Record<
-  ProcessType,
+  StageType,
   { label: string; styles: string }
 > = {
   DOCUMENT: {
@@ -22,7 +22,7 @@ export const PROCESS_TYPE_META: Record<
   },
 } as const;
 
-export const PROCESS_TYPE_OPTIONS: { label: string; value: ProcessType }[] = [
+export const PROCESS_TYPE_OPTIONS: { label: string; value: StageType }[] = [
   { label: '서류 전형', value: 'DOCUMENT' },
   { label: '면접 전형', value: 'INTERVIEW' },
   { label: '기타 전형', value: 'ETC' },

@@ -1,7 +1,7 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
 import { getReviews } from '../api/getReviews';
-import { ReviewListResponse, SortOrder } from '../types';
+import { SortOrder } from '../types';
 
 interface UseGetReviewsParams {
   query?: string;
@@ -34,7 +34,7 @@ export const useGetReviews = ({ query, sort }: UseGetReviewsParams) => {
     /**
      * 다음 페이지 번호(Cursor ID)를 결정하는 로직
      */
-    getNextPageParam: (lastPage: ReviewListResponse) => {
+    getNextPageParam: (lastPage) => {
       return lastPage.hasNext ? lastPage.nextCursorId : undefined;
     },
 

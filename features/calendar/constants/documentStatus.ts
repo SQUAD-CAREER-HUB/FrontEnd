@@ -1,7 +1,7 @@
-import { DocumentStatus } from '../types/filter';
+import { SubmissionStatus } from '../types';
 
 export const DOCUMENT_STATUS_META: Record<
-  DocumentStatus,
+  SubmissionStatus,
   {
     label: string;
     styles: string;
@@ -19,7 +19,7 @@ export const DOCUMENT_STATUS_META: Record<
 
 export const DOCUMENT_STATUS_OPTIONS: {
   label: string;
-  value: DocumentStatus;
+  value: SubmissionStatus;
 }[] = [
   { label: '미제출', value: 'NOT_SUBMITTED' },
   { label: '제출', value: 'SUBMITTED' },

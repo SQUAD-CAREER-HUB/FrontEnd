@@ -25,26 +25,21 @@ export default async function LandingPage({
 }) {
   const { accessToken, refreshToken } = await searchParams;
 
-  // 토큰이 없으면 로그인 페이지로 리다이렉트
-  if (!accessToken) {
-    redirect('/login');
+  /**
+   * [인증 프로세스 핸들링]
+   * URL에 토큰이 있다면, AuthInitializer 컴포넌트를 브라우저에 마운트합니다.
+   * 이 컴포넌트는 마운트 직후 '서버 액션'을 호출하여,
+   * 실제 쿠키 저장과 리다이렉트(주소창 정화)가 '서버 사이드'에서 안전하게 처리되도록 유도합니다.
+   */
+  if (accessToken) {
+    return (
+      <AuthInitializer accessToken={accessToken} refreshToken={refreshToken} />
+    );
   }
 
+  // 토큰이 없는 경우 (일반 랜딩 페이지 방문)
   return (
-    <div>
-      {/* [인증 프로세스 핸들링]
-        URL에 토큰이 있다면, AuthInitializer 컴포넌트를 브라우저에 마운트합니다.
-        이 컴포넌트는 마운트 직후 '서버 액션'을 호출하여,
-        실제 쿠키 저장과 리다이렉트(주소창 정화)가 '서버 사이드'에서 안전하게 처리되도록 유도합니다.
-      */}
-      {accessToken && (
-        <AuthInitializer
-          accessToken={accessToken}
-          refreshToken={refreshToken}
-        />
-      )}
-
-      {/* 실제 사용자에게 보여지는 랜딩 페이지 UI 영역 */}
+    <>
       <Header />
 
       <main>
@@ -55,6 +50,6 @@ export default async function LandingPage({
       </main>
 
       <Footer />
-    </div>
+    </>
   );
 }

@@ -4,26 +4,29 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const refreshToken = request.cookies.get('refresh_token')?.value;
 
-  if (pathname === '/login') {
-    if (refreshToken) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
-    }
+  const isPublicPath = pathname === '/' || pathname === '/login';
 
-    return NextResponse.next();
+  if (isPublicPath && refreshToken) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  // 대시보드 보호
-  if (pathname.startsWith('/dashboard')) {
-    if (!refreshToken) {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
+  if (!isPublicPath && !refreshToken) {
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  // matcher에서 /api/bff를 확실히 포함하거나,
-  // 혹은 미들웨어가 불필요하게 API 요청을 건드리지 않도록 설정해야 합니다.
-  matcher: ['/dashboard/:path*', '/login'],
+  /**
+   * 아래 경로를 제외한 모든 요청 경로에 매칭:
+   * 1. api (BFF API Route)
+   * 2. _next/static (정적 파일)
+   * 3. _next/image (이미지 최적화 파일)
+   * 4. favicon.ico, manifest.ts (루트 정적 파일)
+   * 5. .png, .svg 등 이미지 확장자
+   */
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|manifest.ts|.*\\.png$|.*\\.svg$).*)',
+  ],
 };

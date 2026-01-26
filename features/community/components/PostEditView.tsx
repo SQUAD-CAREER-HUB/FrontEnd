@@ -21,7 +21,7 @@ export default function PostEditView({ postId, mode }: Props) {
     position: data.position,
     interviewType: data.interviewType,
     questions: data.questions,
-    content: data.content,
+    content: data.detailReviewContent,
   };
 
   return (
@@ -30,7 +30,7 @@ export default function PostEditView({ postId, mode }: Props) {
         'bg-white dark:bg-slate-900 w-full rounded-3xl transition-colors',
         mode === 'modal'
           ? 'max-w-2xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto animate-fade-in-up border border-slate-100 dark:border-slate-800'
-          : 'p-0'
+          : 'p-0',
       )}
     >
       {/* 모달 모드일 때만 표시되는 헤더 */}

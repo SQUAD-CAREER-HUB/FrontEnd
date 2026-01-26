@@ -12,6 +12,8 @@ import {
 import { cn } from '@/shared/lib/utils';
 import { MyProfileImage } from '@/features/my-profile/components/MyProfileImage';
 import { useConfirmStore } from '@/shared/stores/useConfirmStore';
+import { useLogout } from '@/features/login/hooks/useLogout';
+import { useRouter } from 'next/navigation';
 
 interface SidebarProfileDropdownMenuProps {
   isExpanded: boolean;
@@ -22,14 +24,20 @@ export const SidebarProfileDropdownMenu = ({
 }: SidebarProfileDropdownMenuProps) => {
   const { data } = useGetMyProfile();
   const { openConfirm } = useConfirmStore();
+  const { mutate, isPending } = useLogout();
+  const router = useRouter();
 
   const handleLogout = () => {
     openConfirm({
       title: '로그아웃',
       description: '로그아웃 하시겠습니까?',
-      confirmText: '로그아웃',
+      confirmText: isPending ? '로그아웃 중...' : '로그아웃',
       onConfirm: () => {
-        // TODO 로그아웃 mutate
+        mutate(undefined, {
+          onSuccess: () => {
+            router.replace('/');
+          },
+        });
       },
     });
   };

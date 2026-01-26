@@ -1,17 +1,13 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import { clientApi } from '@/shared/lib/api/clientApi';
-import { BeforeDeadlineListResponse, SubmissionStatus } from '../types/api';
+import { SubmissionStatus } from '../types/api';
 import { calculateDDay } from '../utils';
+import { getBeforeDeadlineApplications } from '../api/getBeforeDeadlineApplications';
 
 export function useGetBeforeDeadlineApplications() {
   return useSuspenseQuery({
     queryKey: ['applications', 'before-deadline'],
-    queryFn: () => {
-      return clientApi.get<BeforeDeadlineListResponse>(
-        'v1/applications/before-deadline',
-      );
-    },
+    queryFn: getBeforeDeadlineApplications,
     select: (data) => ({
       ...data,
       contents: data.contents.map((item) => {

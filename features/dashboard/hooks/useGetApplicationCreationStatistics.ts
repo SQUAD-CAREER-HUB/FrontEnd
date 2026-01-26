@@ -1,20 +1,16 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { clientApi } from '@/shared/lib/api/clientApi';
+
 import {
-  ApplicationCreationStatisticsResponse,
-  GetApplicationStatisticsParams,
-} from '../types/api';
+  getApplicationCreationStatistics,
+  GetApplicationCreationStatisticsParams,
+} from '../api/getApplicationCreationStatistics';
 
 export const useGetApplicationCreationStatistics = (
-  params?: GetApplicationStatisticsParams,
+  params?: GetApplicationCreationStatisticsParams,
 ) => {
   return useSuspenseQuery({
     queryKey: ['applications', 'statistics', 'creation', params],
-    queryFn: async () => {
-      return clientApi.get<ApplicationCreationStatisticsResponse>(
-        `/v1/applications/statistics/creation?${params}`,
-      );
-    },
+    queryFn: () => getApplicationCreationStatistics(params),
     // Recharts용 데이터 포맷으로 변환
     select: (data) => {
       const weekly = data.weeklyStatistics.map((item, index, array) => {
