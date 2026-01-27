@@ -56,7 +56,7 @@ export default function InterViewQuestionSection() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
           <BookMarked className="w-5 h-5 text-slate-400" />
-          <span>면접 질문</span>
+          <span>면접 질문 ({questions.length})</span>
         </h2>
         <InterViewQuestionModal applicationId={applicationId} />
       </div>
