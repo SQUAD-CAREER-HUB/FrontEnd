@@ -3,7 +3,7 @@
 import { useTimelineStore } from '../stores/useTimeLineStore'
 import DocumentStage from './DocumentStage'
 import FinalResultStage from './FinalResultStage'
-import InterViewQuestionCard from './InterViewQuestionCard'
+import InterViewQuestionSection from './InterViewQuestionSection'
 import InterViewStage from './InterviewStage'
 import OtherStage from './OtherStage'
 import StageDetailNoteCard from './StageDetailNoteCard'
@@ -27,7 +27,7 @@ export default function JobDetailCard() {
       {isPanelOpened && (
         <div className='flex flex-col space-y-6 min-w-0'>
           <StageDetailNoteCard />
-          <InterViewQuestionCard />
+          <InterViewQuestionSection />
         </div>
       )}
     </div>
