@@ -1,9 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { Pen } from 'lucide-react';
 
-import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -11,15 +10,17 @@ import {
   DialogTrigger,
 } from '@/shared/components/ui/dialog';
 
-import InterViewQuestionForm from './InterViewQuestionForm';
+import InterViewQuestionForm, { InterviewQuestionInitialData } from './InterViewQuestionForm';
 
-interface InterViewQuestionModalProps {
+interface EditModalProps {
   applicationId: number;
+  initialData: InterviewQuestionInitialData;
 }
 
-export default function InterViewQuestionModal({
+export default function EditModal({
   applicationId,
-}: InterViewQuestionModalProps) {
+  initialData,
+}: EditModalProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSuccess = () => {
@@ -33,21 +34,22 @@ export default function InterViewQuestionModal({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          className="p-1.5 text-brand-500 hover:bg-brand-50 rounded-lg"
+        <button
+          type="button"
+          className="p-1 text-slate-400 hover:text-slate-600"
         >
-          <Plus className="w-5 h-5" />
-        </Button>
+          <Pen className="w-3.5 h-3.5" />
+        </button>
       </DialogTrigger>
 
       <DialogContent className="gap-0">
         <DialogHeader className="text-lg font-bold mb-6 dark:text-white">
-          새 질문 추가
+          질문 수정
         </DialogHeader>
         <InterViewQuestionForm
           applicationId={applicationId}
-          mode="create"
+          mode="edit"
+          initialData={initialData}
           onSuccess={handleSuccess}
           onCancel={handleCancel}
         />

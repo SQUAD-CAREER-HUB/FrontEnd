@@ -50,15 +50,6 @@ export default function InterViewQuestionSection() {
 
   const questions = data?.pages.flatMap((page) => page.contents) ?? [];
 
-  const handleEdit = (id: number) => {
-    // TODO: 수정 기능 구현
-    console.log('edit', id);
-  };
-
-  const handleDelete = (id: number) => {
-    // TODO: 삭제 기능 구현
-    console.log('delete', id);
-  };
 
   return (
     <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col">
@@ -83,10 +74,11 @@ export default function InterViewQuestionSection() {
             {questions.map((item) => (
               <InterViewQuestionCard
                 key={item.questionArchiveId}
+                applicationId={applicationId}
+                questionArchiveId={item.questionArchiveId}
                 interviewType={item.interviewType}
                 question={item.question}
-                onEdit={() => handleEdit(item.questionArchiveId)}
-                onDelete={() => handleDelete(item.questionArchiveId)}
+                memo={item.memo}
               />
             ))}
             <div ref={observerRef} className="w-full py-2 flex justify-center">

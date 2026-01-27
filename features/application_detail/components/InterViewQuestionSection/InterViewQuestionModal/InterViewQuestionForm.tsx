@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -17,22 +17,56 @@ import {
   InterviewQuestionFormValues,
 } from '../../../constants/schema';
 import { useCreateInterviewQuestion } from '../../../hooks/useCreateInterviewQuestion';
+import { useUpdateInterviewQuestion } from '../../../hooks/useUpdateInterviewQuestion';
+
+export interface InterviewQuestionInitialData {
+  questionArchiveId: number;
+  interviewType: string;
+  question: string;
+  memo: string;
+}
 
 interface InterViewQuestionFormProps {
   applicationId: number;
+  mode: 'create' | 'edit';
+  initialData?: InterviewQuestionInitialData;
   onSuccess: () => void;
   onCancel: () => void;
 }
 
 export default function InterViewQuestionForm({
   applicationId,
+  mode,
+  initialData,
   onSuccess,
   onCancel,
 }: InterViewQuestionFormProps) {
-  const [selectedOption, setSelectedOption] = useState('');
-  const [customInterviewType, setCustomInterviewType] = useState('');
+  const isEditMode = mode === 'edit';
 
-  const { mutate, isPending } = useCreateInterviewQuestion();
+  // 초기 interviewType이 옵션 목록에 있는지 확인
+  const getInitialSelectedOption = () => {
+    if (!initialData?.interviewType) return '';
+    const isPresetOption = interviewOptions.some(
+      (opt) => opt.value === initialData.interviewType && opt.value !== DIRECT_INPUT_VALUE
+    );
+    return isPresetOption ? initialData.interviewType : DIRECT_INPUT_VALUE;
+  };
+
+  const getInitialCustomType = () => {
+    if (!initialData?.interviewType) return '';
+    const isPresetOption = interviewOptions.some(
+      (opt) => opt.value === initialData.interviewType && opt.value !== DIRECT_INPUT_VALUE
+    );
+    return isPresetOption ? '' : initialData.interviewType;
+  };
+
+  const [selectedOption, setSelectedOption] = useState(getInitialSelectedOption);
+  const [customInterviewType, setCustomInterviewType] = useState(getInitialCustomType);
+
+  const { mutate: createMutate, isPending: isCreating } = useCreateInterviewQuestion();
+  const { mutate: updateMutate, isPending: isUpdating } = useUpdateInterviewQuestion();
+
+  const isPending = isCreating || isUpdating;
 
   const {
     register,
@@ -44,11 +78,23 @@ export default function InterViewQuestionForm({
     resolver: zodResolver(interviewQuestionSchema),
     defaultValues: {
       applicationId,
-      interviewType: '',
-      question: '',
-      memo: '',
+      interviewType: initialData?.interviewType ?? '',
+      question: initialData?.question ?? '',
+      memo: initialData?.memo ?? '',
     },
   });
+
+  // 초기 데이터가 변경될 때 폼 값 업데이트
+  useEffect(() => {
+    if (initialData) {
+      setValue('interviewType', initialData.interviewType);
+      setValue('question', initialData.question);
+      setValue('memo', initialData.memo);
+      setSelectedOption(getInitialSelectedOption());
+      setCustomInterviewType(getInitialCustomType());
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialData]);
 
   const isDirectInput = selectedOption === DIRECT_INPUT_VALUE;
 
@@ -75,16 +121,37 @@ export default function InterViewQuestionForm({
   };
 
   const onSubmit = (data: InterviewQuestionFormValues) => {
-    mutate(data, {
-      onSuccess: () => {
-        resetForm();
-        onSuccess();
-      },
-    });
+    if (isEditMode && initialData) {
+      updateMutate(
+        {
+          questionArchiveId: initialData.questionArchiveId,
+          data: {
+            applicationId: data.applicationId,
+            interviewType: data.interviewType,
+            question: data.question,
+            memo: data.memo,
+          },
+        },
+        {
+          onSuccess: () => {
+            onSuccess();
+          },
+        }
+      );
+    } else {
+      createMutate(data, {
+        onSuccess: () => {
+          resetForm();
+          onSuccess();
+        },
+      });
+    }
   };
 
   const handleCancel = () => {
-    resetForm();
+    if (!isEditMode) {
+      resetForm();
+    }
     onCancel();
   };
 

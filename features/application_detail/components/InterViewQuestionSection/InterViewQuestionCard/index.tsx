@@ -1,19 +1,22 @@
 'use client';
 
-import { Pen, Trash2 } from 'lucide-react';
+import EditModal from '../InterViewQuestionModal/EditModal';
+import DeleteButton from './DeleteButton';
 
 interface InterViewQuestionCardProps {
+  applicationId: number;
+  questionArchiveId: number;
   interviewType: string;
   question: string;
-  onEdit?: () => void;
-  onDelete?: () => void;
+  memo: string;
 }
 
 export default function InterViewQuestionCard({
+  applicationId,
+  questionArchiveId,
   interviewType,
   question,
-  onEdit,
-  onDelete,
+  memo,
 }: InterViewQuestionCardProps) {
   return (
     <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border group">
@@ -22,20 +25,16 @@ export default function InterViewQuestionCard({
           {interviewType}
         </span>
         <div className="flex opacity-0 group-hover:opacity-100 transition-opacity">
-          <button
-            type="button"
-            onClick={onEdit}
-            className="p-1 text-slate-400 hover:text-slate-600"
-          >
-            <Pen className="w-3.5 h-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={onDelete}
-            className="p-1 text-slate-400 hover:text-red-500"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-          </button>
+          <EditModal
+            applicationId={applicationId}
+            initialData={{
+              questionArchiveId,
+              interviewType,
+              question,
+              memo,
+            }}
+          />
+          <DeleteButton questionArchiveId={questionArchiveId} />
         </div>
       </div>
       <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
