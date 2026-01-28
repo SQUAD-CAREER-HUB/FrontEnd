@@ -3,17 +3,17 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/shared/components/ui/button'
+import { DateTimeInput } from '@/shared/components/DateTimeInput'
 import LabeledInput from '../../common/LabeledInput'
 import LabeledStatusGroup from '../../common/LabeledStatusGroup'
-import { DatePickerInput } from '@/features/application_detail/components/DatePickerInput'
 import { useNewApplicationStore, ScheduleResult } from '../../../stores/useNewApplicationStore'
 
 export default function CreateOtherScheduleForm() {
   const addOtherSchedule = useNewApplicationStore((state) => state.addOtherSchedule)
 
   const [scheduleName, setScheduleName] = useState('')
-  const [startedAt, setStartedAt] = useState<Date | undefined>(new Date())
-  const [endedAt, setEndedAt] = useState<Date | undefined>(new Date())
+  const [startedAt, setStartedAt] = useState(new Date().toISOString().slice(0, 19))
+  const [endedAt, setEndedAt] = useState(new Date().toISOString().slice(0, 19))
   const [result, setResult] = useState<ScheduleResult>('WAITING')
 
   const handleAdd = () => {
@@ -22,15 +22,15 @@ export default function CreateOtherScheduleForm() {
     addOtherSchedule({
       id: crypto.randomUUID(),
       scheduleName: scheduleName.trim(),
-      startedAt: startedAt?.toISOString() || new Date().toISOString(),
-      endedAt: endedAt?.toISOString() || new Date().toISOString(),
+      startedAt: startedAt || new Date().toISOString(),
+      endedAt: endedAt || new Date().toISOString(),
       scheduleResult: result,
     })
 
     // 폼 초기화
     setScheduleName('')
-    setStartedAt(new Date())
-    setEndedAt(new Date())
+    setStartedAt(new Date().toISOString().slice(0, 19))
+    setEndedAt(new Date().toISOString().slice(0, 19))
     setResult('WAITING')
   }
 
@@ -53,12 +53,12 @@ export default function CreateOtherScheduleForm() {
 
       {/* 시작/종료 일시 */}
       <div className="grid grid-cols-2 gap-3">
-        <DatePickerInput
+        <DateTimeInput
           label="시작 일시"
           value={startedAt}
           onChange={setStartedAt}
         />
-        <DatePickerInput
+        <DateTimeInput
           label="종료 일시"
           value={endedAt}
           onChange={setEndedAt}

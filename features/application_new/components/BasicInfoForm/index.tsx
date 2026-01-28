@@ -8,6 +8,7 @@ import StepNavigation from '../common/StepNavigation'
 import StepHeader from '../common/StepHeader'
 import FormContainer from '../common/FormContainer'
 import FileUploadField from '../common/FileUploadField'
+import { DateTimeInput } from '@/shared/components/DateTimeInput'
 import { useNewApplicationStore } from '../../stores/useNewApplicationStore'
 import { validateBasicInfo } from '../../schemas/basicInfo'
 
@@ -89,14 +90,14 @@ export default function BasicInfoForm({ onNext, onPrev }: BasicInfoFormProps) {
             error={errors.position}
           />
 
-          <FormField
+          <DateTimeInput
             label="마감 일시"
             required
-            type="datetime-local"
-            placeholder="연도-월-일 --:--"
             value={deadline}
-            onChange={(e) => setDeadline(e.target.value)}
+            onChange={setDeadline}
             error={errors.deadline}
+            showIcon={false}
+            className="w-full p-3.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-brand-500 bg-white dark:bg-slate-900 dark:text-white"
           />
 
           <FormField

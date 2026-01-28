@@ -1,5 +1,5 @@
-import Header from "@/features/application/new/components/Header";
-import NewApplicationForm from "@/features/application/new/components/NewApplicationForm";
+import Header from "@/features/application_new/components/Header";
+import NewApplicationForm from "@/features/application_new/components/NewApplicationForm";
 
 export default function Page() {
   return (

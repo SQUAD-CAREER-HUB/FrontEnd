@@ -4,10 +4,10 @@ import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Input } from '@/shared/components/ui/input'
 import { Button } from '@/shared/components/ui/button'
+import { DateTimeInput } from '@/shared/components/DateTimeInput'
 import LabeledDropdown from '../../common/LabeledDropdown'
 import LabeledInput from '../../common/LabeledInput'
 import LabeledStatusGroup from '../../common/LabeledStatusGroup'
-import { DatePickerInput } from '@/features/application_detail/components/DatePickerInput'
 import { useNewApplicationStore, ScheduleResult } from '../../../stores/useNewApplicationStore'
 
 const interviewTypeOptions = [
@@ -36,7 +36,7 @@ export default function CreateInterviewScheduleForm() {
 
   const [type, setType] = useState('first')
   const [customType, setCustomType] = useState('')
-  const [datetime, setDatetime] = useState<Date | undefined>(new Date())
+  const [datetime, setDatetime] = useState(new Date().toISOString().slice(0, 19))
   const [location, setLocation] = useState('')
   const [result, setResult] = useState<ScheduleResult>('WAITING')
 
@@ -48,7 +48,7 @@ export default function CreateInterviewScheduleForm() {
     addInterviewSchedule({
       id: crypto.randomUUID(),
       scheduleName,
-      startedAt: datetime?.toISOString() || new Date().toISOString(),
+      startedAt: datetime || new Date().toISOString(),
       location,
       scheduleResult: result,
     })
@@ -56,7 +56,7 @@ export default function CreateInterviewScheduleForm() {
     // 폼 초기화
     setType('first')
     setCustomType('')
-    setDatetime(new Date())
+    setDatetime(new Date().toISOString().slice(0, 19))
     setLocation('')
     setResult('WAITING')
   }
@@ -90,12 +90,12 @@ export default function CreateInterviewScheduleForm() {
       </div>
 
       {/* 시작 일시 */}
-      <DatePickerInput
+      <DateTimeInput
         label="시작 일시"
         value={datetime}
-        onChange={(date) => setDatetime(date)}
+        onChange={setDatetime}
         id="startDate"
-        required={true}
+        required
       />
 
       {/* 장소/링크 */}
