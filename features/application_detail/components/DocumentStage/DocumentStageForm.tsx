@@ -2,7 +2,7 @@ import { Label } from "@/shared/components/ui/label";
 import { DropDown } from "@/shared/components/DropDown";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { applicationMethodOptions, documentStatusOptions } from "../../constants"
+import { applicationMethodOptions, documentStatusOptions, APPLICATION_METHOD_LABEL_TO_VALUE } from "../../constants"
 import StatusButtonGroup from "../StatusButtonGroup";
 import { BottomActiveButtons } from "../BottomActiveButtons";
 import { ScheduleResult } from "@/shared/types";
@@ -31,9 +31,11 @@ export default function DocumentStageForm({ onCancel, onSave }: DocumentStageFor
     if (data) {
       const { applicationInfo, applicationStageTimeLine } = data;
       const docsStage = applicationStageTimeLine.docsStageTimeLine;
-
       setSubmissionStatus(docsStage?.submissionStatus ?? '');
-      setApplicationMethod(applicationInfo?.applicationMethod ?? '');
+      // 서버에서 한글로 받은 값을 영어 value로 변환
+      const rawMethod = applicationInfo?.applicationMethod ?? '';
+      const methodValue = APPLICATION_METHOD_LABEL_TO_VALUE[rawMethod] ?? rawMethod;
+      setApplicationMethod(methodValue);
       setDeadline(applicationInfo?.deadline ?? '');
       setScheduleResult(docsStage?.scheduleResult ?? 'WAITING');
     }

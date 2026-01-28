@@ -4,6 +4,12 @@ import { ScheduleResult } from '@/shared/types';
 export type SubmissionStatus = 'NOT_SUBMITTED' | 'SUBMITTED';
 export type ApplicationStatus = 'IN_PROGRESS' | 'FINAL_PASS' | 'FINAL_FAIL';
 
+// 서류 전형 수정 요청 (서버로 보낼 때 사용하는 영어 값)
+export type ApplicationMethod = 'PLATFORM' | 'EMAIL' | 'REFERRAL' | 'HOMEPAGE' | 'EMPTY';
+
+// 서버에서 받을 때 오는 한글 값
+export type ApplicationMethodLabel = '홈페이지 지원' | '이메일' | '채용 플랫폼' | '지인 추천' | '미선택' | '미입력';
+
 // 지원 정보
 export interface ApplicationInfo {
   applicationId: number;
@@ -14,7 +20,7 @@ export interface ApplicationInfo {
   currentStageType: string;
   applicationStatus: ApplicationStatus;
   deadline: string;
-  applicationMethod: string;
+  applicationMethod: ApplicationMethodLabel | 'EMPTY'; // 서버에서 한글로 옴
   memo: string;
   attachedFiles: string[];
 }
@@ -109,9 +115,6 @@ export interface EtcScheduleRequest {
   endedAt: string;
   scheduleResult: ScheduleResult;
 }
-
-// 서류 전형 수정 요청
-export type ApplicationMethod = 'PLATFORM' | 'EMAIL' | 'REFERRAL' | 'HOMEPAGE' | 'EMPTY';
 
 export interface DocumentStageUpdateRequest {
   deadline: string;

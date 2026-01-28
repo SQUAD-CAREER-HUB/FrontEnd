@@ -6,6 +6,7 @@ import { Clock } from 'lucide-react';
 import { StatusButton } from '../StatusButton';
 import { useGetApplicationDetail } from '../../hooks/useGetApplicationDetail';
 import { formatDateTime } from '@/shared/lib/utils';
+import { APPLICATION_METHOD_VALUE_TO_LABEL } from '../../constants';
 
 const SUBMISSION_STATUS_LABEL = {
   NOT_SUBMITTED: '미제출',
@@ -13,20 +14,13 @@ const SUBMISSION_STATUS_LABEL = {
   NO_INPUT: '미입력',
 } as const;
 
-const APPLICATION_METHOD_LABEL = {
-  HOMEPAGE: '홈페이지 지원',
-  EMAIL: '이메일',
-  PLATFORM: '채용 플랫폼',
-  REFERRAL: '지인 추천',
-  EMPTY: '미선택',
-} as const;
-
 export default function ViewCard() {
   const params = useParams();
   const applicationId = Number(params.id);
   const { data } = useGetApplicationDetail(applicationId);
 
-  const applicationInfo = data?.applicationInfo;
+  const applicationMethod = data?.applicationInfo.applicationMethod ?? '미입력';
+  const deadline = data?.applicationInfo.deadline;
   const docsStage = data?.applicationStageTimeLine.docsStageTimeLine;
 
   const submissionStatus = docsStage?.submissionStatus ?? 'NO_INPUT';
@@ -48,9 +42,7 @@ export default function ViewCard() {
             지원 방식
           </Label>
           <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
-            {applicationInfo?.applicationMethod
-              ? APPLICATION_METHOD_LABEL[applicationInfo.applicationMethod as keyof typeof APPLICATION_METHOD_LABEL] ?? applicationInfo.applicationMethod
-              : '-'}
+            {applicationMethod}
           </div>
         </div>
         <div>
@@ -59,7 +51,7 @@ export default function ViewCard() {
           </Label>
           <div className="text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5 opacity-50" />
-            {formatDateTime(applicationInfo?.deadline)}
+            {formatDateTime(deadline)}
           </div>
         </div>
       </div>
