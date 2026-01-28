@@ -1,6 +1,6 @@
 import { Card, CardContent, CardFooter } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
-import { DatePickerInput } from "../DatePickerInput";
+import { DateTimeInput } from "@/shared/components/DateTimeInput";
 import StatusButtonGroup from "../StatusButtonGroup";
 import FormLabel from "../common/FormLabel";
 import { BottomActiveButtons } from "../BottomActiveButtons";
@@ -30,12 +30,8 @@ export default function EditCard({ id, type, initialData }: EditCardProps) {
   const { setEditingStageId } = useStageEditor(null, type);
 
   const [scheduleName, setScheduleName] = useState(initialData.scheduleName);
-  const [startDate, setStartDate] = useState<Date | undefined>(
-    initialData.startedAt ? new Date(initialData.startedAt) : undefined
-  );
-  const [endDate, setEndDate] = useState<Date | undefined>(
-    initialData.endedAt ? new Date(initialData.endedAt) : undefined
-  );
+  const [startDate, setStartDate] = useState(initialData.startedAt ?? '');
+  const [endDate, setEndDate] = useState(initialData.endedAt ?? '');
   const [location, setLocation] = useState(initialData.location ?? '');
   const [scheduleResult, setScheduleResult] = useState<ScheduleResult>(initialData.scheduleResult);
 
@@ -49,15 +45,13 @@ export default function EditCard({ id, type, initialData }: EditCardProps) {
   const handleSave = () => {
     if (!scheduleName || !startDate) return;
 
-    const startedAt = startDate.toISOString().slice(0, 19);
-
     if (type === 'interview') {
       updateInterview.mutate(
         {
           scheduleId: id,
           data: {
             scheduleName,
-            startedAt,
+            startedAt: startDate,
             location,
             result: scheduleResult,
           },
@@ -67,14 +61,13 @@ export default function EditCard({ id, type, initialData }: EditCardProps) {
         }
       );
     } else {
-      const endedAt = endDate ? endDate.toISOString().slice(0, 19) : startedAt;
       updateEtc.mutate(
         {
           scheduleId: id,
           data: {
             scheduleName,
-            startedAt,
-            endedAt,
+            startedAt: startDate,
+            endedAt: endDate || startDate,
             scheduleResult,
           },
         },
@@ -105,14 +98,9 @@ export default function EditCard({ id, type, initialData }: EditCardProps) {
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <DatePickerInput
-            label="시작 일시"
-            value={startDate}
-            onChange={(date) => setStartDate(date)}
-            id="startDate"
-          />
+          <DateTimeInput label="시작 일시" value={startDate} onChange={setStartDate} id="startDate" />
           {type === 'interview' ? (
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-1">
               <FormLabel htmlFor="location">장소</FormLabel>
               <Input
                 id="location"
@@ -124,12 +112,7 @@ export default function EditCard({ id, type, initialData }: EditCardProps) {
               />
             </div>
           ) : (
-            <DatePickerInput
-              label="종료 일시"
-              value={endDate}
-              onChange={(date) => setEndDate(date)}
-              id="endDate"
-            />
+            <DateTimeInput label="종료 일시" value={endDate} onChange={setEndDate} id="endDate" />
           )}
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
