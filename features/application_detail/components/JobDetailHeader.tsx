@@ -1,13 +1,14 @@
 'use client';
 
-import { PanelRight, PanelRightClose, Save, Trash2 } from 'lucide-react';
+import { ChevronLeft, PanelRight, PanelRightClose, Save, Trash2 } from 'lucide-react';
 import { Button } from '../../../shared/components/ui/button';
 import { useTimelineStore } from '../stores/useTimeLineStore';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useGetApplicationDetail } from '../hooks/useGetApplicationDetail';
 import { useUpdateApplication } from '../hooks/useUpdateApplication';
 
 export default function JobDetailHeader() {
+  const router = useRouter();
   const params = useParams();
   const applicationId = Number(params.id);
   const { data } = useGetApplicationDetail(applicationId);
@@ -25,30 +26,38 @@ export default function JobDetailHeader() {
     // TODO: 삭제 기능 구현
   }
 
-  const handleSave = () => {
-    if (!data) return;
+  // const handleSave = () => {
+  //   if (!data) return;
 
-    updateApplication.mutate({
-      request: {
-        company: data.applicationInfo.company,
-        position: data.applicationInfo.position,
-        jobPostingUrl: data.applicationInfo.jobPostingUrl,
-        jobLocation: data.applicationInfo.jobLocation,
-        memo: data.applicationInfo.memo,
-      },
-    });
-  }
+  //   updateApplication.mutate({
+  //     request: {
+  //       company: data.applicationInfo.company,
+  //       position: data.applicationInfo.position,
+  //       jobPostingUrl: data.applicationInfo.jobPostingUrl,
+  //       jobLocation: data.applicationInfo.jobLocation,
+  //       memo: data.applicationInfo.memo,
+  //     },
+  //   });
+  // }
 
   return (
     <div className="sticky top-0 z-30 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-sm flex items-center justify-between mb-6 -mt-4 -mx-4 px-4 py-4 md:-mt-8 md:-mx-8 md:px-8 border-b border-slate-200/50 dark:border-slate-800/50 transition-all">
       {/* Left */}
-      <div>
-        <div className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100">
-          {companyName}
+      <div className="flex items-center space-x-3">
+        <button
+          onClick={() => router.back()}
+          className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-500 dark:text-slate-400"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <div>
+          <h1 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
+            <span>{companyName}</span>
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">
+            {position}
+          </p>
         </div>
-        <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">
-          {position}
-        </p>
       </div>
 
       {/* Right */}
@@ -78,8 +87,7 @@ export default function JobDetailHeader() {
         >
           <Trash2 className="h-5 w-5" />
         </Button>
-
-        <Button
+        {/* <Button
           size="smButton"
           onClick={handleSave}
           disabled={updateApplication.isPending}
@@ -87,7 +95,7 @@ export default function JobDetailHeader() {
         >
           <Save className="w-4 h-4" />
           <span>{updateApplication.isPending ? '저장 중...' : '저장'}</span>
-        </Button>
+        </Button> */}
       </div>
     </div>
   )
