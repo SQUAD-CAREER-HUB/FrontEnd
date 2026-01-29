@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import OtherStageItem from './OtherStageItem';
 import { useState } from 'react';
 import { useTimelineStore } from '../stores/useTimeLineStore';
-import AddSchedule from './AddSchedule';
+import AddEtcSchedule from './AddEtcSchedule';
 import StageWrapper from './common/StageWrapper';
 import { ACTIVE_STAGE_STYLES } from '../constants/styles';
 import { useGetApplicationDetail } from '../hooks/useGetApplicationDetail';
@@ -46,7 +46,7 @@ export default function OtherStage() {
               type='other'
             />
           ))}
-          {open && <AddSchedule type="other" setOpen={setOpen} />}
+          {open && <AddEtcSchedule setOpen={setOpen} />}
         </div>
       </div>
     </StageWrapper>

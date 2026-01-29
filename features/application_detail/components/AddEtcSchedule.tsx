@@ -1,45 +1,33 @@
 import { Card, CardContent, CardFooter } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { DateTimeInput } from "@/shared/components/DateTimeInput";
-import StatusButtonGroup from "../StatusButtonGroup";
-import FormLabel from "../common/FormLabel";
-import { BottomActiveButtons } from "../BottomActiveButtons";
-import { useStageEditor } from "../../hooks/useStageEditor";
+import StatusButtonGroup from "./StatusButtonGroup";
+import FormLabel from "./common/FormLabel";
+import { BottomActiveButtons } from "./BottomActiveButtons";
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { ScheduleResult } from "@/shared/types";
-import { useUpdateInterviewSchedule } from "../../hooks/useUpdateInterviewSchedule";
-import { validateInterviewSchedule } from "../../schemas/schedule";
+import { useCreateEtcSchedule } from "../hooks/useCreateEtcSchedule";
+import { validateEtcSchedule } from "../schemas/schedule";
 
-interface InterviewEditCardProps {
-  id: number;
-  initialData: {
-    scheduleName: string;
-    startedAt: string;
-    location?: string;
-    scheduleResult: ScheduleResult;
-  };
+interface AddEtcScheduleProps {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function InterviewEditCard({ id, initialData }: InterviewEditCardProps) {
+export default function AddEtcSchedule({ setOpen }: AddEtcScheduleProps) {
   const params = useParams();
   const applicationId = Number(params.id);
-  const { setEditingStageId } = useStageEditor(null, 'interview');
 
-  const [scheduleName, setScheduleName] = useState(initialData.scheduleName);
-  const [startDate, setStartDate] = useState(initialData.startedAt ?? '');
-  const [location, setLocation] = useState(initialData.location ?? '');
-  const [scheduleResult, setScheduleResult] = useState<ScheduleResult>(initialData.scheduleResult);
+  const [scheduleName, setScheduleName] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [scheduleResult, setScheduleResult] = useState<ScheduleResult>('WAITING');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const updateInterview = useUpdateInterviewSchedule(applicationId);
-
-  const handleClose = () => {
-    setEditingStageId(null);
-  };
+  const createEtc = useCreateEtcSchedule(applicationId);
 
   const handleSave = () => {
-    const result = validateInterviewSchedule({ scheduleName, startedAt: startDate, location });
+    const result = validateEtcSchedule({ scheduleName, startedAt: startDate, endedAt: endDate });
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
       result.error.issues.forEach((issue) => {
@@ -51,17 +39,14 @@ export default function InterviewEditCard({ id, initialData }: InterviewEditCard
     }
     setErrors({});
 
-    updateInterview.mutate(
+    createEtc.mutate(
       {
-        scheduleId: id,
-        data: {
-          scheduleName,
-          startedAt: startDate,
-          location,
-          result: scheduleResult,
-        },
+        scheduleName,
+        startedAt: startDate,
+        endedAt: endDate || startDate,
+        scheduleResult,
       },
-      { onSuccess: () => handleClose() }
+      { onSuccess: () => setOpen(false) }
     );
   };
 
@@ -74,7 +59,7 @@ export default function InterviewEditCard({ id, initialData }: InterviewEditCard
             <Input
               id="name"
               type="text"
-              placeholder="예: 1차 면접"
+              placeholder="예: 코딩테스트"
               value={scheduleName}
               onChange={(e) => { setScheduleName(e.target.value); if (errors.scheduleName) setErrors((prev) => ({ ...prev, scheduleName: '' })); }}
               className="w-full text-sm font-bold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-2"
@@ -87,23 +72,19 @@ export default function InterviewEditCard({ id, initialData }: InterviewEditCard
             <DateTimeInput
               label="시작 일시"
               value={startDate}
-              onChange={(v) => { setStartDate(v); if (errors.startedAt) setErrors((prev) => ({ ...prev, startedAt: '' })); }}
+              onChange={(v) => { setStartDate(v); if (!endDate) setEndDate(v); if (errors.startedAt) setErrors((prev) => ({ ...prev, startedAt: '' })); }}
               id="startDate"
-              className="w-full text-xs border border-slate-200 dark:border-slate-700 rounded-lg p-2 dark:bg-slate-900"
-              showIcon={false}
             />
             {errors.startedAt && <p className="text-xs text-red-500 mt-1">{errors.startedAt}</p>}
           </div>
-          <div className="flex flex-col">
-            <FormLabel htmlFor="location" className="">장소 및 링크</FormLabel>
-            <Input
-              id="location"
-              type="text"
-              placeholder="장소/링크"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="w-full text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-2"
+          <div>
+            <DateTimeInput
+              label="종료 일시"
+              value={endDate}
+              onChange={(v) => { setEndDate(v); if (errors.endedAt) setErrors((prev) => ({ ...prev, endedAt: '' })); }}
+              id="endDate"
             />
+            {errors.endedAt && <p className="text-xs text-red-500 mt-1">{errors.endedAt}</p>}
           </div>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
@@ -114,7 +95,11 @@ export default function InterviewEditCard({ id, initialData }: InterviewEditCard
         </div>
       </CardContent>
       <CardFooter className="flex items-center gap-2 self-end">
-        <BottomActiveButtons onCancel={handleClose} onSave={handleSave} loading={updateInterview.isPending} />
+        <BottomActiveButtons
+          onCancel={() => setOpen(false)}
+          onSave={handleSave}
+          loading={createEtc.isPending}
+        />
       </CardFooter>
     </Card>
   );

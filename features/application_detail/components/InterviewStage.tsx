@@ -6,7 +6,7 @@ import OtherStageItem from './OtherStageItem';
 import { useTimelineStore } from '../stores/useTimeLineStore';
 import { ScheduleResult } from '@/shared/types';
 import { useState } from 'react';
-import AddSchedule from './AddSchedule';
+import AddInterviewSchedule from './AddInterviewSchedule';
 import StageWrapper from './common/StageWrapper';
 import { ACTIVE_STAGE_STYLES, STATUS_FONT_STYLES } from '../constants/styles';
 import { useGetApplicationDetail } from '../hooks/useGetApplicationDetail';
@@ -57,7 +57,7 @@ export default function InterViewStage() {
               type='interview'
             />
           ))}
-          {open && <AddSchedule type="interview" setOpen={setOpen} />}
+          {open && <AddInterviewSchedule setOpen={setOpen} />}
         </div>
       </div>
     </StageWrapper>
