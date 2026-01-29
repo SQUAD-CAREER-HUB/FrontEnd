@@ -1,7 +1,7 @@
 'use client'
 
 import FormLabel from './FormLabel'
-import StatusButtonGroup from '@/features/application_detail/components/StatusButtonGroup'
+import StatusButtonGroup from '@/features/application_detail/components/common/StatusButtonGroup'
 
 type StatusType = 'WAITING' | 'PASS' | 'FAIL'
 

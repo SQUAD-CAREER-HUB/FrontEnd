@@ -3,7 +3,7 @@
 import { Card, CardContent } from '@/shared/components/ui/card'
 import { Clock, Trash2 } from 'lucide-react'
 import { Button } from '@/shared/components/ui/button'
-import { StatusButton } from '@/features/application_detail/components/StatusButton'
+import { StatusButton } from '@/features/application_detail/components/common/StatusButton'
 import { STATUS_BG_STYLES, STATUS_FONT_STYLES, LABEL_STYLES } from '@/features/application_detail/constants/styles'
 
 type ScheduleResult = 'WAITING' | 'PASS' | 'FAIL'
