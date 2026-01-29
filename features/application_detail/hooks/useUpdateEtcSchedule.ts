@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { clientApi } from '@/shared/lib/api/clientApi';
 import {
-  EtcScheduleRequest,
+  EtcScheduleUpdateRequest,
   ScheduleResponse,
   ApplicationDetailResponse,
 } from '../types';
@@ -16,7 +16,7 @@ export function useUpdateEtcSchedule(applicationId: number) {
       data,
     }: {
       scheduleId: number;
-      data: EtcScheduleRequest;
+      data: EtcScheduleUpdateRequest;
     }) => {
       const newData = clientApi.put<ScheduleResponse>(
         `/v1/applications/${applicationId}/schedules/etc/${scheduleId}`,
