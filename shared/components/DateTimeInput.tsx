@@ -1,5 +1,7 @@
 import { Clock } from "lucide-react";
 import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { cn } from "@/shared/lib/utils";
 
 interface DateTimeInputProps {
   value: string;
@@ -12,8 +14,6 @@ interface DateTimeInputProps {
   className?: string;
 }
 
-const DEFAULT_CLASS = "w-full pl-8 pr-2 py-1.5 bg-white/50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-[11px] font-bold h-[34px] dark:text-slate-100";
-
 export function DateTimeInput({ value, onChange, label, id, required, error, showIcon = true, className }: DateTimeInputProps) {
   return (
     <div className="flex flex-col gap-1">
@@ -25,16 +25,19 @@ export function DateTimeInput({ value, onChange, label, id, required, error, sho
       <div className="relative">
         {showIcon && (
           <Clock
-            className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400"
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 z-10 pointer-events-none"
             aria-hidden="true"
           />
         )}
-        <input
+        <Input
           id={id}
           type="datetime-local"
           value={value ? value.slice(0, 16) : ''}
           onChange={(e) => onChange(e.target.value ? `${e.target.value}:00` : '')}
-          className={className ?? DEFAULT_CLASS}
+          className={cn(
+            showIcon && "pl-8",
+            className
+          )}
         />
       </div>
       {error && <p className="text-xs text-red-500 mt-1 ml-1">{error}</p>}
