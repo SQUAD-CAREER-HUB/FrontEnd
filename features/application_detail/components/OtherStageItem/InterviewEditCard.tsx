@@ -8,35 +8,29 @@ import { useStageEditor } from "../../hooks/useStageEditor";
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { ScheduleResult } from "@/shared/types";
-import { useUpdateEtcSchedule } from "../../hooks/useUpdateEtcSchedule";
 import { useUpdateInterviewSchedule } from "../../hooks/useUpdateInterviewSchedule";
 
-interface EditCardProps {
+interface InterviewEditCardProps {
   id: number;
-  type: 'interview' | 'other';
   initialData: {
     scheduleName: string;
     startedAt: string;
-    endedAt?: string;
     location?: string;
     scheduleResult: ScheduleResult;
   };
 }
 
-export default function EditCard({ id, type, initialData }: EditCardProps) {
+export default function InterviewEditCard({ id, initialData }: InterviewEditCardProps) {
   const params = useParams();
   const applicationId = Number(params.id);
-
-  const { setEditingStageId } = useStageEditor(null, type);
+  const { setEditingStageId } = useStageEditor(null, 'interview');
 
   const [scheduleName, setScheduleName] = useState(initialData.scheduleName);
   const [startDate, setStartDate] = useState(initialData.startedAt ?? '');
-  const [endDate, setEndDate] = useState(initialData.endedAt ?? '');
   const [location, setLocation] = useState(initialData.location ?? '');
   const [scheduleResult, setScheduleResult] = useState<ScheduleResult>(initialData.scheduleResult);
 
   const updateInterview = useUpdateInterviewSchedule(applicationId);
-  const updateEtc = useUpdateEtcSchedule(applicationId);
 
   const handleClose = () => {
     setEditingStageId(null);
@@ -45,40 +39,19 @@ export default function EditCard({ id, type, initialData }: EditCardProps) {
   const handleSave = () => {
     if (!scheduleName || !startDate) return;
 
-    if (type === 'interview') {
-      updateInterview.mutate(
-        {
-          scheduleId: id,
-          data: {
-            scheduleName,
-            startedAt: startDate,
-            location,
-            result: scheduleResult,
-          },
+    updateInterview.mutate(
+      {
+        scheduleId: id,
+        data: {
+          scheduleName,
+          startedAt: startDate,
+          location,
+          result: scheduleResult,
         },
-        {
-          onSuccess: () => handleClose(),
-        }
-      );
-    } else {
-      updateEtc.mutate(
-        {
-          scheduleId: id,
-          data: {
-            scheduleName,
-            startedAt: startDate,
-            endedAt: endDate || startDate,
-            scheduleResult,
-          },
-        },
-        {
-          onSuccess: () => handleClose(),
-        }
-      );
-    }
+      },
+      { onSuccess: () => handleClose() }
+    );
   };
-
-  const isPending = updateInterview.isPending || updateEtc.isPending;
 
   return (
     <Card className="transition-all ring-2 ring-brand-50">
@@ -89,7 +62,7 @@ export default function EditCard({ id, type, initialData }: EditCardProps) {
             <Input
               id="name"
               type="text"
-              placeholder={type === 'interview' ? "예: 1차 면접" : "예: 코딩테스트"}
+              placeholder="예: 1차 면접"
               value={scheduleName}
               onChange={(e) => setScheduleName(e.target.value)}
               required
@@ -99,21 +72,17 @@ export default function EditCard({ id, type, initialData }: EditCardProps) {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <DateTimeInput label="시작 일시" value={startDate} onChange={setStartDate} id="startDate" />
-          {type === 'interview' ? (
-            <div className="flex flex-col gap-1">
-              <FormLabel htmlFor="location">장소</FormLabel>
-              <Input
-                id="location"
-                type="text"
-                placeholder="예: 강남구 OO빌딩 3층"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="w-full text-sm font-bold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-2"
-              />
-            </div>
-          ) : (
-            <DateTimeInput label="종료 일시" value={endDate} onChange={setEndDate} id="endDate" />
-          )}
+          <div className="flex flex-col gap-1">
+            <FormLabel htmlFor="location">장소</FormLabel>
+            <Input
+              id="location"
+              type="text"
+              placeholder="예: 강남구 OO빌딩 3층"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="w-full text-sm font-bold bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-2"
+            />
+          </div>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
           <div className="flex flex-col gap-1">
@@ -123,7 +92,7 @@ export default function EditCard({ id, type, initialData }: EditCardProps) {
         </div>
       </CardContent>
       <CardFooter className="flex items-center gap-2 self-end">
-        <BottomActiveButtons onCancel={handleClose} onSave={handleSave} loading={isPending} />
+        <BottomActiveButtons onCancel={handleClose} onSave={handleSave} loading={updateInterview.isPending} />
       </CardFooter>
     </Card>
   );

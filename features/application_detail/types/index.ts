@@ -108,12 +108,20 @@ export interface InterviewScheduleRequest {
   result: ScheduleResult;
 }
 
-// 기타 스케줄 생성/수정 요청
+// 기타 스케줄 생성 요청
 export interface EtcScheduleRequest {
   scheduleName: string;
   startedAt: string;
   endedAt: string;
   scheduleResult: ScheduleResult;
+}
+
+// 기타 스케줄 수정 요청
+export interface EtcScheduleUpdateRequest {
+  scheduleName: string;
+  startedAt: string;
+  endedAt: string;
+  result: ScheduleResult;
 }
 
 export interface DocumentStageUpdateRequest {

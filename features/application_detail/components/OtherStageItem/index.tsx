@@ -2,7 +2,8 @@
 
 import { ScheduleResult } from "@/shared/types";
 import ViewCard from "./ViewCard";
-import EditCard from "./EditCard";
+import InterviewEditCard from "./InterviewEditCard";
+import EtcEditCard from "./EtcEditCard";
 import { useStageEditor } from "../../hooks/useStageEditor";
 
 export type Mode = 'edit' | 'view';
@@ -28,29 +29,41 @@ export default function OtherStageItem({
 }: OtherStageItemProps) {
   const { isEditing } = useStageEditor(id, type);
 
+  if (!isEditing) {
+    return (
+      <ViewCard
+        id={id}
+        title={title}
+        datetime={datetime}
+        scheduleResult={scheduleResult}
+        type={type}
+      />
+    );
+  }
+
+  if (type === 'interview') {
+    return (
+      <InterviewEditCard
+        id={id}
+        initialData={{
+          scheduleName: title,
+          startedAt: datetime,
+          location,
+          scheduleResult,
+        }}
+      />
+    );
+  }
+
   return (
-    <>
-      {isEditing ? (
-        <EditCard
-          id={id}
-          type={type}
-          initialData={{
-            scheduleName: title,
-            startedAt: datetime,
-            endedAt: endDatetime,
-            location,
-            scheduleResult,
-          }}
-        />
-      ) : (
-        <ViewCard
-          id={id}
-          title={title}
-          datetime={datetime}
-          scheduleResult={scheduleResult}
-          type={type}
-        />
-      )}
-    </>
+    <EtcEditCard
+      id={id}
+      initialData={{
+        scheduleName: title,
+        startedAt: datetime,
+        endedAt: endDatetime,
+        scheduleResult,
+      }}
+    />
   );
 }
