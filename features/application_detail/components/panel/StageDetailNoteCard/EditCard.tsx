@@ -1,15 +1,14 @@
 'use client';
 
 import { Dispatch, SetStateAction } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 import { Button } from "@/shared/components/ui/button";
 import { CardContent } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
-import FileUploadButton from "@/shared/components/FileUploadButton";
-import { FileList, FileItem } from "@/shared/components/FileList";
 import { Globe, MapPin, Paperclip, Upload, X } from "lucide-react";
 import FormLabel from "../../common/FormLabel";
-import { StageDetailFormData } from './index';
+import { type StageDetailFormValues } from '../../../schemas/stageDetail';
 
 // S3 URL에서 파일명 추출 (UUID prefix 제거)
 function getFileNameFromUrl(url: string): string {
@@ -25,29 +24,23 @@ function getFileNameFromUrl(url: string): string {
 }
 
 interface EditCardProps {
-  formData: StageDetailFormData;
-  setFormData: Dispatch<SetStateAction<StageDetailFormData>>;
+  form: UseFormReturn<StageDetailFormValues>;
+  attachedFiles: string[];
+  setAttachedFiles: Dispatch<SetStateAction<string[]>>;
+  newFiles: File[];
+  setNewFiles: Dispatch<SetStateAction<File[]>>;
 }
 
-export default function EditCard({ formData, setFormData }: EditCardProps) {
-  const handleChange = (field: keyof StageDetailFormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
+export default function EditCard({ form, attachedFiles, setAttachedFiles, newFiles, setNewFiles }: EditCardProps) {
+  const { register, formState: { errors } } = form;
 
   const handleRemoveFile = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      attachedFiles: prev.attachedFiles.filter((_, i) => i !== index),
-    }));
+    setAttachedFiles(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleAddFiles = (files: FileList | null) => {
     if (!files) return;
-    const newFiles = Array.from(files);
-    setFormData(prev => ({
-      ...prev,
-      newFiles: [...prev.newFiles, ...newFiles],
-    }));
+    setNewFiles(prev => [...prev, ...Array.from(files)]);
   };
 
   return (
@@ -60,20 +53,28 @@ export default function EditCard({ formData, setFormData }: EditCardProps) {
                 회사명 / 직무
               </FormLabel>
               <div className="flex gap-2">
-                <Input
-                  className="flex-1 p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm dark:text-white"
-                  type="text"
-                  value={formData.company}
-                  onChange={(e) => handleChange('company', e.target.value)}
-                  placeholder="회사명 입력"
-                />
-                <Input
-                  className="flex-1 p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm dark:text-white"
-                  type="text"
-                  value={formData.position}
-                  onChange={(e) => handleChange('position', e.target.value)}
-                  placeholder="직무 입력"
-                />
+                <div className="flex-1">
+                  <Input
+                    className="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm dark:text-white"
+                    type="text"
+                    {...register('company')}
+                    placeholder="회사명 입력"
+                  />
+                  {errors.company && (
+                    <p className="text-xs text-red-500 mt-1">{errors.company.message}</p>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <Input
+                    className="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm dark:text-white"
+                    type="text"
+                    {...register('position')}
+                    placeholder="직무 입력"
+                  />
+                  {errors.position && (
+                    <p className="text-xs text-red-500 mt-1">{errors.position.message}</p>
+                  )}
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -86,8 +87,7 @@ export default function EditCard({ formData, setFormData }: EditCardProps) {
                   <Input
                     className="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm dark:text-white pl-8"
                     placeholder="근무지 입력"
-                    value={formData.jobLocation}
-                    onChange={(e) => handleChange('jobLocation', e.target.value)}
+                    {...register('jobLocation')}
                   />
                 </div>
               </div>
@@ -100,10 +100,12 @@ export default function EditCard({ formData, setFormData }: EditCardProps) {
                   <Input
                     className="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm dark:text-white pl-8"
                     placeholder="URL 입력"
-                    value={formData.jobPostingUrl}
-                    onChange={(e) => handleChange('jobPostingUrl', e.target.value)}
+                    {...register('jobPostingUrl')}
                   />
                 </div>
+                {errors.jobPostingUrl && (
+                  <p className="text-xs text-red-500 mt-1">{errors.jobPostingUrl.message}</p>
+                )}
               </div>
             </div>
           </div>
@@ -115,8 +117,7 @@ export default function EditCard({ formData, setFormData }: EditCardProps) {
           <Textarea
             placeholder="메모를 입력해 주세요."
             id="message"
-            value={formData.memo}
-            onChange={(e) => handleChange('memo', e.target.value)}
+            {...register('memo')}
           />
         </div>
         <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
@@ -136,11 +137,11 @@ export default function EditCard({ formData, setFormData }: EditCardProps) {
               />
             </label>
           </div>
-          
+
           <div className="space-y-2">
-            {formData.attachedFiles.length > 0 || formData.newFiles.length > 0 ? (
+            {attachedFiles.length > 0 || newFiles.length > 0 ? (
               <>
-                {formData.attachedFiles.map((file, index) => (
+                {attachedFiles.map((file, index) => (
                   <div
                     key={`existing-${index}`}
                     className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-xl group transition-all hover:bg-white dark:hover:bg-slate-800"
@@ -165,7 +166,7 @@ export default function EditCard({ formData, setFormData }: EditCardProps) {
                     </Button>
                   </div>
                 ))}
-                {formData.newFiles.map((file, index) => (
+                {newFiles.map((file, index) => (
                   <div
                     key={`new-${index}`}
                     className="flex items-center justify-between p-3 bg-brand-50 dark:bg-brand-900/20 border border-brand-200 dark:border-brand-800 rounded-xl group transition-all"
@@ -185,10 +186,7 @@ export default function EditCard({ formData, setFormData }: EditCardProps) {
                       size="xs"
                       variant="ghost"
                       className="cursor-pointer p-1 text-slate-400 hover:text-red-500 rounded-lg"
-                      onClick={() => setFormData(prev => ({
-                        ...prev,
-                        newFiles: prev.newFiles.filter((_, i) => i !== index),
-                      }))}
+                      onClick={() => setNewFiles(prev => prev.filter((_, i) => i !== index))}
                     >
                       <X className="w-4 h-4" />
                     </Button>

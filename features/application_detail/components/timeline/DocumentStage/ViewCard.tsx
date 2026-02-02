@@ -6,7 +6,6 @@ import { Clock } from 'lucide-react';
 import { StatusButton } from '../../common/StatusButton';
 import { useGetApplicationDetail } from '../../../hooks/useGetApplicationDetail';
 import { formatDateTime } from '@/shared/lib/utils';
-import { APPLICATION_METHOD_VALUE_TO_LABEL } from '../../../constants';
 
 const SUBMISSION_STATUS_LABEL = {
   NOT_SUBMITTED: '미제출',

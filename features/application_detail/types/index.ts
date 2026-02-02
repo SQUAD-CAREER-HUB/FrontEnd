@@ -73,6 +73,7 @@ export interface ApplicationUpdateRequestData {
   position?: string;
   jobLocation?: string;
   memo?: string;
+  attachedFiles?: string[];
 }
 
 export interface ApplicationUpdateRequest {

@@ -30,10 +30,20 @@ export function useUpdateApplication(applicationId: number) {
         formData
       );
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: applicationDetailKeys.detail(applicationId),
-      });
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData<ApplicationDetailResponse>(
+        applicationDetailKeys.detail(applicationId),
+        (oldData) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            applicationInfo: {
+              ...oldData.applicationInfo,
+              ...variables.request,
+            },
+          };
+        },
+      );
     },
   });
 }

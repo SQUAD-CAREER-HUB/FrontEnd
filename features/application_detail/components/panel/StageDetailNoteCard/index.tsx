@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import ViewCard from "./ViewCard";
 import EditCard from "./EditCard";
 import { Card, CardHeader } from "@/shared/components/ui/card";
@@ -11,16 +13,7 @@ import StageEditButton from "../../common/StageEditButton";
 import { useStageEdit } from "../../../hooks/useStageEdit";
 import { useGetApplicationDetail } from '../../../hooks/useGetApplicationDetail';
 import { useUpdateApplication } from '../../../hooks/useUpdateApplication';
-
-export interface StageDetailFormData {
-  company: string;
-  position: string;
-  jobLocation: string;
-  jobPostingUrl: string;
-  memo: string;
-  attachedFiles: string[];
-  newFiles: File[];
-}
+import { stageDetailSchema, type StageDetailFormValues } from '../../../schemas/stageDetail';
 
 export default function StageDetailNoteCard() {
   const params = useParams();
@@ -29,42 +22,47 @@ export default function StageDetailNoteCard() {
   const { mutate: updateApplication, isPending } = useUpdateApplication(applicationId);
   const { isEditing, toggleEdit } = useStageEdit(false);
 
-  const [formData, setFormData] = useState<StageDetailFormData>({
-    company: '',
-    position: '',
-    jobLocation: '',
-    jobPostingUrl: '',
-    memo: '',
-    attachedFiles: [],
-    newFiles: [],
+  const form = useForm<StageDetailFormValues>({
+    resolver: zodResolver(stageDetailSchema),
+    defaultValues: {
+      company: '',
+      position: '',
+      jobLocation: '',
+      jobPostingUrl: '',
+      memo: '',
+    },
   });
+
+  const [attachedFiles, setAttachedFiles] = useState<string[]>([]);
+  const [newFiles, setNewFiles] = useState<File[]>([]);
 
   useEffect(() => {
     if (data?.applicationInfo) {
       const info = data.applicationInfo;
-      setFormData({
+      form.reset({
         company: info.company ?? '',
         position: info.position ?? '',
         jobLocation: info.jobLocation ?? '',
         jobPostingUrl: info.jobPostingUrl ?? '',
         memo: info.memo ?? '',
-        attachedFiles: info.attachedFiles ?? [],
-        newFiles: [],
       });
+      setAttachedFiles(info.attachedFiles ?? []);
+      setNewFiles([]);
     }
   }, [data?.applicationInfo]);
 
-  const handleSave = () => {
+  const handleSave = form.handleSubmit((formValues) => {
     updateApplication(
       {
         request: {
-          company: formData.company,
-          position: formData.position,
-          jobLocation: formData.jobLocation,
-          jobPostingUrl: formData.jobPostingUrl,
-          memo: formData.memo,
+          company: formValues.company,
+          position: formValues.position,
+          jobLocation: formValues.jobLocation,
+          jobPostingUrl: formValues.jobPostingUrl,
+          memo: formValues.memo,
+          attachedFiles,
         },
-        files: formData.newFiles.length > 0 ? formData.newFiles : undefined,
+        files: newFiles.length > 0 ? newFiles : undefined,
       },
       {
         onSuccess: () => {
@@ -72,6 +70,22 @@ export default function StageDetailNoteCard() {
         },
       }
     );
+  });
+
+  const handleCancel = () => {
+    if (data?.applicationInfo) {
+      const info = data.applicationInfo;
+      form.reset({
+        company: info.company ?? '',
+        position: info.position ?? '',
+        jobLocation: info.jobLocation ?? '',
+        jobPostingUrl: info.jobPostingUrl ?? '',
+        memo: info.memo ?? '',
+      });
+      setAttachedFiles(info.attachedFiles ?? []);
+      setNewFiles([]);
+    }
+    toggleEdit();
   };
 
   return (
@@ -86,7 +100,7 @@ export default function StageDetailNoteCard() {
         ) : (
           <div className="flex gap-2">
             <Button
-              onClick={toggleEdit}
+              onClick={handleCancel}
               variant="ghost"
               className="text-xs font-bold text-slate-400 hover:text-slate-600"
             >
@@ -104,7 +118,13 @@ export default function StageDetailNoteCard() {
         )}
       </CardHeader>
       {isEditing ? (
-        <EditCard formData={formData} setFormData={setFormData} />
+        <EditCard
+          form={form}
+          attachedFiles={attachedFiles}
+          setAttachedFiles={setAttachedFiles}
+          newFiles={newFiles}
+          setNewFiles={setNewFiles}
+        />
       ) : (
         <ViewCard />
       )}
