@@ -5,11 +5,13 @@ import StatusButtonGroup from "../../common/StatusButtonGroup";
 import FormLabel from "../../common/FormLabel";
 import { BottomActiveButtons } from "../../common/BottomActiveButtons";
 import { useStageEditor } from "../../../hooks/useStageEditor";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { ScheduleResult } from "@/shared/types";
 import { useUpdateInterviewSchedule } from "../../../hooks/useUpdateInterviewSchedule";
+import { useGetApplicationDetail } from "../../../hooks/useGetApplicationDetail";
 import { validateInterviewSchedule } from "../../../schemas/schedule";
+import { hasPreviousStageFail } from "../../../lib/timelineSync";
 
 interface InterviewEditCardProps {
   id: number;
@@ -32,7 +34,12 @@ export default function InterviewEditCard({ id, initialData }: InterviewEditCard
   const [scheduleResult, setScheduleResult] = useState<ScheduleResult>(initialData.scheduleResult);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const { data } = useGetApplicationDetail(applicationId);
   const updateInterview = useUpdateInterviewSchedule(applicationId);
+
+  // 이전 단계(서류/기타)가 불합격이면 합격 선택 불가
+  const prevFailed = useMemo(() => (data ? hasPreviousStageFail('INTERVIEW', data) : false), [data]);
+  const disabledStatuses: ScheduleResult[] = prevFailed ? ['PASS'] : [];
 
   const handleClose = () => {
     setEditingStageId(null);
@@ -109,7 +116,10 @@ export default function InterviewEditCard({ id, initialData }: InterviewEditCard
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
           <div className="flex flex-col gap-1">
             <FormLabel htmlFor="status">진행 상태</FormLabel>
-            <StatusButtonGroup status={scheduleResult} onStatusChange={setScheduleResult} />
+            <StatusButtonGroup status={scheduleResult} onStatusChange={setScheduleResult} disabledStatuses={disabledStatuses} />
+            {prevFailed && (
+              <p className="text-[10px] text-red-400 mt-1">이전 단계에 불합격이 있어 합격으로 변경할 수 없습니다</p>
+            )}
           </div>
         </div>
       </CardContent>

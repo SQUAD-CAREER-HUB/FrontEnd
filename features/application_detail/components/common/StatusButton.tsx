@@ -10,6 +10,7 @@ interface StatusButtonProps {
   onClick?: (status: ScheduleResult) => void;
   label?: string;
   className?: string;
+  disabled?: boolean;
 }
 
 export function StatusButton({
@@ -17,7 +18,8 @@ export function StatusButton({
   currentStatus,
   onClick,
   label,
-  className
+  className,
+  disabled = false,
 }: StatusButtonProps) {
   const isActive = status === currentStatus;
   const statusLabel = {
@@ -26,24 +28,26 @@ export function StatusButton({
     FAIL: '불합격'
   }
   const statusStyles = {
-    WAITING: isActive 
-      ? 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200' 
+    WAITING: isActive
+      ? 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200'
       : 'text-slate-400 hover:text-slate-600',
-    PASS: isActive 
-      ? 'bg-green-500 text-white' 
+    PASS: isActive
+      ? 'bg-green-500 text-white'
       : 'hover:text-green-600',
-    FAIL: isActive 
-      ? 'bg-red-500 text-white' 
+    FAIL: isActive
+      ? 'bg-red-500 text-white'
       : 'hover:text-red-600'
   };
 
   return (
-    <Button 
-      variant={'xs'} 
-      size={'xs'} 
-      onClick={() => onClick?.(status)}
+    <Button
+      variant={'xs'}
+      size={'xs'}
+      onClick={() => !disabled && onClick?.(status)}
+      disabled={disabled}
       className={cn(
         'font-bold shadow-none rounded-md',
+        disabled && 'opacity-40 cursor-not-allowed',
         statusStyles[status],
         className
       )}
