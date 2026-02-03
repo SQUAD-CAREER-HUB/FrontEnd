@@ -1,7 +1,8 @@
 'use client'
 
 import { ScheduleResult } from "@/shared/types";
-import ViewCard from "./ViewCard";
+import EtcViewCard from "./EtcViewCard";
+import InterviewViewCard from "./InterviewViewCard";
 import InterviewEditCard from "./InterviewEditCard";
 import EtcEditCard from "./EtcEditCard";
 import { useStageEditor } from "../../../hooks/useStageEditor";
@@ -30,13 +31,24 @@ export default function ScheduleCard({
   const { isEditing } = useStageEditor(id, type);
 
   if (!isEditing) {
+    if (type === 'interview') {
+      return (
+        <InterviewViewCard
+          id={id}
+          title={title}
+          datetime={datetime}
+          location={location}
+          scheduleResult={scheduleResult}
+        />
+      );
+    }
     return (
-      <ViewCard
+      <EtcViewCard
         id={id}
         title={title}
         datetime={datetime}
+        endDatetime={endDatetime}
         scheduleResult={scheduleResult}
-        type={type}
       />
     );
   }

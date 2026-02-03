@@ -32,20 +32,20 @@ export default function InterViewStage() {
 
   return (
     <StageWrapper number={3} stage="INTERVIEW">
-      <div className='transition-opacity opacity-90'>
-        <div className='flex justify-between items-center mb-4'>
-          <h3 className={`font-bold text-lg text-slate-900 dark:text-slate-100 ${activeStage === 'INTERVIEW' && ACTIVE_STAGE_STYLES.font} ${STATUS_FONT_STYLES[result]}`}>
+      <div className={`rounded-xl p-5 shadow-sm transition-all border bg-white dark:bg-slate-900 ${activeStage === 'INTERVIEW' ? ACTIVE_STAGE_STYLES.border : 'border-slate-200 dark:border-slate-700'}`}>
+        <div className='flex justify-between items-center mb-5'>
+          <h3 className={`font-bold text-lg ${activeStage === 'INTERVIEW' ? 'text-brand-600 dark:text-brand-400' : STATUS_FONT_STYLES[result]}`}>
             면접 전형
           </h3>
-          <div
+          <button
             onClick={() => { setOpen(prev => !prev) }}
-            className='p-2 text-slate-400 hover:text-brand-500 transition-colors cursor-pointer'
+            className='p-2 text-slate-400 hover:text-brand-500 transition-colors'
             title="전형 추가"
           >
-            <Plus className='w-5 h-5 mr-1' />
-          </div>
+            <Plus className='w-5 h-5' />
+          </button>
         </div>
-        <div className={`space-y-3 p-3 rounded-xl transition-all ${activeStage === 'INTERVIEW' && ACTIVE_STAGE_STYLES.bg}`}>
+        <div className='space-y-3'>
           {interviewStageTimeLine?.map((stage) => (
             <ScheduleCard
               key={stage.scheduleId}
