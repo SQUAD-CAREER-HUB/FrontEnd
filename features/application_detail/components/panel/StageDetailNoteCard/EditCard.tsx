@@ -1,6 +1,5 @@
 'use client';
 
-import { Dispatch, SetStateAction } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Button } from "@/shared/components/ui/button";
 import { CardContent } from "@/shared/components/ui/card";
@@ -8,6 +7,7 @@ import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Globe, MapPin, Paperclip, Upload, X } from "lucide-react";
 import FormLabel from "../../common/FormLabel";
+import { useAttachedFilesStore } from '../../../stores/useAttachedFilesStore';
 import { type StageDetailFormValues } from '../../../schemas/stageDetail';
 
 // S3 URL에서 파일명 추출 (UUID prefix 제거)
@@ -25,22 +25,23 @@ function getFileNameFromUrl(url: string): string {
 
 interface EditCardProps {
   form: UseFormReturn<StageDetailFormValues>;
-  attachedFiles: string[];
-  setAttachedFiles: Dispatch<SetStateAction<string[]>>;
-  newFiles: File[];
-  setNewFiles: Dispatch<SetStateAction<File[]>>;
 }
 
-export default function EditCard({ form, attachedFiles, setAttachedFiles, newFiles, setNewFiles }: EditCardProps) {
+export default function EditCard({ form }: EditCardProps) {
   const { register, formState: { errors } } = form;
-
-  const handleRemoveFile = (index: number) => {
-    setAttachedFiles(prev => prev.filter((_, i) => i !== index));
-  };
+  const {
+    attachedFiles,
+    newFiles,
+    removeAttachedFile,
+    addNewFiles,
+    removeNewFile,
+  } = useAttachedFilesStore();
 
   const handleAddFiles = (files: FileList | null) => {
+
     if (!files) return;
-    setNewFiles(prev => [...prev, ...Array.from(files)]);
+    console.log(files);
+    addNewFiles(Array.from(files));
   };
 
   return (
@@ -160,7 +161,7 @@ export default function EditCard({ form, attachedFiles, setAttachedFiles, newFil
                       size="xs"
                       variant="ghost"
                       className="cursor-pointer p-1 text-slate-400 hover:text-red-500 rounded-lg"
-                      onClick={() => handleRemoveFile(index)}
+                      onClick={() => removeAttachedFile(index)}
                     >
                       <X className="w-4 h-4" />
                     </Button>
@@ -186,7 +187,7 @@ export default function EditCard({ form, attachedFiles, setAttachedFiles, newFil
                       size="xs"
                       variant="ghost"
                       className="cursor-pointer p-1 text-slate-400 hover:text-red-500 rounded-lg"
-                      onClick={() => setNewFiles(prev => prev.filter((_, i) => i !== index))}
+                      onClick={() => removeNewFile(index)}
                     >
                       <X className="w-4 h-4" />
                     </Button>

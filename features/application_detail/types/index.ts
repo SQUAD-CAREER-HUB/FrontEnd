@@ -78,7 +78,7 @@ export interface ApplicationUpdateRequestData {
 
 export interface ApplicationUpdateRequest {
   request: ApplicationUpdateRequestData;
-  files?: File[];
+  files?: (File | string)[];
 }
 
 // 스케줄 API 응답 타입

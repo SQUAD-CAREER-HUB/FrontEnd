@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,6 +13,7 @@ import StageEditButton from "../../common/StageEditButton";
 import { useStageEdit } from "../../../hooks/useStageEdit";
 import { useGetApplicationDetail } from '../../../hooks/useGetApplicationDetail';
 import { useUpdateApplication } from '../../../hooks/useUpdateApplication';
+import { useAttachedFilesStore } from '../../../stores/useAttachedFilesStore';
 import { stageDetailSchema, type StageDetailFormValues } from '../../../schemas/stageDetail';
 
 export default function StageDetailNoteCard() {
@@ -33,12 +34,12 @@ export default function StageDetailNoteCard() {
     },
   });
 
-  const [attachedFiles, setAttachedFiles] = useState<string[]>([]);
-  const [newFiles, setNewFiles] = useState<File[]>([]);
-
+  const { attachedFiles, newFiles, reset: resetFiles } = useAttachedFilesStore();
   useEffect(() => {
     if (data?.applicationInfo) {
       const info = data.applicationInfo;
+      // 서버에서 받은 원본 URL 확인
+      console.log('[서버 원본 URL]', info.attachedFiles);
       form.reset({
         company: info.company ?? '',
         position: info.position ?? '',
@@ -46,12 +47,15 @@ export default function StageDetailNoteCard() {
         jobPostingUrl: info.jobPostingUrl ?? '',
         memo: info.memo ?? '',
       });
-      setAttachedFiles(info.attachedFiles ?? []);
-      setNewFiles([]);
+      resetFiles(info.attachedFiles ?? []);
     }
   }, [data?.applicationInfo]);
 
   const handleSave = form.handleSubmit((formValues) => {
+    // 기존 URL과 새 파일을 합쳐서 files로 전송
+    const allFiles: (File | string)[] = [...attachedFiles, ...newFiles];
+    console.log('[저장 요청 files]', allFiles);
+
     updateApplication(
       {
         request: {
@@ -60,9 +64,8 @@ export default function StageDetailNoteCard() {
           jobLocation: formValues.jobLocation,
           jobPostingUrl: formValues.jobPostingUrl,
           memo: formValues.memo,
-          attachedFiles,
         },
-        files: newFiles.length > 0 ? newFiles : undefined,
+        files: allFiles.length > 0 ? allFiles : undefined,
       },
       {
         onSuccess: () => {
@@ -82,8 +85,7 @@ export default function StageDetailNoteCard() {
         jobPostingUrl: info.jobPostingUrl ?? '',
         memo: info.memo ?? '',
       });
-      setAttachedFiles(info.attachedFiles ?? []);
-      setNewFiles([]);
+      resetFiles(info.attachedFiles ?? []);
     }
     toggleEdit();
   };
@@ -118,13 +120,7 @@ export default function StageDetailNoteCard() {
         )}
       </CardHeader>
       {isEditing ? (
-        <EditCard
-          form={form}
-          attachedFiles={attachedFiles}
-          setAttachedFiles={setAttachedFiles}
-          newFiles={newFiles}
-          setNewFiles={setNewFiles}
-        />
+        <EditCard form={form} />
       ) : (
         <ViewCard />
       )}
