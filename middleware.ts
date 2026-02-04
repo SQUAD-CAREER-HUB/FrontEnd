@@ -23,10 +23,10 @@ export const config = {
    * 1. api (BFF API Route)
    * 2. _next/static (정적 파일)
    * 3. _next/image (이미지 최적화 파일)
-   * 4. favicon.ico, manifest.ts (루트 정적 파일)
+   * 4. favicon.ico, manifest.webmanifest (루트 정적 파일)
    * 5. .png, .svg 등 이미지 확장자
    */
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|manifest.ts|.*\\.png$|.*\\.svg$).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|manifest.webmanifest|firebase-messaging-sw\\.js|.*\\.png$|.*\\.svg$).*)',
   ],
 };

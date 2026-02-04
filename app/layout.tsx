@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   title: 'Career-Hub',
   description:
     '구직자의 지원 현황·자소서·면접 일정을 한 곳에서 관리하는 통합 플랫폼 SaaS 서비스',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Career-Hub',
+  },
 };
 
 export default function RootLayout({
