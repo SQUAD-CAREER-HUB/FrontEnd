@@ -11,6 +11,26 @@ export const applicationMethodOptions = [
   { value: "EMPTY", label: "미선택" }
 ];
 
+// 서버에서 한글로 받은 값을 영어 value로 변환하는 매핑
+export const APPLICATION_METHOD_LABEL_TO_VALUE: Record<string, string> = {
+  '홈페이지 지원': 'HOMEPAGE',
+  '이메일': 'EMAIL',
+  '채용 플랫폼': 'PLATFORM',
+  '지인 추천': 'REFERRAL',
+  '미선택': 'EMPTY',
+  '미입력': 'EMPTY',
+  EMPTY: 'EMPTY',
+};
+
+// 영어 value를 한글 label로 변환하는 매핑
+export const APPLICATION_METHOD_VALUE_TO_LABEL: Record<string, string> = {
+  HOMEPAGE: '홈페이지 지원',
+  EMAIL: '이메일',
+  PLATFORM: '채용 플랫폼',
+  REFERRAL: '지인 추천',
+  EMPTY: '미선택',
+};
+
 export const DIRECT_INPUT_VALUE = '직접 입력';
 
 export const interviewOptions = [

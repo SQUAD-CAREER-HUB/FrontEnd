@@ -1,13 +1,13 @@
 'use client'
 
 import { useTimelineStore } from '../stores/useTimeLineStore'
-import DocumentStage from './DocumentStage'
-import FinalResultStage from './FinalResultStage'
-import InterViewQuestionSection from './InterViewQuestionSection'
-import InterViewStage from './InterviewStage'
-import OtherStage from './OtherStage'
-import StageDetailNoteCard from './StageDetailNoteCard'
-import { TimelineCard } from './TimelineCard'
+import DocumentStage from './timeline/DocumentStage'
+import FinalResultStage from './timeline/FinalResultStage'
+import InterViewQuestionSection from './panel/InterViewQuestionSection'
+import InterViewStage from './timeline/InterviewStage'
+import EtcStage from './timeline/EtcStage'
+import StageDetailNoteCard from './panel/StageDetailNoteCard'
+import { TimelineCard } from './timeline/TimelineCard'
 
 export default function JobDetailCard() {
   const isPanelOpened = useTimelineStore(state => state.isPanelOpened);
@@ -19,7 +19,7 @@ export default function JobDetailCard() {
       <div className={`${timelineColumnSpan} flex flex-col min-w-0 transition-all`}>
         <TimelineCard>
           <DocumentStage />
-          <OtherStage />
+          <EtcStage />
           <InterViewStage />
           <FinalResultStage />
         </TimelineCard>

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import TimelineStepNumber from "../TimeLineStepNumber";
+import TimelineStepNumber from "./TimeLineStepNumber";
 import { ApplicationStage } from "@/shared/types";
 
 interface StageWrapperProps {
