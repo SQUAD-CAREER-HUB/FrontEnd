@@ -1,6 +1,6 @@
 import { CalendarDaysIcon } from 'lucide-react';
 
-export default function ScheduleListEmptyState() {
+export default function DailyApplicationListEmptyState() {
   return (
     <div className='border-2 border-dashed border-border p-16 text-center rounded-3xl bg-slate-50'>
       <div className='flex flex-col justify-center items-center'>
