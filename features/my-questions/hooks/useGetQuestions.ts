@@ -15,7 +15,6 @@ export const useGetQuestions = ({
   size = 20,
 }: UseGetQuestionsProps) => {
   return useSuspenseInfiniteQuery<GetQuestionsResponse>({
-    // queryKey에 linkStatus와 query를 포함하여 필터가 바뀔 때마다 새 데이터를 가져옵니다.
     queryKey: ['questions', linkStatus, query],
 
     queryFn: ({ pageParam }) =>
@@ -28,7 +27,6 @@ export const useGetQuestions = ({
 
     initialPageParam: undefined,
 
-    // 다음 페이지 커서 설정 (명세서의 nextCursorId 활용)
     getNextPageParam: (lastPage) => {
       return lastPage.hasNext ? lastPage.nextCursorId : undefined;
     },
