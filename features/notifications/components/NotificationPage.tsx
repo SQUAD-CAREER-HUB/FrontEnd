@@ -37,7 +37,7 @@ export default function NotificationPage() {
 
   if (isLoading) {
     return (
-      <div className="animate-fade-in p-4">
+      <div className="animate-fade-in p-4 max-w-4xl mx-auto">
         <NotificationHeader
           onSettingsClick={handleSettingsClick}
           onMarkAllReadClick={handleMarkAllReadClick}
@@ -52,7 +52,7 @@ export default function NotificationPage() {
 
   if (isError) {
     return (
-      <div className="animate-fade-in p-4">
+      <div className="animate-fade-in p-4 max-w-4xl mx-auto">
         <NotificationHeader
           onSettingsClick={handleSettingsClick}
           onMarkAllReadClick={handleMarkAllReadClick}
@@ -66,7 +66,7 @@ export default function NotificationPage() {
   }
 
   return (
-    <div className="animate-fade-in p-4">
+    <div className="animate-fade-in p-4 max-w-4xl mx-auto">
       <NotificationHeader
         onSettingsClick={handleSettingsClick}
         onMarkAllReadClick={handleMarkAllReadClick}

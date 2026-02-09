@@ -23,7 +23,7 @@ export default function MainSidebar() {
     <aside
       className={cn(
         'sticky top-0 h-screen',
-        'bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-col  gap-y-4 z-20 hidden md:flex flex-shrink-0 transition-all duration-300',
+        'bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-col  gap-y-4 z-32 hidden md:flex flex-shrink-0 transition-all duration-300',
         isExpanded ? 'w-64 p-4' : 'w-20 p-2 items-center',
       )}
     >

@@ -4,12 +4,11 @@ import ApplicationFilterPanel from '@/features/applications/components/Applicati
 import ApplicationFilterPanelMobile from '@/features/applications/components/ApplicationFilterPanelMobile';
 import ApplicationHeader from '@/features/applications/components/ApplicationHeader';
 import ApplicationList from '@/features/applications/components/ApplicationList';
-import { useApplicationFilterPanelStore } from '@/features/applications/stores/useApplicationFilterPanelStore';
 import { useApplicationFilterValueStore } from '@/features/applications/stores/useApplicationFilterValueStore';
+import { useGetApplications } from '@/features/applications/hooks/useGetApplications';
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
 
 export default function ApplicationsContainer() {
-  const { isOpen } = useApplicationFilterPanelStore();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
 
   const { query, stageTypes, submissionStatus, stageResult } =
@@ -28,19 +27,23 @@ export default function ApplicationsContainer() {
     stageResult: stageResult || undefined,
   };
 
+  const { data } = useGetApplications(filter);
+  const totalCount = data?.pages.flatMap((page) => page.contents).length ?? 0;
+
   return (
-    <div className="flex flex-col h-full">
-      <ApplicationHeader />
+    <div className='flex flex-col lg:flex-row relative bg-slate-50 dark:bg-slate-950 min-h-full'>
+      <div className="flex-1 flex flex-col min-w-0 p-4">
+        <ApplicationHeader totalCount={totalCount} />
 
-      <div className="flex flex-1 overflow-hidden">
-        {/* 메인 콘텐츠 */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar">
-          <ApplicationList filter={filter} />
+        <div className="flex flex-1 overflow-hidden">
+          {/* 메인 콘텐츠 */}
+          <div className="flex-1 overflow-y-auto custom-scrollbar">
+            <ApplicationList filter={filter} />
+          </div>
         </div>
-
-        {/* Desktop 사이드 패널 */}
-        {isDesktop && isOpen && <ApplicationFilterPanel />}
       </div>
+      {/* Desktop 사이드 패널 */}
+      {isDesktop && <ApplicationFilterPanel />}
 
       {/* Mobile Drawer (Sheet는 모바일에서만 렌더) */}
       {!isDesktop && <ApplicationFilterPanelMobile />}

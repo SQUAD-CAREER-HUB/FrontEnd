@@ -4,6 +4,12 @@ import { ScheduleResult } from '@/shared/types';
 export type SubmissionStatus = 'NOT_SUBMITTED' | 'SUBMITTED';
 export type ApplicationStatus = 'IN_PROGRESS' | 'FINAL_PASS' | 'FINAL_FAIL';
 
+// 서류 전형 수정 요청 (서버로 보낼 때 사용하는 영어 값)
+export type ApplicationMethod = 'PLATFORM' | 'EMAIL' | 'REFERRAL' | 'HOMEPAGE' | 'EMPTY';
+
+// 서버에서 받을 때 오는 한글 값
+export type ApplicationMethodLabel = '홈페이지 지원' | '이메일' | '채용 플랫폼' | '지인 추천' | '미선택' | '미입력';
+
 // 지원 정보
 export interface ApplicationInfo {
   applicationId: number;
@@ -14,7 +20,7 @@ export interface ApplicationInfo {
   currentStageType: string;
   applicationStatus: ApplicationStatus;
   deadline: string;
-  applicationMethod: string;
+  applicationMethod: ApplicationMethodLabel | 'EMPTY'; // 서버에서 한글로 옴
   memo: string;
   attachedFiles: string[];
 }
@@ -67,11 +73,12 @@ export interface ApplicationUpdateRequestData {
   position?: string;
   jobLocation?: string;
   memo?: string;
+  attachedFiles?: string[];
 }
 
 export interface ApplicationUpdateRequest {
   request: ApplicationUpdateRequestData;
-  files?: File[];
+  files?: (File | string)[];
 }
 
 // 스케줄 API 응답 타입
@@ -102,7 +109,7 @@ export interface InterviewScheduleRequest {
   result: ScheduleResult;
 }
 
-// 기타 스케줄 생성/수정 요청
+// 기타 스케줄 생성 요청
 export interface EtcScheduleRequest {
   scheduleName: string;
   startedAt: string;
@@ -110,12 +117,64 @@ export interface EtcScheduleRequest {
   scheduleResult: ScheduleResult;
 }
 
-// 서류 전형 수정 요청
-export type ApplicationMethod = 'PLATFORM' | 'EMAIL' | 'REFERRAL' | 'HOMEPAGE' | 'EMPTY';
+// 기타 스케줄 수정 요청
+export interface EtcScheduleUpdateRequest {
+  scheduleName: string;
+  startedAt: string;
+  endedAt: string;
+  result: ScheduleResult;
+}
 
 export interface DocumentStageUpdateRequest {
   deadline: string;
   applicationMethod: ApplicationMethod;
   submissionStatus: SubmissionStatus;
   scheduleResult: ScheduleResult;
+}
+
+// 면접 질문 생성 요청
+export interface InterviewQuestionRequest {
+  applicationId: number;
+  interviewQuestionId?: number | null;
+  interviewType: string;
+  question: string;
+  memo: string;
+}
+
+// 면접 질문 응답
+export interface InterviewQuestionResponse {
+  interviewQuestionId: number;
+  applicationId: number;
+  interviewType: string;
+  question: string;
+  memo: string;
+}
+
+// 면접 질문 아카이브 아이템
+export interface InterviewQuestionArchiveItem {
+  questionArchiveId: number;
+  interviewQuestionId: number;
+  applicationId: number;
+  company: string;
+  interviewType: string;
+  question: string;
+  memo: string;
+  createdAt: string;
+}
+
+// 면접 질문 목록 조회 응답
+export interface InterviewQuestionsResponse {
+  contents: InterviewQuestionArchiveItem[];
+  hasNext: boolean;
+  nextCursorId: number | null;
+}
+
+// 면접 질문 목록 조회 필터
+export type LinkStatus = 'LINKED' | 'UNLINKED';
+
+export interface InterviewQuestionsFilter {
+  query?: string;
+  linkStatus?: LinkStatus;
+  applicationId?: number;
+  size?: string;
 }
