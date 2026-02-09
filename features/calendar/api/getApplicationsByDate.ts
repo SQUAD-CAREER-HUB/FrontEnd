@@ -1,6 +1,6 @@
 import { clientApi } from '@/shared/lib/api/clientApi';
 
-export interface DailyApplication {
+export interface getDailyApplicationListItemResponse {
   applicationId: number;
   company: string;
   position: string;
@@ -19,7 +19,7 @@ export interface DailyApplication {
 }
 
 export function getApplicationsByDate(targetDate: string) {
-  return clientApi.get<DailyApplication[]>(
+  return clientApi.get<getDailyApplicationListItemResponse[]>(
     `/v1/schedules/date?targetDate=${targetDate}`,
   );
 }

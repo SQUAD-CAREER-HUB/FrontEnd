@@ -2,11 +2,9 @@
 
 import { useGetReviewDetail } from '../../hooks/useGetReviewDetail';
 
-import PostListItemMenu from '../SearchablePostList/PostListItemMenu';
 import PostDetailHeader from './PostDetailHeader';
 import PostDetailReviewSection from './PostDetailReviewSection';
 import PostDetailQuestionListSection from './PostDetailQuestionListSection';
-import { DialogFooter } from '@/shared/components/ui/dialog';
 
 /**
  * - useGetReviewDetail을 사용하여 데이터를 렌더링합니다.
@@ -17,7 +15,12 @@ export default function PostDetailView({ postId }: { postId: number }) {
 
   return (
     <>
-      <PostDetailHeader data={data} />
+      <PostDetailHeader
+        data={{
+          ...data,
+          postId,
+        }}
+      />
 
       {/* 본문 스크롤 영역 */}
       <div className='flex-1 overflow-y-auto p-8 pt-6 space-y-8 custom-scrollbar animate-fade-in-up'>
@@ -30,10 +33,6 @@ export default function PostDetailView({ postId }: { postId: number }) {
           detailReviewContent={data.detailReviewContent}
         />
       </div>
-
-      <DialogFooter className='relative py-6 border-t border-slate-100 dark:border-slate-800 flex justify-end items-center'>
-        <PostListItemMenu isMyPost={data.isMyPost} postId={postId} />
-      </DialogFooter>
     </>
   );
 }

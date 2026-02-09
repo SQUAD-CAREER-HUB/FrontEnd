@@ -1,24 +1,9 @@
 'use client';
 
-import {
-  BookMarkedIcon,
-  BriefcaseIcon,
-  CalendarIcon,
-  LayoutDashboardIcon,
-  UsersIcon,
-  LucideIcon,
-} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/shared/lib/utils';
-
-const NAV_ITEMS: { href: string; label: string; icon: LucideIcon }[] = [
-  { href: '/dashboard', label: '대시보드', icon: LayoutDashboardIcon },
-  { href: '/applications', label: '지원 현황', icon: BriefcaseIcon },
-  { href: '/calendar', label: '캘린더', icon: CalendarIcon },
-  { href: '/questions', label: '면접 질문', icon: BookMarkedIcon },
-  { href: '/community', label: '커뮤니티', icon: UsersIcon },
-];
+import { MOBILE_NAV_ITEMS } from '../constants';
 
 export default function MobileNav() {
   const pathname = usePathname();
@@ -26,7 +11,7 @@ export default function MobileNav() {
   return (
     <div className='h-15 md:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border z-30'>
       <div className='flex justify-between items-center px-2'>
-        {NAV_ITEMS.map((item, index) => {
+        {MOBILE_NAV_ITEMS.map((item, index) => {
           const isActive = pathname === item.href;
 
           return (

@@ -12,11 +12,12 @@ export default function DailyApplicationList({
   const targetDate = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : '';
 
   const { data } = useGetApplicationsByDate(targetDate);
+  const isEmpty = data.length === 0;
 
-  if (data.length === 0) return <DailyApplicationListEmptyState />;
+  if (isEmpty) return <DailyApplicationListEmptyState />;
 
   return (
-    <div className='flex flex-col gap-2 max-h-[400px] overflow-y-auto'>
+    <div className='flex flex-col gap-2 max-h-100 overflow-y-auto'>
       {data.map((application) => (
         <ApplicationCard key={application.applicationId} data={application} />
       ))}

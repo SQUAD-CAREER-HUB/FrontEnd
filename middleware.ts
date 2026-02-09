@@ -27,6 +27,6 @@ export const config = {
    * 5. .png, .svg 등 이미지 확장자
    */
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|manifest.ts|.*\\.png$|.*\\.svg$).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|manifest.ts|mockServiceWorker.js|.*\\.png$|.*\\.svg$).*)',
   ],
 };

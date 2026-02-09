@@ -1,13 +1,13 @@
 import { create } from 'zustand';
-import { QuestionItem } from '../types';
+import { Question } from '../types';
 
 interface QuestionModalState {
   isOpen: boolean;
   mode: 'create' | 'edit';
-  selectedQuestion: QuestionItem | null;
+  selectedQuestion: Question | null;
 
   openCreateModal: () => void;
-  openEditModal: (question: QuestionItem) => void;
+  openEditModal: (question: Question) => void;
   closeModal: () => void;
 }
 

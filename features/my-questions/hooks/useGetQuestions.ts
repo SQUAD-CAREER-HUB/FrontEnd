@@ -1,7 +1,6 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
-import { getQuestions } from '../api/getQuestions';
-import { GetQuestionsResponse } from '../types';
+import { GetQuestionListResponse, getQuestions } from '../api/getQuestions';
 
 interface UseGetQuestionsProps {
   linkStatus: 'LINKED' | 'UNLINKED';
@@ -14,7 +13,7 @@ export const useGetQuestions = ({
   query,
   size = 20,
 }: UseGetQuestionsProps) => {
-  return useSuspenseInfiniteQuery<GetQuestionsResponse>({
+  return useSuspenseInfiniteQuery<GetQuestionListResponse>({
     queryKey: ['questions', linkStatus, query],
 
     queryFn: ({ pageParam }) =>

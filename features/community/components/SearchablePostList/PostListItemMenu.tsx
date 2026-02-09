@@ -13,15 +13,18 @@ import { useConfirmStore } from '@/shared/stores/useConfirmStore';
 import { useDeleteReview } from '../../hooks/useDeleteReview';
 import { useState } from 'react';
 import PostReportModal from '../PostReportModal';
+import { cn } from '@/shared/lib/utils';
 
 interface PostListItemMenuProps {
   isMyPost: boolean;
   postId: number;
+  className?: string;
 }
 
 export default function PostListItemMenu({
   isMyPost,
   postId,
+  className = '',
 }: PostListItemMenuProps) {
   const router = useRouter();
   const { openConfirm } = useConfirmStore();
@@ -40,48 +43,48 @@ export default function PostListItemMenu({
 
   return (
     <>
-      <div className='absolute top-5 right-4 z-20'>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              onClick={(e) => e.stopPropagation()}
-              className='p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-400 outline-none'
-            >
-              <MoreVertical className='w-4 h-4' />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end' className='w-32'>
-            {/* 💡 본인 게시글인 경우에만 수정/삭제 노출 */}
-            {isMyPost ? (
-              <>
-                <DropdownMenuItem
-                  onClick={handleEdit}
-                  className='gap-2 cursor-pointer'
-                >
-                  <Pencil className='w-3.5 h-3.5' />{' '}
-                  <span className='text-sm'>수정</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={handleDelete}
-                  className='gap-2 cursor-pointer'
-                >
-                  <Trash2 className='w-3.5 h-3.5' />{' '}
-                  <span className='text-sm'>삭제</span>
-                </DropdownMenuItem>
-              </>
-            ) : (
-              /* 💡 타인의 게시글인 경우에만 신고 노출 */
-              <DropdownMenuItem
-                onClick={() => setIsReportModalOpen(true)}
-                className='gap-2 cursor-pointer text-slate-500'
-              >
-                <AlertCircle className='w-3.5 h-3.5' />{' '}
-                <span className='text-sm'>신고</span>
-              </DropdownMenuItem>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            onClick={(e) => e.stopPropagation()}
+            className={cn(
+              'p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-400 outline-none',
+              className,
             )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+          >
+            <MoreVertical className='w-4 h-4' />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align='end' className='w-32'>
+          {isMyPost ? (
+            <>
+              <DropdownMenuItem
+                onClick={handleEdit}
+                className='gap-2 cursor-pointer'
+              >
+                <Pencil className='w-3.5 h-3.5' />{' '}
+                <span className='text-sm'>수정</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={handleDelete}
+                className='gap-2 cursor-pointer'
+              >
+                <Trash2 className='w-3.5 h-3.5' />{' '}
+                <span className='text-sm'>삭제</span>
+              </DropdownMenuItem>
+            </>
+          ) : (
+            /* 💡 타인의 게시글인 경우에만 신고 노출 */
+            <DropdownMenuItem
+              onClick={() => setIsReportModalOpen(true)}
+              className='gap-2 cursor-pointer text-slate-500'
+            >
+              <AlertCircle className='w-3.5 h-3.5' />{' '}
+              <span className='text-sm'>신고</span>
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <PostReportModal
         postId={postId}

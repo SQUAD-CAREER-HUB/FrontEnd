@@ -36,7 +36,7 @@ export default function DailyApplicationModal() {
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>
-      <DialogContent className='sm:max-w-[500px]'>
+      <DialogContent className='sm:max-w-125'>
         <DialogHeader>
           <DialogTitle>
             {selectedDate
